@@ -19,7 +19,8 @@ npm install
 npm run dev
 
 +-----
-|   Downloaded UIKIT.css on offical website
+|   Downloaded UIKIT.css/UIKIT.js/UIKIT-icons.js on offical website
 |   Copy UIKIT.css's Content to ./public/css/app.css
+|   Copy UIKIT.js/UIKIT-icons.js to ./public/js/
 +----
 
