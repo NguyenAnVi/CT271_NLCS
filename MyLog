@@ -1,0 +1,8 @@
+17/8/22
+#Terminate:
+npm remove bootstrap
+composer require torrix/laravel-uikit
+php artisan vendor:publish --provider="Torrix\LaravelUikitServiceProvider" --force
+composer require laravel/fortify
+#more INFO: https://github.com/torrix/laravel-uikit
+
