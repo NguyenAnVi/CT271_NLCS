@@ -1,1 +1,25 @@
 composer create-project laravel/laravel:^8.0 CT271_NLCS
+npm remove bootstrap
+npm install uikit
+composer require torrix/laravel-uikit
+php artisan vendor:publish --provider="Torrix\LaravelUikitServiceProvider" --force
+composer require laravel/fortify
+php artisan vendor:publish --provider="Laravel\Fortify\FortifyServiceProvider"
+
++-----
+|#Add in config/app.php:
+|
+| 'providers' => [
+|        // ...
+|        App\Providers\FortifyServiceProvider::class,
+|    ],
++-----
+
+npm install
+npm run dev
+
++-----
+|   Downloaded UIKIT.css on offical website
+|   Copy UIKIT.css's Content to ./public/css/app.css
++----
+
