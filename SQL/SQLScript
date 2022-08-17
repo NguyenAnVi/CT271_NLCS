@@ -1,0 +1,88 @@
+DROP DATABASE IF EXISTS nhathuocsuckhoeDB;
+CREATE DATABASE nhathuocsuckhoeDB;
+
+ALTER DATABASE nhathuocsuckhoeDB CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+USE nhathuocsuckhoeDB;
+
+CREATE TABLE quocGia (
+    QG_id VARCHAR(2),
+    QG_ten VARCHAR(50)
+);
+
+LOAD DATA INFILE 'D:/Space/NLCS/CT271_NLCS/SQL/country.csv'
+INTO TABLE quocGia
+FIELDS TERMINATED BY ','
+LINEs TERMINATED BY '\n'
+IGNORE 1 ROWS;
+
+CREATE TABLE thuongHieu (
+    TH_id INT,
+    TH_ten VARCHAR(50),
+    QG_id VARCHAR(2),
+    TH_logo TEXT
+);
+
+CREATE TABLE danhMucSanPham (
+    DMSP_id INT,
+    DMSP_ten VARCHAR(50),
+    DMSP_cap VARCHAR(2),
+    TH_logo TEXT
+);
+
+CREATE TABLE chuongTrinhKhuyenMai (
+    CTKM_id INT,
+    CTKM_phanTram INT,
+    CTKM_thoiHan TIMESTAMP
+);
+
+CREATE TABLE nguoiDung (
+    ND_id INT,
+    ND_hoTen TEXT,
+    ND_sdt INT,
+    ND_diaChi TEXT,
+    ND_email TEXT,
+    ND_quyenTruyCap INT,
+    diemTichLuy INT,
+    maNhanVien INT
+);
+
+CREATE TABLE donHang (
+    DH_id INT,
+    ND_id_KH INT,
+    ND_id_QLBH INT,
+    DH_ngayLap TIMESTAMP,
+    DH_diaChiGiaoHang TEXT,
+    DH_trangThai TEXT
+);
+
+CREATE TABLE sanPham (
+    SP_id INT,
+    SP_ten TEXT,
+    SP_hinhAnh TEXT,
+    MTSP_id INT,
+    SP_giaNiemYet INT,
+    CTKM_id INT
+);
+
+CREATE TABLE moTaSanPham (
+    MTSP_id INT,
+    MTSP_congDung TEXT,
+    MTSP_huongDanSuDung TEXT,
+    MTSP_quiCach VARCHAR(20),
+    QG_id INT,
+    TH_id INT,
+    DMSP_id INT,
+    SP_id INT
+);
+
+CREATE TABLE chiTietDonHang (
+    CTDH_id INT,
+    DH_id INT,
+    SP_id INT,
+    CTDH_soLuong INT
+);
+
+
+
+
