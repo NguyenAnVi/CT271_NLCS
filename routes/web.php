@@ -11,11 +11,5 @@ Route::get('/', function () {
 })->name('home');
 
 Route::match(['get', 'post'], '/login', [LoginController::class, 'login'])->name('login');
+Route::match(['post'], '/logout', [LoginController::class, 'logout'])->name('logout');
 Route::match(['get', 'post'], '/register', [LoginController::class, 'register'])->name('register');
-Route::middleware('auth')->group(function (){
-    Route::prefix('/admin')->group(function (){
-        Route::get('/', [AdminHomeController::class, 'index'])->name('admin_home');
-        Route::match(['get', 'post'], '/login', [AdminLoginController::class, 'login'])->name('admin_login');
-        Route::match(['get', 'post'], '/register', [AdminLoginController::class, 'register'])->name('admin_register');
-    });
-});
