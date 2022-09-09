@@ -8,11 +8,11 @@ use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
-    public function index()
-    {
-        $user = Auth::user();
-        echo 'Xin chào User, '. $user->name;
-    }
+    // public function index()
+    // {
+    //     $user = Auth::user();
+    //     echo 'Xin chào User, '. $user->name;
+    // }
     public function gethomepage(){
         $data = ([
             // 'general_message'=>'Một thông điệp',

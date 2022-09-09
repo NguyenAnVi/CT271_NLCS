@@ -12,20 +12,26 @@ class DatabaseSeeder extends Seeder
         DB::table('admins')->insert([
             [
                 'name' => 'Admin',
-                'email' => 'admin@gmail.com',
-                'password' => bcrypt('123456'),
+                'phone' => '1',
+                'password' => bcrypt('1'),
             ]
         ]);
 
         DB::table('users')->insert([
             [
-                'name' => 'User',
-                'phone' => '0939963285',
-                // 'email' => 'user@gmail.com',
-                'password' => bcrypt('123456'),
-                // 'address' => 'VinhPhu - ThoaiSon - AnGiang',
+                'name' => 'User123',
+                'phone' => '1',
+                'password' => bcrypt('1'),
                 'point' => 0,
             ]
         ]);
+
+        // DB::table('products')->insert([
+        //     [
+        //         'name' => 'Admin',
+        //         'phone' => '1',
+        //         'password' => bcrypt('123456'),
+        //     ]
+        // ]);
     }
 }

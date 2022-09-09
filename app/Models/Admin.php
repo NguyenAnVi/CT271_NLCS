@@ -15,11 +15,11 @@ class Admin extends Authenticatable
     protected $guarded = 'admin';
 
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'phone', 'password',
     ];
 
     protected $hidden = [
-        'password', 'remember_token',
+        'remember_token',
     ];
 }
 

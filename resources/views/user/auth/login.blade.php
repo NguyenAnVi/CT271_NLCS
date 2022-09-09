@@ -7,13 +7,25 @@
                 <h2>Đăng nhập</h2>
             </div>
             <div class="uk-width-2-3 uk-padding">
+                @error('approve')
+                    <div class="uk-alert-danger" uk-alert>
+                        <a class="uk-alert-close" uk-close></a>
+                        <p>{{ $message }}</p>
+                    </div>
+                @enderror
                 <form id="login-form" class="uk-panel uk-panel-box uk-form" method="POST" action="{{ route('login') }}">
                     @csrf
                     <div class="uk-form-row uk-margin">
-                        <input class="uk-input uk-width-1-1 uk-form-large @error('phone') uk-form-danger @enderror" type="text" name="phone" value="@if(isset($phone)){{$request->input('phone')}}@endif" placeholder="Nhập số điện thoại">
+                        <input class="uk-input uk-width-1-1 uk-form-large @error('phone') uk-form-danger @enderror" value="{{ old('phone') }}" type="text" name="phone" value="@if(isset($phone)){{$request->input('phone')}}{{$request->input('general_message')}}@endif" placeholder="Nhập số điện thoại">
+                        @error('phone')
+                            <div class="uk-text-danger">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div class="uk-form-row uk-margin">
-                        <input class="uk-input uk-width-1-1 uk-form-large @error('password') uk-form-danger @enderror" type="password" name="password" placeholder="Nhập mật khẩu">
+                        <input class="uk-input uk-width-1-1 uk-form-large @error('password') uk-form-danger @enderror" value="{{ old('password') }}" type="password" name="password" placeholder="Nhập mật khẩu">
+                        @error('password')
+                            <div class="uk-text-danger">{{ $message }}</div>
+                        @enderror
                     </div>
                     
                     {{-- <div class="uk-form-row uk-text-small"> --}}

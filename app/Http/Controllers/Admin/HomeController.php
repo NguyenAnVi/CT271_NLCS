@@ -12,7 +12,7 @@ class HomeController extends Controller
     {
         $user = Auth::guard('admin')->user();
         echo 'Xin chào Admin, '. $user->name;
-        return view('admin.home');
+        return route('admin.home');
     }
 }
 

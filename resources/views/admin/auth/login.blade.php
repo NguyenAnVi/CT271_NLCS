@@ -1,16 +1,37 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Admin Login</title>
-</head>
-<body>
-<form method="POST" action="{{ route('admin.login') }}">
-    @csrf
-    <h1>Admin</h1>
-    <input type="text" name="email" placeholder="Nhập địa chỉ email">
-    <input type="password" name="password" placeholder="Nhập mật khẩu">
-    <button type="submit">Đăng nhập</button>
-</form>
-</body>
-</html>
-
+@extends('layouts.adminapp')
+@section('content')
+    <div class="uk-child-width-expand@s uk-text-center uk-align-center uk-padding" uk-grid="" style="width: 900px;">
+        <div class="uk-card uk-card-default uk-card-body uk-grid-margin uk-margin" uk-grid>
+            <div class="uk-width-1-3 uk-padding">
+                <img class="" width="140" height="120" src="{{asset('logo/LOGO.png')}}" alt="">
+                <h2>Đăng nhập (ADMIN)</h2>
+            </div>
+            <div class="uk-width-2-3 uk-padding">
+                @error('approve')
+                    <div class="uk-alert-danger" uk-alert>
+                        <a class="uk-alert-close" uk-close></a>
+                        <p>{{ $message }}</p>
+                    </div>
+                @enderror
+                <form id="login-form" class="uk-panel uk-panel-box uk-form" method="POST" action="{{ route('admin.login') }}">
+                    @csrf
+                    <div class="uk-form-row uk-margin">
+                        <input class="uk-input uk-width-1-1 uk-form-large @error('phone') uk-form-danger @enderror" type="text" name="phone" value="@if(isset($phone)){{$request->input('phone')}}@endif" placeholder="Nhập số điện thoại">
+                    </div>
+                    <div class="uk-form-row uk-margin">
+                        <input class="uk-input uk-width-1-1 uk-form-large @error('password') uk-form-danger @enderror" type="password" name="password" placeholder="Nhập mật khẩu">
+                    </div>
+                    
+                    {{-- <div class="uk-form-row uk-text-small"> --}}
+                        {{-- <label class="uk-float-left"><input type="checkbox"> Remember Me</label> --}}
+                        {{-- <a class="uk-float-right uk-link uk-link-muted" href="#">Forgot Password?</a> --}}
+                    {{-- </div> --}}
+                </form>
+                <div class="uk-margin">
+                    <button class="uk-button uk-button-primary uk-button-large uk-width-expand@m" type="submit" form="login-form">Đăng nhập</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+@endsection

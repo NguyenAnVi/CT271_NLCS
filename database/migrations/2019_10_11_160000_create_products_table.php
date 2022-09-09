@@ -12,12 +12,10 @@ class CreateProductsTable extends Migration
             $table->id();
             $table->string('name');
             $table->text('image');
-            // $table->string('email')->unique();
             $table->text('detail');
             $table->integer('price');
             $table->unsignedBigInteger('saleoff_id')->nullable();
             $table->foreign('saleoff_id')->references('id')->on('saleoff')->nullOnDelete();
-            // $table->foreignId('saleoff_id')->nullOnDelete();
             $table->timestamps();
         });
     }

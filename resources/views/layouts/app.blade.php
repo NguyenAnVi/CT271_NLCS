@@ -14,7 +14,7 @@
 </head>
 <body style="min-height: 100vh">
 <div id="app">
-    <div class="uk-background-primary uk-light">
+    <div class="uk-background-primary uk-light uk-position-z-index" uk-sticky=" show-on-up: true; animation: uk-animation-slide-top">
         <nav class="uk-navbar-container uk-navbar-transparent">
             <div class="uk-container">
                 <div class="uk-navbar" data-uk-navbar>
@@ -117,7 +117,7 @@
                                             </li>
                                             <li class="uk-nav-divider"></li>
                                             <li>
-                                                <a href="{{ route('logout') }}"
+                                                <a href="{{ route('admin.logout') }}"
                                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                                     {{ __('Đăng xuất') }}
                                                 </a>
@@ -135,7 +135,7 @@
             </div>
         </nav>
     </div>
-    @include('layouts.generalmessage')
+    @includeIf('layouts.generalmessage')
     
     <main class="" uk-height-viewport="offset-bottom:true ; offset-top:true">
         @yield('content')
