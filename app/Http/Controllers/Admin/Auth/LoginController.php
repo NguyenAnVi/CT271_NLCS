@@ -6,17 +6,24 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-
+use App\SessionGuard as Guard;
+use App\Csrf;
 use App\Models\Admin as User;
 
 class LoginController extends Controller
 {
-    private const adminpassword = "DY!q6EuRJw";
-    
     public function login(Request $request)
     {
         if ($request->getMethod() == 'GET') {
-            return view('admin.auth.login');
+            if(!Auth::guard('admin')->user()){
+                return view('admin.auth.login');
+            }
+            else{
+                $data = ([
+                    'any' => 'Bạn đã đăng nhập với tên '.Auth::guard('admin')->user()->name,
+                ]);
+                return redirect()->route('admin.home')->withErrors($data);
+            }
         }
         $request->validate([
             'phone' => 'required',
@@ -24,6 +31,7 @@ class LoginController extends Controller
         ]);
         $credentials = $request->only(['phone', 'password']);
         if (Auth::guard('admin')->attempt($credentials)) {
+            Csrf::generateToken();
             return redirect()->route('admin.home');
         } else {
             return redirect()->back()->withInput()->withErrors(([
@@ -32,58 +40,13 @@ class LoginController extends Controller
         }
     }
 
-    public function register(Request $request)
-    {
-        Auth::guard('admin')->check();
-        if($request->getMethod() == 'GET') {
-            return view('admin.auth.register');
-        }
-        $credentials = $request->only(['name', 'phone', 'password']);
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'phone' => 'required|string|max:10|min:10|unique:admins',
-            'password' => 'required|min:6',
-        ]);
-        User::create([
-            'name' => $request->input('name'),
-            'phone' => $request->input('phone'),
-            // 'email' => $request['email'],
-            // 'address' => $request['address'],
-            // 'password' => Hash::make($input['password']),
-            'password' => Hash::make($request->input('password')),
-            'point' => 0,
-        ]);
-        $data=([
-            'general_message' => 'Tạo tài khoản thành công.',
-            'general_message_type' => 'success',
-        ]);
-        return view('admin.auth.login', $data);
-    }
-   
-    public function logout(Request $request){
-        Auth::guard('admin')->logout();
- 
+    public static function logout(Request $request){
+        Guard::logout($request);
         $request->session()->invalidate();
         $request->session()->regenerateToken();
- 
         return redirect()->route('admin.home');
     }
 
-    public function confirm_password(Request $request){
-        if($request->getMethod() == 'GET') {
-            return view('auth.confirm-password');
-        }
-        // else
-        if (! Hash::check($request->password, $request->user()->password)) {
-            return back()->withErrors([
-                'password' => ['The provided password does not match our records.']
-            ]);
-        }
-     
-        $request->session()->passwordConfirmed();
-     
-        return redirect()->intended();
-    }
 
 }
     

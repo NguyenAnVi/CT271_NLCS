@@ -14,8 +14,18 @@ class LoginController extends Controller
     public function login(Request $request)
     {
         if ($request->getMethod() == 'GET') {
-            return view('user.auth.login');
+            if(!Auth::user()){
+                return view('user.auth.login');
+            }
+            else{
+                $data = ([
+                    'general_message'=>'Bạn đã đăng nhập với tên '.Auth::user()->name,
+                    'general_message_type'=>'warning'
+                ]);
+                return view('home', $data);
+            }
         }
+
         $request->validate([
             'phone' => 'required',
             'password' => 'required'

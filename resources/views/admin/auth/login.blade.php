@@ -16,19 +16,25 @@
                 <form id="login-form" class="uk-panel uk-panel-box uk-form" method="POST" action="{{ route('admin.login') }}">
                     @csrf
                     <div class="uk-form-row uk-margin">
-                        <input class="uk-input uk-width-1-1 uk-form-large @error('phone') uk-form-danger @enderror" type="text" name="phone" value="@if(isset($phone)){{$request->input('phone')}}@endif" placeholder="Nhập số điện thoại">
+                        <input autofocus tabindex="1" class="uk-input uk-width-1-1 uk-form-large @error('phone') uk-form-danger @enderror" type="text" name="phone" value="@if(isset($phone)){{$request->input('phone')}}@endif" placeholder="Nhập số điện thoại">
+                        @error('phone')
+                            <span class="uk-text-danger">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
                     </div>
                     <div class="uk-form-row uk-margin">
-                        <input class="uk-input uk-width-1-1 uk-form-large @error('password') uk-form-danger @enderror" type="password" name="password" placeholder="Nhập mật khẩu">
+                        <input tabindex="1" class="uk-input uk-width-1-1 uk-form-large @error('password') uk-form-danger @enderror" type="password" name="password" placeholder="Nhập mật khẩu">
                     </div>
+                        @error('password')
+                            <span class="uk-text-danger">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
                     
-                    {{-- <div class="uk-form-row uk-text-small"> --}}
-                        {{-- <label class="uk-float-left"><input type="checkbox"> Remember Me</label> --}}
-                        {{-- <a class="uk-float-right uk-link uk-link-muted" href="#">Forgot Password?</a> --}}
-                    {{-- </div> --}}
                 </form>
                 <div class="uk-margin">
-                    <button class="uk-button uk-button-primary uk-button-large uk-width-expand@m" type="submit" form="login-form">Đăng nhập</button>
+                    <button tabindex="1" class="uk-button uk-button-primary uk-button-large uk-width-expand@m" type="submit" form="login-form">Đăng nhập</button>
                 </div>
                 </form>
             </div>

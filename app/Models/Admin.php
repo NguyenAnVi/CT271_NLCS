@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+
 class Admin extends Authenticatable
 {
     use HasFactory, Notifiable;
@@ -19,7 +20,8 @@ class Admin extends Authenticatable
     ];
 
     protected $hidden = [
-        'remember_token',
+        'remember_token','password', 'created_at', 'updated_at'
+
     ];
 }
 

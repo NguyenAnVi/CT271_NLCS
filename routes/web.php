@@ -11,7 +11,7 @@ Route::match(['get'], '/home', [HomeController::class, 'gethomepage'])->name('ho
 // Route::match(['get'], '/search/{keyword}', [SearchController::class, 'search'])->name('search');
 // Route::match(['get'], '/product/{id}', [ProductController::class, 'getproductpage'])->name('viewproduct');
 Route::resource('product', ProductController::class)->except([
-    'create', 'store', 'update', 'destroy', 'index'
+    'create', 'store', 'update', 'destroy', 'index' , 'edit'
 ]);
 
 // User_Auth

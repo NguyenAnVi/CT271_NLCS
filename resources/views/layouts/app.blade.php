@@ -29,29 +29,6 @@
                                         <li class="uk-active"><a href="#" class="">Danhmuc</a></li>
                                     </ul>    
                                 </div>
-                                
-                                {{-- <div class="uk-navbar-dropdown uk-navbar-dropdown-width-3">
-                                    <div class="uk-navbar-dropdown-grid uk-child-width-1-3" data-uk-grid>
-                                        <div>
-                                            <ul class="uk-nav uk-navbar-dropdown-nav">
-                                                <li class="uk-nav-header">Laravel</li>
-                                                
-                                            </ul>
-                                        </div>
-                                        <div>
-                                            <ul class="uk-nav uk-navbar-dropdown-nav">
-                                                <li class="uk-nav-header">UIkit</li>
-                                                
-                                            </ul>
-                                        </div>
-                                        <div>
-                                            <ul class="uk-nav uk-navbar-dropdown-nav">
-                                                <li class="uk-nav-header">Vue.js</li>
-                                               
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div> --}}
                             </li>
                         </ul>
                     </div>
@@ -135,12 +112,12 @@
             </div>
         </nav>
     </div>
-    @includeIf('layouts.generalmessage')
-    
-    <main class="" uk-height-viewport="offset-bottom:true ; offset-top:true">
-        @yield('content')
+    <main uk-height-viewport="offset-bottom:true ; offset-top:true">
+        <div class="uk-container">
+            @includeIf('layouts.generalmessage')
+            @yield('content')
+        </div>
     </main>
-
     <footer class="uk-section uk-section-xsmall uk-section-secondary">
         <div class="uk-container">
             <div class="uk-grid uk-text-center uk-text-left@s uk-flex-middle" data-uk-grid>

@@ -11,7 +11,12 @@ class DatabaseSeeder extends Seeder
     {
         DB::table('admins')->insert([
             [
-                'name' => 'Admin',
+                'name' => 'ROOT',
+                'phone' => 'ROOT',
+                'password' => bcrypt('root'),
+            ],
+            [
+                'name' => 'Admin01',
                 'phone' => '1',
                 'password' => bcrypt('1'),
             ]
@@ -19,7 +24,7 @@ class DatabaseSeeder extends Seeder
 
         DB::table('users')->insert([
             [
-                'name' => 'User123',
+                'name' => 'User01',
                 'phone' => '1',
                 'password' => bcrypt('1'),
                 'point' => 0,

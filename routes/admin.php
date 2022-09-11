@@ -3,7 +3,8 @@
 
 use App\Http\Controllers\Admin\Auth\LoginController;
 use App\Http\Controllers\Admin\HomeController;
-use App\Http\Controllers\Admin\AdminProductController;
+use App\Http\Controllers\Admin\Manager\AdminHRController;
+use App\Http\Controllers\Admin\Manager\AdminProductController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\EnsureTokenIsValid;
 
@@ -12,14 +13,26 @@ Route::match(['post'], '/logout', [LoginController::class, 'logout'])->name('adm
 
 Route::middleware('auth:admin')->group(function (){
     Route::prefix('')->group(function (){
-        Route::match(['get', 'post'], 'register', [LoginController::class, 'register'])->name('admin.register');
         Route::get('home', [HomeController::class, 'index'])->name('admin.home');
         Route::get('', function(){return redirect()->route('admin.home');});
 
-        Route::match(['get', 'post'],'confirm-password', [LoginController::class, 'confirm_password'])->name('password.confirm');
+        // Adding new Admin Account route
+        Route::match(['get', 'post'], 'hr', [AdminHRController::class, 'index'])->name('admin.hr');
+        Route::match(['post'], 'hr/create', [AdminHRController::class, 'createNewAccount'])->name('admin.hr.create');
+        Route::match(['delete'], 'hr/destroy/{id}', [AdminHRController::class, 'destroy'])->name('admin.hr.destroy');
 
+        // Route::match(['get', 'post'],'confirm-password', [LoginController::class, 'confirm_password'])->name('password.confirm');
+
+        Route::resource('product', AdminProductController::class)
+            ->except(['show'])
+            ->names([
+                'index' => 'admin.product',
+                'create' => 'admin.product.create',
+                'store' => 'admin.product.store',
+                'edit' => 'admin.product.edit',
+                'update' => 'admin.product.update',
+                'destroy' => 'admin.product.destroy'
+            ]);
         
-        
-        Route::resource('product', AdminProductController::class)->except(['show']);
     });
 });

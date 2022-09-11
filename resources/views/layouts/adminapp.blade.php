@@ -19,7 +19,7 @@
             <div class="uk-container">
                 <div class="uk-navbar" data-uk-navbar>
                     <div class="uk-navbar-left">
-                        <a class="uk-navbar-item uk-logo" href="/">{{ config('app.name', 'Laravel') }}</a>
+                        <a class="uk-navbar-item uk-logo" href="{{route('admin.home')}}">{{ config('app.name', 'Laravel') }}</a>
                         <ul class="uk-navbar-nav">
                         </ul>
                     </div>
@@ -66,10 +66,12 @@
             </div>
         </nav>
     </div>
-    @includeIf('layouts.generalmessage')
     
     <main class="" uk-height-viewport="offset-bottom:true ; offset-top:true">
-        @yield('content')
+        <div class="uk-container">
+            @includeIf('layouts.generalmessage')
+            @yield('content')
+        </div>
     </main>
 
     <footer class="uk-section uk-section-xsmall uk-section-secondary">
