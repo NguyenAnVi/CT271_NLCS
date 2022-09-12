@@ -20,6 +20,8 @@ Route::middleware('auth:admin')->group(function (){
         Route::match(['get', 'post'], 'hr', [AdminHRController::class, 'index'])->name('admin.hr');
         Route::match(['post'], 'hr/create', [AdminHRController::class, 'createNewAccount'])->name('admin.hr.create');
         Route::match(['delete'], 'hr/destroy/{id}', [AdminHRController::class, 'destroy'])->name('admin.hr.destroy');
+        Route::match(['get'], 'hr/edit/{id}', [AdminHRController::class, 'edit'])->name('admin.hr.edit');
+        Route::match(['post'], 'hr/update/{id}', [AdminHRController::class, 'update'])->name('admin.hr.update');
 
         // Route::match(['get', 'post'],'confirm-password', [LoginController::class, 'confirm_password'])->name('password.confirm');
 

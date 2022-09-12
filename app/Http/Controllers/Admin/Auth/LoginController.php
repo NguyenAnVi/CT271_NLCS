@@ -5,10 +5,8 @@ namespace App\Http\Controllers\Admin\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use App\SessionGuard as Guard;
 use App\Csrf;
-use App\Models\Admin as User;
 
 class LoginController extends Controller
 {
@@ -20,7 +18,7 @@ class LoginController extends Controller
             }
             else{
                 $data = ([
-                    'any' => 'Bạn đã đăng nhập với tên '.Auth::guard('admin')->user()->name,
+                    'warning' => 'Bạn đã đăng nhập với tên '.Auth::guard('admin')->user()->name,
                 ]);
                 return redirect()->route('admin.home')->withErrors($data);
             }
@@ -35,7 +33,7 @@ class LoginController extends Controller
             return redirect()->route('admin.home');
         } else {
             return redirect()->back()->withInput()->withErrors(([
-                'approve' => 'Số điện thoại hoặc mật khẩu sai'
+                'danger' => 'Số điện thoại hoặc mật khẩu sai'
             ]));
         }
     }
@@ -44,7 +42,9 @@ class LoginController extends Controller
         Guard::logout($request);
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect()->route('admin.home');
+        return redirect()->route('admin.home')->withErrors([
+            'success' => 'Đăng xuất thành công',
+        ]);
     }
 
 

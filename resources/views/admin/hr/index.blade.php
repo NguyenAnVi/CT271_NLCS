@@ -3,7 +3,7 @@
 <div class="uk-container uk-padding-small ">
     <div>
         <ul class="uk-child-width-expand" uk-tab>
-            <li onclick="UIkit.slider('#slcontent').show('0');" class="uk-active"><a href=""><h3 class="uk-text-bold">Danh sách nhân viên {{Auth::guard('admin')->user()}}</h3></a></li>
+            <li onclick="UIkit.slider('#slcontent').show('0');" class="uk-active"><a href=""><h3 class="uk-text-bold">Danh sách nhân viên</h3></a></li>
             <li onclick="UIkit.slider('#slcontent').show('1');" class="" ><a href="#"><h3 class="uk-text-bold">Thêm mới</h3></a></li>
         </ul>
     </div>
@@ -37,7 +37,10 @@
                                     @csrf
                                     @method('delete')
                                 </form>
-                                <td><button class="uk-button-primary" type="button"><span uk-icon="pencil"></span></button></td>
+                                <form id="item-{{$item->id}}-edit-form" method="GET" action="{{route('admin.hr.edit',['id' => $item->id])}}" hidden>
+                                    @csrf
+                                </form>
+                                <td><button form="item-{{$item->id}}-edit-form" class="uk-button-primary" type="submit"><span uk-icon="pencil"></span></button></td>
                                 <td><button form="item-{{$item->id}}-destroy-form" class="uk-button-danger" type="submit"><span uk-icon="close"></span></button></td>
                                 @endif
                             </tr>
@@ -95,7 +98,7 @@
                         </div>
     
                         <div class="uk-width-1-1@s">
-                            <button tabindex="1" class="uk-button uk-button-primary uk-button-large uk-width-expand@m" type="submit" form="register-form">Đăng ký</button>
+                            <button tabindex="1" class="uk-button uk-button-primary uk-button-large uk-width-expand@m" type="submit" form="register-form">Thêm</button>
                         </div>
                     </form>
                     
