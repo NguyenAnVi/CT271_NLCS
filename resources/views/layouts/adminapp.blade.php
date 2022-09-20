@@ -93,5 +93,6 @@
 </div>
 <script src="{{ asset('js/uikit.js') }}" defer></script>
 <script src="{{ asset('js/uikit-icons.js') }}" defer></script>
+
 </body>
 </html>

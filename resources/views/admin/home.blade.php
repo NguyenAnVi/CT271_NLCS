@@ -10,14 +10,13 @@
             back
         }
     </style>
-    <div id="list-functions" class="uk-padding uk-padding-remove-horizontal uk-child-width-1-2  uk-grid-medium uk-text-center" uk-grid="masonry:true">
+    <div id="list-functions" class="uk-padding uk-padding-remove-horizontal uk-child-width-1-2@m uk-grid-match uk-grid-medium uk-text-center" uk-grid="">
         <div>
             <a href="{{route('admin.product')}}">
                 <div class="uk-card uk-card-secondary uk-card-body uk-transition-toggle">
                     <img class="uk-transition-scale-up uk-transition-opaque" src="{{asset('logo/ProductManager.jpg')}}" alt="">
                     <div class="uk-position-center">
                         <div class=""><h2 class="">QL Sản Phẩm</h2></div>
-                        {{-- <div class="uk-transition-scale-up"><h3 class="">Products Management</h3></div> --}}
                     </div>
                 </div>
             </a>  
@@ -28,6 +27,17 @@
                     <img class="uk-transition-scale-up uk-transition-opaque" src="{{asset('logo/HR.jpg')}}" alt="">
                     <div class="uk-position-center">
                         <div class=""><h2 class="">QL CTKM</h2></div>
+                        {{-- <div class="uk-transition-scale-up"><h3 class="">Create new Admin account</h3></div> --}}
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div>
+            <a href="{{route('admin.customer')}}">
+                <div class="uk-card uk-card-secondary uk-card-body uk-transition-toggle">
+                    <img class="uk-transition-scale-up uk-transition-opaque" src="{{asset('logo/HR.jpg')}}" alt="">
+                    <div class="uk-position-center">
+                        <div class=""><h2 class="">QL Khách hàng</h2></div>
                         {{-- <div class="uk-transition-scale-up"><h3 class="">Create new Admin account</h3></div> --}}
                     </div>
                 </div>

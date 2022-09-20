@@ -38,7 +38,6 @@
                                     @method('delete')
                                 </form>
                                 <form id="item-{{$item->id}}-edit-form" method="GET" action="{{route('admin.hr.edit',['id' => $item->id])}}" hidden>
-                                    @csrf
                                 </form>
                                 <td><button form="item-{{$item->id}}-edit-form" class="uk-button-primary" type="submit"><span uk-icon="pencil"></span></button></td>
                                 <td><button form="item-{{$item->id}}-destroy-form" class="uk-button-danger" type="submit"><span uk-icon="close"></span></button></td>
@@ -49,6 +48,7 @@
                             
                         </tbody>
                     </table>
+                    {{$admins->links()}}
                 </div>
             </li>
             <li id="add" class="uk-width-1-1">

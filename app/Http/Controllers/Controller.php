@@ -20,7 +20,7 @@ class Controller extends BaseController
         }
                 
         http_response_code(404);
-        echo view()->render('errors/404');
+        echo view('errors/404');
         exit();        
     }
     

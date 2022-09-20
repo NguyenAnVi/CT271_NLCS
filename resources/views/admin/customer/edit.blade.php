@@ -2,13 +2,12 @@
 @section('content')
 <div class="uk-container uk-padding-small ">
     <div class="uk-width-1-1 uk-padding">
-        <h2 class="uk-text-center">Thay đổi thông tin người dùng ({{$admin->id}})</h2>
+        <h2 class="uk-text-center">Thay đổi thông tin người dùng ({{$user->id}})</h2>
         <p class="uk-text-center uk-text-italic">*Đánh dấu check <label><input class="uk-checkbox" type="checkbox" checked></label> vào những trường cần thay đổi</p>
-        
         <form id="edit-form" 
                 class="uk-grid-small uk-form uk-child-width-1-1" 
                 method="POST" 
-                action="{{ route('admin.hr.update', ['id' => $admin->id]) }}" 
+                action="{{ route('admin.customer.update', ['id' => $user->id]) }}" 
                 uk-grid="">
             @csrf
             <div class="uk-form" uk-grid>
@@ -22,7 +21,7 @@
                         <span class="uk-text-bold uk-form-large">Họ và Tên: </span>
                     </div>
                     <div class="uk-width-1-1@s uk-width-2-3@m">
-                        <input value="@if(old('name')!=NULL){{old('name')}}@else{{$admin->name}}@endif" autofocus tabindex="1" 
+                        <input value="@if(old('name')!=NULL){{old('name')}}@else{{$user->name}}@endif" autofocus tabindex="1" 
                         class="uk-input uk-form-large @error('name') uk-form-danger @enderror" 
                         type="text" name="name" placeholder="Họ và tên">
                         @error('name')
@@ -44,7 +43,7 @@
                         <span class="uk-text-bold uk-form-large">Điện thoại: </span>
                     </div>
                     <div class="uk-width-1-1@s uk-width-2-3@m">
-                        <input value="@if(old('phone')!=NULL){{old('phone')}}@else{{$admin->phone}}@endif" autofocus tabindex="1" 
+                        <input value="@if(old('phone')!=NULL){{old('phone')}}@else{{$user->phone}}@endif" autofocus tabindex="1" 
                         class="uk-input uk-form-large @error('phone') uk-form-danger @enderror" 
                         type="text" name="phone" placeholder="Điện thoại" >
                         @error('phone')

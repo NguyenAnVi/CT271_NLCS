@@ -3,14 +3,13 @@
 namespace App\Http\Controllers\Admin\Manager;
 
 use App\Http\Controllers\Controller;
-use App\Models\Admin;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 
-
-class AdminHRController extends Controller
+class AdminCustomerController extends Controller
 {
     public function getCurrentId(){
         return Auth::guard('admin')->user()->id;
@@ -43,11 +42,11 @@ class AdminHRController extends Controller
     public function index($data=NULL)
     {
         $check = $this->checkRootUser($this->getCurrentId());
-        $admins = DB::table('admins')->paginate(5);
+        $users = DB::table('users')->paginate(5);
         if($check){
-            if($data!=NULL) $data = array_merge($data,['admins' => $admins,]);
-            else $data = (['admins' => $admins,]);
-            return view('admin.hr.index', $data);
+            if($data!=NULL) $data = array_merge($data,['users' => $users,]);
+            else $data = (['users' => $users,]);
+            return view('admin.customer.index', $data);
         }
         else{
             return $this->rejectAction();
@@ -55,44 +54,19 @@ class AdminHRController extends Controller
         
     }
 
-    public function createNewAccount(Request $request)
-    {   
-        $check = $this->checkRootUser($this->getCurrentId());
-        if($check){
-            //do something if the User is ROOT
-            $credentials = $request->only(['name', 'phone', 'password', 'password_confirm']);
-            $validated = $request->validate([
-                'name' => 'required|string|max:255',
-                'phone' => 'required|string|max:10|min:10|unique:admins',
-                'password' => 'required|min:6',
-                'password_confirmation' => 'required|same:password'
-            ]);
-            Admin::create([
-                'name' => $request->input('name'),
-                'phone' => $request->input('phone'),
-                'password' => Hash::make($request->input('password')),
-            ]);
-            return redirect()->route('admin.hr')->withErrors(['success'=>'Tạo tài khoản thành công.']);
-        }
-        else{
-            return $this->rejectAction();
-        }
-    }
-
     public function edit($id)
     {
         $check = $this->checkRootUser($this->getCurrentId());
         if($check){
             //do something if the User is ROOT
-            // $admin = Admin::find($id);
-            $admin = Admin::where('id', $id)->first();
-            if (! $admin) {
+            $user = User::where('id', $id)->first();
+            if (! $user) {
                 return $this->notFound();                       
             }
             $data = ([
-                'admin' => $admin,
+                'user' => $user,
             ]);
-            return view('admin.hr.edit', $data);
+            return view('admin.customer.edit', $data);
         }
         else{
             return $this->rejectAction();
@@ -109,37 +83,38 @@ class AdminHRController extends Controller
             $this->invokeCsrfGuard();
 
             // Kiểm tra xem id có tồn tại hay không?
-            $admin = Admin::find($id);
-            if (! $admin) {
-                return $this->notFound();                       
+            $user = User::find($id);
+            if (! $user) {
+                // return $this->notFound();
+                return view('tested', ['msg'=>$user]);
             }
             else{
                 // $credentials = $request->only(['name', 'phone', 'password']);
                 $validated = FALSE;
-                $admin = Admin::find($id);
+                $user = User::find($id);
                 $fields = '';
                 if($request->boolean('name_check')){
                     $validated = $request->validate(['name' => 'required|string|max:255']);
                     $fields = $fields.'`họ tên` ';
-                    $admin->name = $request->input('name');
+                    $user->name = $request->input('name');
                     
                 }
                 if($request->boolean('phone_check')){
-                    if ($request->input('phone') != $admin->phone){
+                    if ($request->input('phone') != $user->phone){
                         $validated = $request->validate(['phone' => 'required|string|max:10|min:10|unique:admins']);
                         $fields = $fields.'số điện thoại, ';
-                        $admin->phone = $request->input('phone');
+                        $user->phone = $request->input('phone');
                     }
                 }
                 if($request->boolean('password_check')){
                     
                     $validated = $request->validate(['password' => 'required|min:6']);
                     $fields = $fields.'mật khẩu mới ';
-                    $admin->password = Hash::make($request->input('password'));
+                    $user->password = Hash::make($request->input('password'));
                 }
 
-                $admin->save();
-                return redirect()->route('admin.hr')->withErrors(([
+                $user->save();
+                return redirect()->route('admin.customer')->withErrors(([
                     'success'=> $fields.' đã được cập nhật.'
                 ]));
                 
@@ -163,15 +138,15 @@ class AdminHRController extends Controller
             $this->invokeCsrfGuard();
 
             // Kiểm tra xem id có tồn tại hay không?
-            $admin = Admin::find($id);
-            if (! $admin) {
+            $user = User::find($id);
+            if (! $user) {
                 $this->notFound();                       
             }
 
             // Thực hiện xóa contact...
-            $admin->delete();
-            return redirect()->route('admin.hr')->withErrors(([
-                'success'=> 'Đã xóa thành công '.$admin->name.'.'
+            $user->delete();
+            return redirect()->route('admin.customer')->withErrors(([
+                'success'=> 'Đã xóa thành công '.$user->name.'.'
             ]));
         }
         else{
