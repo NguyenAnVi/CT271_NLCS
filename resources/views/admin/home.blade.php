@@ -22,7 +22,7 @@
             </a>  
         </div>
         <div>
-            <a href="">
+            <a href="{{route('admin.saleoff')}}">
                 <div class="uk-card uk-card-secondary uk-card-body uk-transition-toggle">
                     <img class="uk-transition-scale-up uk-transition-opaque" src="{{asset('logo/HR.jpg')}}" alt="">
                     <div class="uk-position-center">

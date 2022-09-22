@@ -3,32 +3,23 @@
 namespace App\Http\Controllers\Admin\Manager;
 
 use App\Http\Controllers\Controller;
-use App\Models\Product;
+use App\Models\SaleOff;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use Illuminate\Support\Facades\DB;
-use App\Models\Image;
 
-class AdminProductController extends Controller
+class AdminSaleOffController extends Controller
 {
     
     public function index($data=NULL)
     {
-        
-        $products = DB::table('products')->paginate(5);
-        $saleoffs = DB::table('saleoff');
-        if($data!=NULL) $data = array_merge($data,['products' => $products, 'saleoffs' => $saleoffs]);
-        else $data = (['products' => $products, 'saleoffs' => $saleoffs]);
-        return view('admin.product.index', $data);
-        
+        $saleoffs = DB::table('saleoff')->paginate(5);
+        if($data!=NULL) $data = array_merge($data,['saleoffs' => $saleoffs]);
+        else $data = (['saleoffs' => $saleoffs]);
+        return view('admin.saleoff.index', $data);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create($request)
     {
         
@@ -42,27 +33,27 @@ class AdminProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
-        $this->validate($request, [
-            'filenames' => 'required',
-            'filenames.*' => 'required'
-        ]);
+        // $this->validate($request, [
+        //     'filenames' => 'required',
+        //     'filenames.*' => 'required'
+        // ]);
 
-        $files = [];
-        if($request->hasfile('images'))
-        {
-            foreach($request->file('images') as $file)
-            {
-                $name = time().rand(1,100).'.'.$file->extension();
-                $file->move(public_path('files'), $name);  
-                $files[] = $name;  
-            }
-        }
+        // $files = [];
+        // if($request->hasfile('images'))
+        // {
+        //     foreach($request->file('images') as $file)
+        //     {
+        //         $name = time().rand(1,100).'.'.$file->extension();
+        //         $file->move(public_path('files'), $name);  
+        //         $files[] = $name;  
+        //     }
+        // }
 
-        $file= new Image();
-        $file->filenames = $files;
-        $file->save();
+        // $file= new Image();
+        // $file->filenames = $files;
+        // $file->save();
 
-        return back()->with('success', 'Data Your files has been successfully added');
+        // return back()->with('success', 'Data Your files has been successfully added');
     }
 
     /**
@@ -71,7 +62,7 @@ class AdminProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function show(Product $product)
+    public function show(SaleOff $product)
     {
         //
     }
@@ -82,7 +73,7 @@ class AdminProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function edit(Product $product)
+    public function edit(SaleOff $product)
     {
         //
     }
@@ -94,7 +85,7 @@ class AdminProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateProductRequest $request, Product $product)
+    public function update(UpdateProductRequest $request, SaleOff $product)
     {
         //
     }
@@ -105,7 +96,7 @@ class AdminProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Product $product)
+    public function destroy(SaleOff $product)
     {
         //
     }

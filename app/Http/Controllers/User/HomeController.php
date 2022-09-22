@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Product;
 
 class HomeController extends Controller
 {
@@ -36,6 +37,10 @@ class HomeController extends Controller
             ],
         ]);
         return view('tested', $data);
+    }
+    public function showProduct(Product $product)
+    {
+        //
     }
 }
 

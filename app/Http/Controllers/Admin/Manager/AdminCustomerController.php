@@ -39,8 +39,7 @@ class AdminCustomerController extends Controller
     // }
     //////////////////////////////////////////////////////////
         
-    public function index($data=NULL)
-    {
+    public function index($data=NULL){
         $check = $this->checkRootUser($this->getCurrentId());
         $users = DB::table('users')->paginate(5);
         if($check){
@@ -54,8 +53,7 @@ class AdminCustomerController extends Controller
         
     }
 
-    public function edit($id)
-    {
+    public function edit($id){
         $check = $this->checkRootUser($this->getCurrentId());
         if($check){
             //do something if the User is ROOT
@@ -74,8 +72,7 @@ class AdminCustomerController extends Controller
         
     }
 
-    public function update(Request $request, $id)
-    {
+    public function update(Request $request, $id){
         $check = $this->checkRootUser($this->getCurrentId());
         if($check){
             //do something if the User is ROOT
@@ -128,8 +125,7 @@ class AdminCustomerController extends Controller
         }
     }
 
-    public function destroy($id)
-    {
+    public function destroy($id){
         $check = $this->checkRootUser($this->getCurrentId());
         if($check){
             unset($check);

@@ -23,11 +23,11 @@
                         <td>{{$item->name}}</td>
                         <td class="phone" data-phone="{{$item->phone}}">{{$item->phone}}</td>
                         <td>{{$item->point}}</td>
-                        <form id="item-{{$item->id}}-destroy-form" method="POST" action="{{route('admin.customer.destroy',['id' => $item->id])}}" hidden>
+                        <form id="item-{{$item->id}}-destroy-form" method="POST" action="{{route('admin.customer.destroy',['customer' => $item->id])}}" hidden>
                             @csrf
                             @method('delete')
                         </form>
-                        <form id="item-{{$item->id}}-edit-form" method="GET" action="{{route('admin.customer.edit',['id' => $item->id])}}" hidden>
+                        <form id="item-{{$item->id}}-edit-form" method="GET" action="{{route('admin.customer.edit',['customer' => $item->id])}}" hidden>
                         </form>
                         <td><button form="item-{{$item->id}}-edit-form" class="uk-button-primary" type="submit"><span uk-icon="pencil"></span></button></td>
                         <td><button form="item-{{$item->id}}-destroy-form" class="uk-button-danger" type="submit"><span uk-icon="close"></span></button></td>
