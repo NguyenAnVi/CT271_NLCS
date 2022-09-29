@@ -4,99 +4,89 @@ namespace App\Http\Controllers\Admin\Manager;
 
 use App\Http\Controllers\Controller;
 use App\Models\SaleOff;
+use Illuminate\Database\DBAL\TimestampType;
 use Illuminate\Http\Request;
-use App\Http\Requests\StoreProductRequest;
-use App\Http\Requests\UpdateProductRequest;
 use Illuminate\Support\Facades\DB;
 
 class AdminSaleOffController extends Controller
 {
-    
-    public function index($data=NULL)
+
+    public function index($data = NULL)
     {
-        $saleoffs = DB::table('saleoff')->paginate(5);
-        if($data!=NULL) $data = array_merge($data,['saleoffs' => $saleoffs]);
+        $saleoffs = DB::table('saleoffs')->paginate(5);
+        if ($data != NULL) $data = array_merge($data, ['saleoffs' => $saleoffs]);
         else $data = (['saleoffs' => $saleoffs]);
         return view('admin.saleoff.index', $data);
     }
 
-    public function create($request)
+    public function create(Request $request)
     {
-        
+        return view('admin.saleoff.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreProductRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreProductRequest $request)
+    public function store(Request $request)
     {
-        // $this->validate($request, [
-        //     'filenames' => 'required',
-        //     'filenames.*' => 'required'
-        // ]);
+        //// 
+        $this->validate($request, [
+            'name' => 'required|string',
+        ]);
 
-        // $files = [];
-        // if($request->hasfile('images'))
-        // {
-        //     foreach($request->file('images') as $file)
-        //     {
-        //         $name = time().rand(1,100).'.'.$file->extension();
-        //         $file->move(public_path('files'), $name);  
-        //         $files[] = $name;  
-        //     }
-        // }
+        $saleoff = new SaleOff;
+        $saleoff->timestamps = false;
 
-        // $file= new Image();
-        // $file->filenames = $files;
-        // $file->save();
+        $saleoff->name = $request->name;
 
-        // return back()->with('success', 'Data Your files has been successfully added');
+        if ($request->boolean('price_check')) {
+            $saleoff->amount = $request->price_amount;
+            $saleoff->percent = 0;
+        } else {
+            $saleoff->amount = 0;
+            $saleoff->percent = $request->price_percent;
+        }
+
+        if (strcmp($request->saleoff_starttime, $request->saleoff_endtime) < 0) {
+            $saleoff->starttime = $request->saleoff_starttime;
+            $saleoff->endtime = $request->saleoff_endtime;
+        } else {
+            return back()->withInput()->withErrors([
+                'saleoff_endtime' => 'Thời gian kết thúc KM phải lớn hơn thời gian bắt đầu',
+            ]);
+        }
+        echo view('tested', ['msg' => $saleoff->starttime . $saleoff->endtime]);
+
+        if ($request->hasFile('banner')) {
+            $file = $request->file('banner');
+            $name = preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $saleoff->name)) . '-' . time() . '.' . $file->extension();
+            $file->storeAs('public/saleoff/banners', $name);
+
+            $saleoff->imageurl = $name;
+        } else {
+            $saleoff->imageurl = "";
+        }
+
+        $saleoff->save();
+
+        $last_inserted = $saleoff->id;
+
+        return redirect()->route('admin.saleoff')->withErrors(['success' => 'Đã tạo thành công CTKM ' . $saleoff->name . '.']);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function show(SaleOff $product)
+    public function edit($saleoff)
     {
-        //
+        $sf = SaleOff::where('id', $saleoff)->first();
+        if (!$sf) return $this->notFound();
+        $data = ([
+            'saleoff' => $sf,
+        ]);
+        return view('admin.saleoff.edit', $data);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(SaleOff $product)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateProductRequest  $request
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateProductRequest $request, SaleOff $product)
+    public function update(Request $request, $saleoff)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(SaleOff $product)
+    public function destroy($saleoff)
     {
         //
     }

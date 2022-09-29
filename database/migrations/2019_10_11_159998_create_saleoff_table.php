@@ -8,16 +8,18 @@ class CreateSaleoffTable extends Migration
 {
     public function up()
     {
-        Schema::create('saleoff', function (Blueprint $table) {
+        Schema::create('saleoffs', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->integer('price');
-            $table->timestamp('expire');
-            $table->timestamps();
+            $table->double('percent');
+            $table->integer('amount');
+            $table->datetime('starttime');
+            $table->datetime('endtime');
+            $table->string('imageurl');
         });
     }
     public function down()
     {
-        Schema::dropIfExists('saleoff');
+        Schema::dropIfExists('saleoffs');
     }
 }
