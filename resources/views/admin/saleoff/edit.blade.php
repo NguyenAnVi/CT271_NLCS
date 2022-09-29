@@ -6,16 +6,17 @@
         <h2 class="uk-text-center">Thay đổi thông tin chương trình khuyến mãi ({{$saleoff->name}})</h2>
         <p class="uk-text-center uk-text-italic">*Đánh dấu check <label><input class="uk-checkbox" type="checkbox" checked></label> vào những trường cần thay đổi</p>
         
-        <form id="edit-form" class="uk-grid-small uk-form uk-child-width-1-1" method="POST" 
+        <form id="edit-form" class="uk-grid-small uk-form uk-child-width-1-1" uk-grid
+            method="POST" 
             enctype="multipart/form-data"
-            action="{{ route('admin.saleoff.update', ['saleoff' => $saleoff]) }}" 
-            uk-grid="">
+            action="{{ route('admin.saleoff.update', $saleoff)}}">
             @csrf
+            @method('put')
             <div class="uk-form" uk-grid>
                 <div class="uk-width-expand uk-grid-match" uk-grid>
                     <div class="uk-width-auto@s uk-width-expand@m uk-text-right">
                         <label class="uk-form-large ">
-                            <input name="name_check" class="uk-checkbox" type="checkbox" checked>
+                            <input name="name_check" class="uk-checkbox" type="checkbox">
                         </label>
                     </div>
                     <div class="uk-width-expand@s uk-width-1-4@m">
@@ -40,7 +41,7 @@
                 <div class="uk-width-expand uk-grid-match" uk-grid>
                     <div class="uk-width-auto@s uk-width-expand@m uk-text-right">
                         <label class="uk-form-large ">
-                            <input name="price_check" class="uk-checkbox" type="checkbox" checked>
+                            <input name="change_price_check" class="uk-checkbox" type="checkbox">
                         </label>
                     </div>
                     <div class="uk-width-expand@s uk-width-1-4@m">
@@ -48,7 +49,7 @@
                     </div>
                     <div class="uk-width-1-1@s uk-width-2-3@m">
                         <div class="uk-margin uk-grid-large uk-child-width-auto uk-grid">
-                            <label><input class="uk-radio" type="radio" @if(old('price_amount') || $saleoff->amount!=0){{__('checked')}}@endif name="price_check" value="1">
+                            <label><input class="uk-radio " type="radio" @if(old('price_amount') || $saleoff->amount!=0){{__('checked')}}@endif name="price_check" value="1">
                                 Giảm giá theo tiền mặt (VNĐ):
                             </label>
                         </div>
@@ -106,7 +107,7 @@
                 <div class="uk-width-expand uk-grid-match" uk-grid>
                     <div class="uk-width-auto@s uk-width-expand@m uk-text-right">
                         <label class="uk-form-large ">
-                            <input name="image_check" class="uk-checkbox" type="checkbox" checked>
+                            <input name="image_check" class="uk-checkbox" type="checkbox">
                         </label>
                     </div>
                     <div class="uk-width-expand@s uk-width-1-4@m">
