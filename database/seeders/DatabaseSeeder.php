@@ -121,13 +121,11 @@ class DatabaseSeeder extends Seeder
                 'point' => 0,
             ],
         ]);
-        // DB::table('products')->insert([
-        //     [
-        //         'name' => 'Product1',
-        //         'phone' => '1',
-        //         'password' => bcrypt('123456'),
-        //     ]
-        // ]);
+        DB::table('saleoffs')->insert([
+            [
+                'name' => 'NONE',
+            ]
+        ]);
         // DB::table('products')->insert([
         //     [
         //         'name' => 'Admin',

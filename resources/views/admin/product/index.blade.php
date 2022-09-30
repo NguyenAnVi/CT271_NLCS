@@ -12,42 +12,52 @@
         <ul class="uk-slider-items uk-grid uk-grid-match">
             <li class="uk-width-1-1">
                 <div class="uk-cover-container">
+                    @if(isset($products))
                     {{-- table --}}
                     <table class="uk-table uk-table-middle uk-table-divider">
                         <thead>
                             <tr>
+                                <th class="uk-width-small">HinhAnh</th>
                                 <th class="uk-width-small">ID</th>
                                 <th>Tên</th>
                                 <th class="uk-width-small">ChiTiet</th>
                                 <th class="uk-width-small">Gia</th>
                                 <th class="uk-width-small">SaleOff</th>
-                                <th class="uk-width-small">HinhAnh</th>
                                 <th class="uk-table-shrink">Sửa</th>
                                 <th class="uk-table-shrink">Xóa</th>
                             </tr>
                         </thead>
                         <tbody> 
-                            @if(isset($admins))
+                            
                             @foreach ($products as $item)
                             <tr>
+                                {{-- <td><img src="{{asset('storage/products/'.$item->image)}}"></td> --}}
+                                <td><img src="{{$item->images}}"></td>
+
                                 <td>{{$item->id}}</td>
                                 <td>{{$item->name}}</td>
                                 <td>{{$item->detail}}</td>
                                 <td>{{$item->price}}</td>
-                                <form id="item-{{$item->id}}-destroy-form" method="POST" action="{{route('admin.product.destroy',['id' => $item->id])}}" hidden>@csrf @method('delete')</form>
-                                <form id="item-{{$item->id}}-edit-form" method="GET" action="{{route('admin.product.edit',['id' => $item->id])}}" hidden></form>
-                                <form id="item-{{$item->id}}-images-form" method="GET" action="{{route('admin.product.showimages',['id' => $item->id])}}" hidden></form>
+                                {{-- <form id="item-{{$item->id}}-destroy-form" method="POST" action="{{route('admin.product.destroy',$item)}}" hidden>@csrf @method('delete')</form>
+                                <form id="item-{{$item->id}}-edit-form" method="GET" action="{{route('admin.product.edit',$item)}}" hidden></form> --}}
+                                {{-- <form id="item-{{$item->id}}-images-form" method="GET" action="{{route('admin.product.showimages',['id' => $item->id])}}" hidden></form> --}}
 
                                 <td><button form="item-{{$item->id}}-images-form" class="uk-button-primary" type="submit"><span uk-icon="pencil"></span></button></td>
                                 <td><button form="item-{{$item->id}}-edit-form" class="uk-button-primary" type="submit"><span uk-icon="pencil"></span></button></td>
                                 <td><button form="item-{{$item->id}}-destroy-form" class="uk-button-danger" type="submit"><span uk-icon="close"></span></button></td>
                             </tr>
                             @endforeach
-                            @endif
+                            
+                            
                             
                         </tbody>
                     </table>
                     {{$products->links()}}
+                    @else
+                        <div>
+                            NOTHING
+                        </div>
+                    @endif
                 </div>
             </li>
             <li id="add" class="uk-width-1-1">
@@ -106,9 +116,9 @@
                                 <label class="uk-form-label" for="form-horizontal-select">Select</label>
                                 <div class="uk-form-controls">
                                     <select class="uk-select" id="form-horizontal-select">
-                                        @foreach($saleoffs as $saleoff)
-                                            <option>{{$saleoff->name}}</option>
-                                        @endforeach
+                                        {{-- @foreach($saleoffs as $saleoff) --}}
+                                            {{-- <option>{{$saleoff->name}}</option> --}}
+                                        {{-- @endforeach --}}
                                     </select>
                                 </div>
                             </div>

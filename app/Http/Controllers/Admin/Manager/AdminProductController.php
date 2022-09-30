@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use Illuminate\Support\Facades\DB;
-use App\Models\Image;
+use App\Models\SaleOff;
 
 class AdminProductController extends Controller
 {
@@ -17,11 +17,10 @@ class AdminProductController extends Controller
     {
         
         $products = DB::table('products')->paginate(5);
-        $saleoffs = DB::table('saleoff');
+        $saleoffs = DB::table('saleoffs');
         if($data!=NULL) $data = array_merge($data,['products' => $products, 'saleoffs' => $saleoffs]);
         else $data = (['products' => $products, 'saleoffs' => $saleoffs]);
         return view('admin.product.index', $data);
-        
     }
 
     /**
@@ -29,9 +28,12 @@ class AdminProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create($request)
+    public function create()
     {
-        
+        $data = ([
+            'saleoffs' => SaleOff::all(),
+        ]);
+        return view('admin.product.create', $data);
     }
 
     /**
@@ -40,29 +42,49 @@ class AdminProductController extends Controller
      * @param  \App\Http\Requests\StoreProductRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreProductRequest $request)
+    public function store(Request $request)
     {
-        $this->validate($request, [
-            'filenames' => 'required',
-            'filenames.*' => 'required'
-        ]);
+        // $this->validate($request, [
+        //     'name' => 'required',
+        //     'price' => 'required',
+        //     'detail' => 'string|max:500',
+        //     // 'images[]' => 'file|image',
+        // ]);
 
-        $files = [];
-        if($request->hasfile('images'))
-        {
+        
+        $product= new Product();
+        $product->timestamps = false;
+
+        $product->name = $request->name;
+        $product->price = $request->price;
+        $product->detail = $request->detail;
+        $product->saleoff_id = $request->saleoff;
+        $product->images = "";
+        
+        $product->save();
+
+        if($request->has('images')){
+            $count = 1;
+            $files = [];
             foreach($request->file('images') as $file)
             {
-                $name = time().rand(1,100).'.'.$file->extension();
-                $file->move(public_path('files'), $name);  
-                $files[] = $name;  
+                $name = $count.preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $product->name)) . '-' . time() . '.' . $file->extension();
+                $file->storeAs('public/products/'.$product->id.'/', $name);
+                // $file->move(storage_path().'/public/products/'.$product->id, $name);
+                $files[] = $name;
+                $count++;
+                
             }
+            
+            $product->images = $files;
+            // return view('tested', ['msg'=>$count.'.'.$product->name.'.'.$f ]);
+        }else {
+            // make imageurl null if there's no banner
+            $product->images = "";
         }
-
-        $file= new Image();
-        $file->filenames = $files;
-        $file->save();
-
-        return back()->with('success', 'Data Your files has been successfully added');
+        
+        $product->save();
+        return back()->withInput()->withErrors(['success'=> 'Sản phẩm đã được thêm']);
     }
 
     /**

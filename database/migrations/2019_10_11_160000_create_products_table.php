@@ -16,7 +16,6 @@ class CreateProductsTable extends Migration
             $table->string('images');
             $table->unsignedBigInteger('saleoff_id')->nullable();
             $table->foreign('saleoff_id')->references('id')->on('saleoffs')->nullOnDelete();
-            $table->timestamps();
         });
     }
 
