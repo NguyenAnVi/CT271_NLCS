@@ -63,15 +63,13 @@ class AdminSaleOffController extends Controller
             $name = preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $saleoff->name)) . '-' . time() . '.' . $file->extension();
             $file->storeAs('public/saleoff/banners', $name);
 
-            $saleoff->imageurl = $name;
+            $saleoff->imageurl = asset('storage/saleoff/banners').'/'.$name;
         } else {
             // make imageurl null if there's no banner
             $saleoff->imageurl = "";
         }
 
         $saleoff->save();
-
-        $last_inserted = $saleoff->id;
 
         return redirect()->route('admin.saleoff')->withErrors(['success' => 'Đã tạo thành công CTKM ' . $saleoff->name . '.']);
     }
@@ -146,7 +144,15 @@ class AdminSaleOffController extends Controller
         if($request->has('image_check')){
             // 1. delete old image
             if($saleoff->imageurl != ""){
-                $files = array_filter(glob(storage_path('app/public/saleoff/banners/'.$saleoff->imageurl)),"is_file"); 
+                $files = array_filter(
+                    glob(
+                        storage_path(
+                            'app/public/saleoff/banners/'
+                            .explode("/",$saleoff->imageurl)[sizeof(explode("/",$saleoff->imageurl))-1]
+                        )
+                    )
+                    ,"is_file"
+                ); 
                 foreach($files as $file)
                 unlink($file); // delete file
             }
@@ -176,7 +182,15 @@ class AdminSaleOffController extends Controller
         $sf = SaleOff::find($saleoff);
         // delete image
         if($sf->imageurl != ""){
-            $files = array_filter(glob(storage_path('app/public/saleoff/banners/'.$sf->imageurl)),"is_file"); 
+            $files = array_filter(
+                glob(
+                    storage_path(
+                        'app/public/saleoff/banners/'
+                        .explode("/",$sf->imageurl)[sizeof(explode("/",$sf->imageurl))-1]
+                    )
+                ),
+                "is_file"
+            ); 
             foreach($files as $file)
             unlink($file); // delete file
         }
