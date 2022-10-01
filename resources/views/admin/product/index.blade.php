@@ -1,5 +1,6 @@
 @extends('layouts.adminapp')
 @section('content')
+<?php use App\Models\SaleOff;?>
 <script src="{{ asset('js/jquery-3.6.1.min.js') }}"></script>
 <div class="uk-container uk-padding ">
     <div class="uk-visible@m">
@@ -18,17 +19,16 @@
         <ul class="uk-slider-items uk-grid">
             <li class="uk-width-1-1">
                 <div class="uk-cover-container">
-                    @if($products!="")
                     {{-- table --}}
                     <table class="uk-table uk-table-middle uk-table-divider">
                         <thead>
                             <tr>
+                                <th class="uk-table-shrink">ID</th>
                                 <th class="uk-width-small"></th>
-                                <th class="uk-width-small">ID</th>
+                                
                                 <th>Tên SP</th>
-                                <th class="uk-width-small" uk-tooltip="Chi tiết sản phẩm">ChiTiet</th>
                                 <th class="uk-width-small" uk-tooltip="Giá bán (Chưa bao gồm khuyến mãi)">Gia</th>
-                                <th class="uk-table-shrink" uk-tooltip="Chương trình KM đang áp dụng">KM</th>
+                                <th class="uk-width-small" uk-tooltip="Chương trình KM đang áp dụng">KM</th>
                                 <th class="uk-table-shrink">Sửa</th>
                                 <th class="uk-table-shrink">Xóa</th>
                             </tr>
@@ -37,21 +37,21 @@
                             
                             @foreach ($products as $item)
                             <tr>
+                                <td>{{$item->id}}</td>
                                 <td>
                                     @if(getImageAt($item->images, 0))
                                     <img class="uk-comment-avatar uk-object-cover" width="100"  style="aspect-ratio: 1 / 1;" src="{{getImageAt($item->images, 0)}}">
                                     @endif
                                 </td>
-
-                                <td>{{$item->id}}</td>
                                 <td>{{$item->name}}</td>
-                                <td>{{$item->detail}}</td>
-                                <td>{{$item->price}}</td>
+                                <td>{{number_format($item->price, 0, ',', '.')}}đ</td>
                                 <form id="item-{{$item->id}}-destroy-form" method="POST" action="{{route('admin.product.destroy',$item->id)}}" hidden>@csrf @method('delete')</form>
                                 {{-- <form id="item-{{$item->id}}-edit-form" method="GET" action="{{route('admin.product.edit',$item)}}" hidden></form> --}}
                                 {{-- <form id="item-{{$item->id}}-images-form" method="GET" action="{{route('admin.product.showimages',['id' => $item->id])}}" hidden></form> --}}
-
-                                <td><button form="item-{{$item->id}}-images-form" class="uk-button-secondary uk-icon-button" type="submit"><span uk-icon="tag"></span></button></td>
+                                <?php 
+                                    $item_saleoff = SaleOff::where('id', $item->saleoff_id)->first();
+                                ?>
+                                <td uk-tooltip="@if($item_saleoff->amount != 0){{$item_saleoff->amount}}@else{{$item_saleoff->percent}}@endif">{{$item_saleoff->name}}</td>
                                 <td><button form="item-{{$item->id}}-edit-form" class="uk-button-primary uk-icon-button" type="submit"><span uk-icon="pencil"></span></button></td>
                                 <td><button form="item-{{$item->id}}-destroy-form" class="uk-button-danger uk-icon-button" type="submit"><span uk-icon="close"></span></button></td>
                             </tr>
@@ -62,11 +62,6 @@
                         </tbody>
                     </table>
                     {{$products->links()}}
-                    @else
-                        <div class="uk-width-1-1 uk-text-center uk-padding-large">
-                            <h4>Chưa có sản phẩm nào</h4>
-                        </div>
-                    @endif
                 </div>
             </li>
             <li id="add" class="uk-width-1-1">
