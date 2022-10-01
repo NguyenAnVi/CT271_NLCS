@@ -135,8 +135,30 @@ class AdminProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Product $product)
+    public function destroy($p)
     {
-        //
+        $product = Product::find($p);
+        
+        // delete images
+        if($product->images != ""){
+            $files = array_filter(
+                glob(
+                    storage_path(
+                        'app/public/products/'.$product->id.'/*'
+                    )
+                ),
+                "is_file"
+            );
+            foreach($files as $file) unlink($file); // delete files
+
+            rmdir(storage_path(
+                'app/public/products/'.$product->id
+            ));
+        }
+        // return view('tested', ['msg'=>$product]);
+        // delete record from database
+        $product->delete();
+        unset($product);
+        return redirect()->route('admin.product')->withErrors(['success' => 'Đã xóa 1 SP']);
     }
 }

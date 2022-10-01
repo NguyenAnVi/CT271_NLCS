@@ -37,16 +37,18 @@
                             
                             @foreach ($products as $item)
                             <tr>
-                                {{-- <td><img src="{{asset('storage/products/'.$item->image)}}"></td> --}}
-                                <td><img class="uk-comment-avatar uk-object-cover" width="100"  style="aspect-ratio: 1 / 1;" src="{{getImageAt($item->images, 0)}}"></td>
-                                {{-- <td><img class="uk-comment-avatar" src="" width="80" height="80"></td> --}}
+                                <td>
+                                    @if(getImageAt($item->images, 0))
+                                    <img class="uk-comment-avatar uk-object-cover" width="100"  style="aspect-ratio: 1 / 1;" src="{{getImageAt($item->images, 0)}}">
+                                    @endif
+                                </td>
 
                                 <td>{{$item->id}}</td>
                                 <td>{{$item->name}}</td>
                                 <td>{{$item->detail}}</td>
                                 <td>{{$item->price}}</td>
-                                {{-- <form id="item-{{$item->id}}-destroy-form" method="POST" action="{{route('admin.product.destroy',$item)}}" hidden>@csrf @method('delete')</form>
-                                <form id="item-{{$item->id}}-edit-form" method="GET" action="{{route('admin.product.edit',$item)}}" hidden></form> --}}
+                                <form id="item-{{$item->id}}-destroy-form" method="POST" action="{{route('admin.product.destroy',$item->id)}}" hidden>@csrf @method('delete')</form>
+                                {{-- <form id="item-{{$item->id}}-edit-form" method="GET" action="{{route('admin.product.edit',$item)}}" hidden></form> --}}
                                 {{-- <form id="item-{{$item->id}}-images-form" method="GET" action="{{route('admin.product.showimages',['id' => $item->id])}}" hidden></form> --}}
 
                                 <td><button form="item-{{$item->id}}-images-form" class="uk-button-secondary uk-icon-button" type="submit"><span uk-icon="tag"></span></button></td>
