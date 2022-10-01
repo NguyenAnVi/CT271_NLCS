@@ -17,8 +17,6 @@ class AdminProductController extends Controller
     {
         
         $products = DB::table('products')->paginate(5);
-        $saleoffs = DB::table('saleoffs');
-
         if($data!=NULL) 
             $data = array_merge($data,[
                 'products' => $products, 
@@ -56,7 +54,7 @@ class AdminProductController extends Controller
         $this->validate($request, [
             'name' => 'required',
             'price' => 'required',
-            'detail' => 'string|max:500',
+            'detail' => 'string|max:5000',
         ]);
 
         
