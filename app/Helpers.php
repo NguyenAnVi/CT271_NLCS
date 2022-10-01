@@ -1,8 +1,8 @@
 <?php
 
 if (!function_exists('getImages')) {
-    function getImages($str)
+    function getImageAt($array, $position)
     {
-        return preg_split('/(.),(.)/', str_replace('[',str_replace(']',$str, ''),''));
+        return json_decode(str_replace('\\','',$array))[$position];
     }
 }

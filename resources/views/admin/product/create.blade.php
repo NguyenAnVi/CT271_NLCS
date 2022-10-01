@@ -3,6 +3,9 @@
 <script src="{{ asset('js/jquery-3.6.1.min.js') }}"></script>
 <div class="uk-container uk-padding-small ">
     <div class="uk-cover-container">
+        <div>
+            <H3 class="uk-text-bold uk-width-expand">Thêm sản phẩm mới</H3>
+        </div>
         {{-- adding form --}}
         <form id="create-form" 
                 class="uk-grid-small uk-form" 

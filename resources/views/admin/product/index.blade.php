@@ -1,13 +1,19 @@
 @extends('layouts.adminapp')
 @section('content')
 <script src="{{ asset('js/jquery-3.6.1.min.js') }}"></script>
-<div class="uk-container uk-padding-small ">
-    <div>
+<div class="uk-container uk-padding ">
+    <div class="uk-visible@m">
         <ul class="uk-child-width-expand" uk-tab>
             <li onclick="UIkit.slider('#slcontent').show('0');" class="uk-active"><a href=""><h3 class="uk-text-bold">Danh sách Sản phẩm</h3></a></li>
             <li onclick="UIkit.slider('#slcontent').show('1');" class="" ><a href="#"><h3 class="uk-text-bold">Thêm SP mới</h3></a></li>
         </ul>
     </div>
+    <div class="uk-hidden@m" uk-grid>
+        <H3 class="uk-text-bold uk-width-expand">Danh sách sản phẩm</H3>
+        <button form="create-form" class="uk-icon-button uk-width-auto uk-text-center uk-button-primary uk-padding-small">Thêm sản phẩm mới &nbsp;&nbsp;&nbsp; <span uk-icon="plus"></span></button>
+        <form hidden id="create-form" action="{{route('admin.product.create')}}" method="GET">@csrf</form>
+    </div>
+
     <div id="slcontent" uk-slider="center:true; autoplay:false; finite:true; index:0; draggable:false">
         <ul class="uk-slider-items uk-grid uk-grid-match">
             <li class="uk-width-1-1">
@@ -17,12 +23,12 @@
                     <table class="uk-table uk-table-middle uk-table-divider">
                         <thead>
                             <tr>
-                                <th class="uk-width-small">HinhAnh</th>
+                                <th class="uk-width-small"></th>
                                 <th class="uk-width-small">ID</th>
-                                <th>Tên</th>
-                                <th class="uk-width-small">ChiTiet</th>
-                                <th class="uk-width-small">Gia</th>
-                                <th class="uk-width-small">SaleOff</th>
+                                <th>Tên SP</th>
+                                <th class="uk-width-small" uk-tooltip="Chi tiết sản phẩm">ChiTiet</th>
+                                <th class="uk-width-small" uk-tooltip="Giá bán (Chưa bao gồm khuyến mãi)">Gia</th>
+                                <th class="uk-table-shrink" uk-tooltip="Chương trình KM đang áp dụng">KM</th>
                                 <th class="uk-table-shrink">Sửa</th>
                                 <th class="uk-table-shrink">Xóa</th>
                             </tr>
@@ -32,7 +38,7 @@
                             @foreach ($products as $item)
                             <tr>
                                 {{-- <td><img src="{{asset('storage/products/'.$item->image)}}"></td> --}}
-                                <td><img src="{{getImages($item->images)}}"></td>
+                                <td><img class="uk-comment-avatar uk-object-cover" width="100"  style="aspect-ratio: 1 / 1;" src="{{getImageAt($item->images, 0)}}"></td>
                                 {{-- <td><img class="uk-comment-avatar" src="" width="80" height="80"></td> --}}
 
                                 <td>{{$item->id}}</td>
@@ -43,9 +49,9 @@
                                 <form id="item-{{$item->id}}-edit-form" method="GET" action="{{route('admin.product.edit',$item)}}" hidden></form> --}}
                                 {{-- <form id="item-{{$item->id}}-images-form" method="GET" action="{{route('admin.product.showimages',['id' => $item->id])}}" hidden></form> --}}
 
-                                <td><button form="item-{{$item->id}}-images-form" class="uk-button-primary" type="submit"><span uk-icon="pencil"></span></button></td>
-                                <td><button form="item-{{$item->id}}-edit-form" class="uk-button-primary" type="submit"><span uk-icon="pencil"></span></button></td>
-                                <td><button form="item-{{$item->id}}-destroy-form" class="uk-button-danger" type="submit"><span uk-icon="close"></span></button></td>
+                                <td><button form="item-{{$item->id}}-images-form" class="uk-button-secondary uk-icon-button" type="submit"><span uk-icon="tag"></span></button></td>
+                                <td><button form="item-{{$item->id}}-edit-form" class="uk-button-primary uk-icon-button" type="submit"><span uk-icon="pencil"></span></button></td>
+                                <td><button form="item-{{$item->id}}-destroy-form" class="uk-button-danger uk-icon-button" type="submit"><span uk-icon="close"></span></button></td>
                             </tr>
                             @endforeach
                             
