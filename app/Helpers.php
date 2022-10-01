@@ -1,6 +1,6 @@
 <?php
 
-if (!function_exists('getImages')) {
+if (!function_exists('getImageAt')) {
     function getImageAt($array, $position)
     {
         if($array)
