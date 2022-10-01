@@ -1,5 +1,4 @@
 /public/storage
-.env
 .env.backup
 /.idea
 /.vscode
