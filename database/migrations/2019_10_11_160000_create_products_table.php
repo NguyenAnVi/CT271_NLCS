@@ -13,7 +13,7 @@ class CreateProductsTable extends Migration
             $table->string('name');
             $table->text('detail');
             $table->integer('price');
-            $table->string('images');
+            $table->text('images');
             $table->unsignedBigInteger('saleoff_id')->nullable();
             $table->foreign('saleoff_id')->references('id')->on('saleoffs')->nullOnDelete();
         });

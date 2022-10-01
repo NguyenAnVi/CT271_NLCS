@@ -18,8 +18,17 @@ class AdminProductController extends Controller
         
         $products = DB::table('products')->paginate(5);
         $saleoffs = DB::table('saleoffs');
-        if($data!=NULL) $data = array_merge($data,['products' => $products, 'saleoffs' => $saleoffs]);
-        else $data = (['products' => $products, 'saleoffs' => $saleoffs]);
+
+        if($data!=NULL) 
+            $data = array_merge($data,[
+                'products' => $products, 
+                'saleoffs' => SaleOff::all(),
+            ]);
+        else 
+            $data = ([
+                'products' => $products,
+                'saleoffs' => SaleOff::all(),
+            ]);
         return view('admin.product.index', $data);
     }
 
@@ -44,12 +53,11 @@ class AdminProductController extends Controller
      */
     public function store(Request $request)
     {
-        // $this->validate($request, [
-        //     'name' => 'required',
-        //     'price' => 'required',
-        //     'detail' => 'string|max:500',
-        //     // 'images[]' => 'file|image',
-        // ]);
+        $this->validate($request, [
+            'name' => 'required',
+            'price' => 'required',
+            'detail' => 'string|max:500',
+        ]);
 
         
         $product= new Product();
@@ -70,7 +78,7 @@ class AdminProductController extends Controller
             {
                 $name = $count.preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $product->name)) . '-' . time() . '.' . $file->extension();
                 $file->storeAs('public/products/'.$product->id.'/', $name);
-                // $file->move(storage_path().'/public/products/'.$product->id, $name);
+                $name = asset('storage/products/'.$product->id).'/'.$name;
                 $files[] = $name;
                 $count++;
                 

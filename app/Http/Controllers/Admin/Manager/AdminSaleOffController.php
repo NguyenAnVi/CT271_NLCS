@@ -168,6 +168,7 @@ class AdminSaleOffController extends Controller
                 // make imageurl null if there's no banner
                 $saleoff->imageurl = "";
             }
+            $prop++;
         }
         
         $saleoff->save();

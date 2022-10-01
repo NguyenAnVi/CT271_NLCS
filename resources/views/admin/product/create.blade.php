@@ -61,7 +61,12 @@
                     <input name="images[]" type="file" accept="image/*" multiple>
                     <button class="uk-button uk-button-default uk-margin uk-width-1-1" type="button" tabindex="-1">Hình ảnh</button>
                 </div>
-                <ul id="myImg" class="uk-thumbnav" uk-margin></ul>
+                {{-- <ul id="myImg" class="uk-thumbnav" uk-margin uk-grid></ul> --}}
+                <div class="uk-position-relative uk-visible-toggle uk-light" tabindex="-1" uk-slider="sets: true; finite: true; easing; velocity:3">
+                    <ul id="myImg" class="uk-grid uk-slider-items uk-child-width-1-2 uk-child-width-1-3@m">
+                    </ul>
+                </div>
+
             </div>
 
             <div class="uk-width-1-1@s">
@@ -85,7 +90,8 @@
     });
 
     function imageIsLoaded(e) {
-        $('#myImg').append('<li class="uk-active"><img src=' + e.target.result + ' width="100" height="67" ></li>');
+        // $('#myImg').append('<li class="uk-active uk-width-1-4"><img class="uk-comment-avatar" src=' + e.target.result + ' width="100" height="67" ></li>');
+        $('#myImg').append('<li><img src=' + e.target.result + ' width="400" height="600" alt=""></li>');
     };    
 </script>
 @endsection
