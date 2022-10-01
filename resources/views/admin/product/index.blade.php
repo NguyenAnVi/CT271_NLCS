@@ -15,10 +15,10 @@
     </div>
 
     <div id="slcontent" uk-slider="center:true; autoplay:false; finite:true; index:0; draggable:false">
-        <ul class="uk-slider-items uk-grid uk-grid-match">
+        <ul class="uk-slider-items uk-grid">
             <li class="uk-width-1-1">
                 <div class="uk-cover-container">
-                    @if(isset($products))
+                    @if($products!="")
                     {{-- table --}}
                     <table class="uk-table uk-table-middle uk-table-divider">
                         <thead>
@@ -63,8 +63,8 @@
                     </table>
                     {{$products->links()}}
                     @else
-                        <div>
-                            NOTHING
+                        <div class="uk-width-1-1 uk-text-center uk-padding-large">
+                            <h4>Chưa có sản phẩm nào</h4>
                         </div>
                     @endif
                 </div>
