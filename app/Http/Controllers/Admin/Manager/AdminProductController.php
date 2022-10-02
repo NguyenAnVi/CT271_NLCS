@@ -93,23 +93,11 @@ class AdminProductController extends Controller
         return back()->withInput()->withErrors(['success'=> 'Sản phẩm đã được thêm']);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
     public function show(Product $product)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         $product = Product::find($id);
@@ -167,14 +155,14 @@ class AdminProductController extends Controller
                 foreach ($products_data as $item) {
                     $output .= '<tr><td>'.$item->id.'</td><td>';
                     if(getImageAt($item->images, 0))
-                        $output.= '<img class="uk-comment-avatar uk-object-cover" width="100"  style="aspect-ratio: 1 / 1;" src="'.getImageAt($item->images, 0).'">';
+                      $output.= '<img class="uk-comment-avatar uk-object-cover" width="100"  style="aspect-ratio: 1 / 1;" src="'.getImageAt($item->images, 0).'">';
                     $output.='</td><td>'.$item->name.'</td><td>'.number_format($item->price, 0, ',', '.').'đ</td><form id="item-'.$item->id.'-destroy-form" method="POST" action="'.route('admin.product.destroy',$item->id).'" hidden>'.csrf_token().'@method(\'delete\')</form>';
                     $item_saleoff = SaleOff::where('id', $item->saleoff_id)->first();
                     $output .= '<td uk-tooltip="';
                     if($item_saleoff->amount != 0)
-                        $output .= $item_saleoff->amount;
+                      $output .= $item_saleoff->amount;
                     else
-                        $output .= $item_saleoff->percent;
+                      $output .= $item_saleoff->percent;
                     $output .= '">'.$item_saleoff->name.'</td><td><button form="item-'.$item->id.'-edit-form" class="uk-button-primary uk-icon-button" type="submit"><span uk-icon="pencil"></span></button></td>
                     <td><button form="item-'.$item->id.'-destroy-form" class="uk-button-danger uk-icon-button" type="submit"><span uk-icon="close"></span></button></td></tr>';
                 }

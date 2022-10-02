@@ -58,9 +58,7 @@
                             <hr class="uk-divider-icon">
                             <option value="-1">{{__('Thêm CTKM mới')}}</option>
                         </select>
-                        {{-- {{}} --}}
                     </div>
-                
             </div>
             <div class="uk-width-1-2@s uk-grid-match">
                 <div class="uk-width-1-1 uk-match" uk-form-custom>
@@ -104,6 +102,5 @@
         if (selectedValue == -1) document.getElementById('new-saleoff').submit();
     }
     let editor = new FroalaEditor('textarea#froala-editor');
-    
 </script> 
 @endsection

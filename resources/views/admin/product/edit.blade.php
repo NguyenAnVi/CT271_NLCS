@@ -1,28 +1,32 @@
 @extends('layouts.adminapp')
 @section('content')
-<div class="uk-container uk-padding-small ">
-    <div class="uk-width-1-1 uk-padding">
-        <h2 class="uk-text-center">Thay đổi thông tin San Pham ({{$admin->id}})</h2>
+
+<link href="{{asset('froala-editor/css/froala_editor.pkgd.min.css')}}" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="{{asset('froala-editor/js/froala_editor.pkgd.min.js')}}"></script>
+<script src="{{ asset('js/jquery-3.6.1.min.js') }}"></script>
+
+<div class="uk-container uk-padding-small">
+    <div class="uk-width-1-1 uk-padding-small@l">
+        <h2 class="uk-text-center">Thay đổi thông tin sản phẩm ({{$product->id}})</h2>
         <p class="uk-text-center uk-text-italic">*Đánh dấu check <label><input class="uk-checkbox" type="checkbox" checked></label> vào những trường cần thay đổi</p>
         
-        <form id="edit-form" 
+        <form id="edit-form" uk-grid
                 class="uk-grid-small uk-form uk-child-width-1-1" 
                 method="POST" 
-                action="{{ route('admin.hr.update', ['id' => $admin->id]) }}" 
-                uk-grid="">
+                action="{{route('admin.product.update', $product->id)}}">
             @csrf
             <div class="uk-form" uk-grid>
                 <div class="uk-width-expand uk-grid-match" uk-grid>
                     <div class="uk-width-auto@s uk-width-expand@m uk-text-right">
                         <label class="uk-form-large ">
-                            <input name="name_check" class="uk-checkbox" type="checkbox" checked>
+                            <input name="name_check" class="uk-checkbox" type="checkbox">
                         </label>
                     </div>
                     <div class="uk-width-expand@s uk-width-1-4@m">
-                        <span class="uk-text-bold uk-form-large">Họ và Tên: </span>
+                        <span class="uk-text-bold uk-form-large">Tên SP: </span>
                     </div>
                     <div class="uk-width-1-1@s uk-width-2-3@m">
-                        <input value="@if(old('name')!=NULL){{old('name')}}@else{{$admin->name}}@endif" autofocus tabindex="1" 
+                        <input value="@if(old('name')!=NULL){{old('name')}}@else{{$product->name}}@endif" autofocus tabindex="1" 
                         class="uk-input uk-form-large @error('name') uk-form-danger @enderror" 
                         type="text" name="name" placeholder="Họ và tên">
                         @error('name')
@@ -37,17 +41,17 @@
                 <div class="uk-width-expand uk-grid-match" uk-grid>
                     <div class="uk-width-auto@s uk-width-expand@m uk-text-right">
                         <label class="uk-form-large ">
-                            <input name="phone_check" class="uk-checkbox" type="checkbox" checked>
+                            <input name="price_check" class="uk-checkbox" type="checkbox">
                         </label>
                     </div>
                     <div class="uk-width-expand@s uk-width-1-4@m">
-                        <span class="uk-text-bold uk-form-large">Điện thoại: </span>
+                        <span class="uk-text-bold uk-form-large">Giá bán: </span>
                     </div>
                     <div class="uk-width-1-1@s uk-width-2-3@m">
-                        <input value="@if(old('phone')!=NULL){{old('phone')}}@else{{$admin->phone}}@endif" autofocus tabindex="1" 
-                        class="uk-input uk-form-large @error('phone') uk-form-danger @enderror" 
-                        type="text" name="phone" placeholder="Điện thoại" >
-                        @error('phone')
+                        <input value="@if(old('price')!=NULL){{old('price')}}@else{{$product->price}}@endif" autofocus tabindex="1" 
+                        class="uk-input uk-form-large @error('price') uk-form-danger @enderror" 
+                        type="text" name="price" placeholder="Giá bán" >
+                        @error('price')
                         <span class="uk-text-danger">
                             <strong>{{ $message }}</strong>
                         </span>
@@ -55,34 +59,104 @@
                     </div>
                 </div>
             </div>
+            
             <div class="uk-form" uk-grid>
                 <div class="uk-width-expand uk-grid-match" uk-grid>
                     <div class="uk-width-auto@s uk-width-expand@m uk-text-right">
                         <label class="uk-form-large ">
-                            <input name="password_check" class="uk-checkbox" type="checkbox">
+                            <input name="detail_check" class="uk-checkbox" type="checkbox">
                         </label>
                     </div>
                     <div class="uk-width-expand@s uk-width-1-4@m">
-                        <span class="uk-text-bold uk-form-large">Mật khẩu: </span>
+                        <span class="uk-text-bold uk-form-large">Chi tiết: </span>
                     </div>
                     <div class="uk-width-1-1@s uk-width-2-3@m">
-                        <input value="" autofocus tabindex="1" 
-                        class="uk-input uk-form-large @error('password') uk-form-danger @enderror" 
-                        type="text" name="password" placeholder="Mật khẩu mới">
-                        @error('password')
+                        <textarea name='detail' tabindex="2" id="froala-editor">@if(old('detail')!=NULL){{old('detail')}}@else{{$product->detail}}@endif</textarea>
+                        @error('detail')
                         <span class="uk-text-danger">
                             <strong>{{ $message }}</strong>
                         </span>
                         @enderror
                     </div>
+                    
                 </div>
             </div>
+
+            <div class="uk-form" uk-grid>
+                <div class="uk-width-expand uk-grid-match" uk-grid>
+                    <div class="uk-width-auto@s uk-width-expand@m uk-text-right">
+                        <label class="uk-form-large ">
+                            <input name="saleoff_check" class="uk-checkbox" type="checkbox">
+                        </label>
+                    </div>
+                    <div class="uk-width-expand@s uk-width-1-4@m">
+                        <span class="uk-text-bold uk-form-large">CTKM: </span>
+                    </div>
+                    <div class="uk-width-1-1@s uk-width-2-3@m">
+                        <select class="uk-select" id="saleoff-select" name="saleoff" onchange="changeFunc()">
+                            @foreach($saleoffs as $saleoff)
+                            <option value="{{$saleoff->id}}" @if((old('saleoff')==$saleoff->id)||($product->saleoff_id==$saleoff->id))selected @endif>{{$saleoff->name}}</option>
+                            @endforeach
+                            <hr class="uk-divider-icon">
+                            <option value="-1">{{__('Thêm CTKM mới')}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="uk-form" uk-grid>
+                <div class="uk-width-expand uk-grid-match" uk-grid>
+                    <div class="uk-width-auto@s uk-width-expand@m uk-text-right">
+                        <label class="uk-form-large ">
+                            <input name="images_check" class="uk-checkbox" type="checkbox">
+                        </label>
+                    </div>
+                    <div class="uk-width-expand@s uk-width-1-4@m">
+                        <span class="uk-text-bold uk-form-large">Hình ảnh: </span>
+                    </div>
+                    <div class="uk-width-1-1@s uk-width-2-3@m">
+                        <div class="uk-width-1-1 uk-match" uk-form-custom>
+                            <input name="images[]" type="file" accept="image/*" multiple>
+                            <button class="uk-button uk-button-default uk-margin uk-width-1-1" type="button" tabindex="-1">Hình ảnh</button>
+                        </div>
+                        <div class="uk-position-relative uk-visible-toggle uk-light" tabindex="-1" uk-slider="sets: true; finite: true; easing; velocity:3">
+                            <ul id="myImg" class="uk-grid uk-slider-items uk-child-width-1-2 uk-child-width-1-3@m">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="uk-width-1-1@s  uk-text-center">
                 <button tabindex="1" 
                     class="uk-button uk-button-primary uk-button-large uk-width-1-4" 
                     type="submit" form="edit-form" >Thay đổi</button>
             </div>
         </form>
+        <form hidden id="new-saleoff" action="{{route('admin.saleoff.create')}}" method="get"></form>
     </div>
 </div>
+<script> FroalaEditor('textarea#froala-editor')</script>
+<script>
+    function changeFunc() {
+        var selectBox = document.getElementById("saleoff-select");
+        var selectedValue = selectBox.options[selectBox.selectedIndex].value;
+        if (selectedValue == -1) document.getElementById('new-saleoff').submit();
+    }
+    $(function() {
+         $(":file").change(function() {
+             if (this.files && this.files[0]) {
+                 for (var i = 0; i < this.files.length; i++) {
+                     var reader = new FileReader();
+                     reader.onload = imageIsLoaded;
+                     reader.readAsDataURL(this.files[i]);
+                 }
+             }
+         });
+     });
+     function imageIsLoaded(e) {
+         // $('#myImg').append('<li class="uk-active uk-width-1-4"><img class="uk-comment-avatar" src=' + e.target.result + ' width="100" height="67" ></li>');
+         $('#myImg').append('<li><img src=' + e.target.result + ' width="400" height="600" alt=""></li>');
+     };    
+</script>
 @endsection
