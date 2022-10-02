@@ -58,5 +58,6 @@ Route::middleware('auth:admin')->group(function () {
                 'update' => 'admin.product.update',
                 'destroy' => 'admin.product.destroy'
             ]);
+        Route::get('product/search', [AdminProductController::class, 'search'])->name('admin.product.search');
     });
 });

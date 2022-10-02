@@ -54,7 +54,7 @@ class AdminProductController extends Controller
         $this->validate($request, [
             'name' => 'required',
             'price' => 'required',
-            'detail' => 'string|max:5000',
+            'detail' => 'max:5000',
         ]);
 
         
@@ -63,7 +63,7 @@ class AdminProductController extends Controller
 
         $product->name = $request->name;
         $product->price = $request->price;
-        $product->detail = $request->detail;
+        $product->detail = ($request->detail!=NULL)?$request->detail:"";
         $product->saleoff_id = $request->saleoff;
         $product->images = "";
         
@@ -110,29 +110,27 @@ class AdminProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function edit(Product $product)
+    public function edit($id)
     {
-        //
+        $product = Product::find($id);
+        if($product){
+            $data=([
+                'saleoffs' => SaleOff::all(),
+                'product' => $product,
+            ]);
+
+            // return view('tested', ['msg'=>'right']);    
+            return view('admin.product.edit', $data);
+        }
+        return $this->notFound();
+        return view('tested', ['msg'=>'error']);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateProductRequest  $request
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
     public function update(UpdateProductRequest $request, Product $product)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($p)
     {
         $product = Product::find($p);
@@ -158,5 +156,30 @@ class AdminProductController extends Controller
         $product->delete();
         unset($product);
         return redirect()->route('admin.product')->withErrors(['success' => 'Đã xóa 1 SP']);
+    }
+
+    public function search(Request $request)
+    {
+        if ($request->ajax()) {
+            $output = '';
+            $products_data = DB::table('products')->where('name', 'LIKE', '%' . $request->search . '%')->get();
+            if ($products_data) {
+                foreach ($products_data as $item) {
+                    $output .= '<tr><td>'.$item->id.'</td><td>';
+                    if(getImageAt($item->images, 0))
+                        $output.= '<img class="uk-comment-avatar uk-object-cover" width="100"  style="aspect-ratio: 1 / 1;" src="'.getImageAt($item->images, 0).'">';
+                    $output.='</td><td>'.$item->name.'</td><td>'.number_format($item->price, 0, ',', '.').'đ</td><form id="item-'.$item->id.'-destroy-form" method="POST" action="'.route('admin.product.destroy',$item->id).'" hidden>'.csrf_token().'@method(\'delete\')</form>';
+                    $item_saleoff = SaleOff::where('id', $item->saleoff_id)->first();
+                    $output .= '<td uk-tooltip="';
+                    if($item_saleoff->amount != 0)
+                        $output .= $item_saleoff->amount;
+                    else
+                        $output .= $item_saleoff->percent;
+                    $output .= '">'.$item_saleoff->name.'</td><td><button form="item-'.$item->id.'-edit-form" class="uk-button-primary uk-icon-button" type="submit"><span uk-icon="pencil"></span></button></td>
+                    <td><button form="item-'.$item->id.'-destroy-form" class="uk-button-danger uk-icon-button" type="submit"><span uk-icon="close"></span></button></td></tr>';
+                }
+            }
+            return Response($output);
+        }
     }
 }

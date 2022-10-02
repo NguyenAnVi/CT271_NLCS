@@ -3,17 +3,23 @@
 <?php use App\Models\SaleOff;?>
 <script src="{{ asset('js/jquery-3.6.1.min.js') }}"></script>
 <div class="uk-container uk-padding ">
-    <div class="uk-visible@m">
-        <ul class="uk-child-width-expand" uk-tab>
-            <li onclick="UIkit.slider('#slcontent').show('0');" class="uk-active"><a href=""><h3 class="uk-text-bold">Danh sách Sản phẩm</h3></a></li>
-            <li onclick="UIkit.slider('#slcontent').show('1');" class="" ><a href="#"><h3 class="uk-text-bold">Thêm SP mới</h3></a></li>
-        </ul>
+    <div class="uk-flex-between" uk-grid>
+        <H3 class="uk-text-bold">Danh sách sản phẩm</H3>
+        {{-- Search field --}}
+        <button class="uk-toggle uk-icon-button uk-width-auto uk-text-center uk-button-primary uk-padding-small"><span uk-icon="search"></span></button>
+        <div class="uk-drop" uk-drop="animation; animate-out:true;mode: click; pos: left-center; offset: 0">
+            <form class="uk-search uk-search-default uk-width-1-1">
+                <input id="search" class="uk-search-input" type="search" placeholder="Tìm kiếm...">
+            </form>
+        </div>
     </div>
-    <div class="uk-hidden@m" uk-grid>
-        <H3 class="uk-text-bold uk-width-expand">Danh sách sản phẩm</H3>
+    
+    <div uk-grid class="uk-flex-between uk-margin-small">
+        {{$products->links()}}
         <button form="create-form" class="uk-icon-button uk-width-auto uk-text-center uk-button-primary uk-padding-small">Thêm sản phẩm mới &nbsp;&nbsp;&nbsp; <span uk-icon="plus"></span></button>
         <form hidden id="create-form" action="{{route('admin.product.create')}}" method="GET">@csrf</form>
     </div>
+    
 
     <div id="slcontent" uk-slider="center:true; autoplay:false; finite:true; index:0; draggable:false">
         <ul class="uk-slider-items uk-grid">
@@ -33,7 +39,7 @@
                                 <th class="uk-table-shrink">Xóa</th>
                             </tr>
                         </thead>
-                        <tbody> 
+                        <tbody uk-scrollspy="cls: uk-animation-fade; target: tr; delay: 300;"> 
                             
                             @foreach ($products as $item)
                             <tr>
@@ -46,12 +52,12 @@
                                 <td>{{$item->name}}</td>
                                 <td>{{number_format($item->price, 0, ',', '.')}}đ</td>
                                 <form id="item-{{$item->id}}-destroy-form" method="POST" action="{{route('admin.product.destroy',$item->id)}}" hidden>@csrf @method('delete')</form>
-                                {{-- <form id="item-{{$item->id}}-edit-form" method="GET" action="{{route('admin.product.edit',$item)}}" hidden></form> --}}
+                                <form id="item-{{$item->id}}-edit-form" method="GET" action="{{route('admin.product.edit',$item->id)}}" hidden></form>
                                 {{-- <form id="item-{{$item->id}}-images-form" method="GET" action="{{route('admin.product.showimages',['id' => $item->id])}}" hidden></form> --}}
                                 <?php 
                                     $item_saleoff = SaleOff::where('id', $item->saleoff_id)->first();
                                 ?>
-                                <td uk-tooltip="@if($item_saleoff->amount != 0){{$item_saleoff->amount}}@else{{$item_saleoff->percent}}@endif">{{$item_saleoff->name}}</td>
+                                <td uk-tooltip="Giảm @if($item_saleoff->amount != 0){{number_format($item_saleoff->amount, 0, ',', '.').'đ'}}@else{{$item_saleoff->percent.'%'}}@endif">{{$item_saleoff->name}}</td>
                                 <td><button form="item-{{$item->id}}-edit-form" class="uk-button-primary uk-icon-button" type="submit"><span uk-icon="pencil"></span></button></td>
                                 <td><button form="item-{{$item->id}}-destroy-form" class="uk-button-danger uk-icon-button" type="submit"><span uk-icon="close"></span></button></td>
                             </tr>
@@ -61,7 +67,23 @@
                             
                         </tbody>
                     </table>
-                    {{$products->links()}}
+                    <script type="text/javascript">
+                        $('#search').on('keyup',function(){
+                            $value = $(this).val();
+                            $.ajax({
+                                type: 'get',
+                                url: '{{route('admin.product.search')}}',
+                                data: {
+                                    'search': $value
+                                },
+                                success:function(data){
+                                    $('tbody').html(data);
+                                    $('ul.uk-pagination').hide();
+                                }
+                            });
+                        })
+                        $.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } });
+                    </script>
                 </div>
             </li>
             <li id="add" class="uk-width-1-1">
