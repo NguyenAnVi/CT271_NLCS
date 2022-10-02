@@ -46,8 +46,6 @@
                 </span>
                 @enderror
             </div>
-            <script>new FroalaEditor('textarea#froala-editor')</script>
-
             <div class="uk-width-1-2@s">
                     <label class="uk-form-label" for="form-horizontal-select">
                         Chương trình khuyến mãi
@@ -62,13 +60,6 @@
                         </select>
                         {{-- {{}} --}}
                     </div>
-                    <script>
-                        function changeFunc() {
-                            var selectBox = document.getElementById("form-horizontal-select");
-                            var selectedValue = selectBox.options[selectBox.selectedIndex].value;
-                            if (selectedValue == -1) document.getElementById('new-saleoff').submit();
-                        }
-                    </script>
                 
             </div>
             <div class="uk-width-1-2@s uk-grid-match">
@@ -106,6 +97,13 @@
     function imageIsLoaded(e) {
         // $('#myImg').append('<li class="uk-active uk-width-1-4"><img class="uk-comment-avatar" src=' + e.target.result + ' width="100" height="67" ></li>');
         $('#myImg').append('<li><img src=' + e.target.result + ' width="400" height="600" alt=""></li>');
-    };    
-</script>
+    };   
+    function changeFunc() {
+        var selectBox = document.getElementById("form-horizontal-select");
+        var selectedValue = selectBox.options[selectBox.selectedIndex].value;
+        if (selectedValue == -1) document.getElementById('new-saleoff').submit();
+    }
+    let editor = new FroalaEditor('textarea#froala-editor');
+    
+</script> 
 @endsection
