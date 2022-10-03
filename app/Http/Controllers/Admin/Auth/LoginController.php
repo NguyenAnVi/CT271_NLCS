@@ -32,9 +32,9 @@ class LoginController extends Controller
             Csrf::generateToken();
             return redirect()->route('admin.home');
         } else {
-            return redirect()->back()->withInput()->withErrors(([
-                'danger' => 'Số điện thoại hoặc mật khẩu sai'
-            ]));
+            return back()->withInput()->withErrors([
+                'password' => 'Số điện thoại hoặc mật khẩu sai'
+            ]);
         }
     }
 
