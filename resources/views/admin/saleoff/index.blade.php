@@ -21,8 +21,9 @@
                     <table class="uk-table uk-table-middle uk-table-divider">
                         <thead>
                             <tr>
-                                <th class="uk-width-small">ID</th>
-                                <th class="">Tên CTKM</th>
+                                <th class="uk-table-shrink">ID</th>
+																<th class="uk-width-small"></th>
+                                <th>Tên CTKM</th>
                                 {{-- <th class="uk-width-small">ChiTiet</th> --}}
                                 <th class="uk-width-small">Giá giảm</th>
                                 {{-- <th class="uk-width-small">SaleOff</th> --}}
@@ -37,6 +38,11 @@
                             @foreach ($saleoffs as $item)
                             <tr>
                                 <td>{{$item->id}}</td>
+																<td>
+																	@if($item->imageurl!="")
+																	<img class="uk-comment-avatar uk-object-cover" width="100"  style="aspect-ratio: 3/1;" src="{{$item->imageurl}}">
+																	@endif
+																</td>
                                 <td>{{$item->name}}</td>
                                 {{-- <td>{{$item->detail}}</td> --}}
                                 @if($item->amount>$item->percent)

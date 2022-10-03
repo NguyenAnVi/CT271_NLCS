@@ -60,7 +60,7 @@ class AdminSaleOffController extends Controller
         // check if banner
         if ($request->hasFile('banner')) {
             $file = $request->file('banner');
-            $name = preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $saleoff->name)) . '-' . time() . '.' . $file->extension();
+            $name = unified_format($saleoff->name) . '-' . time() . '.' . $file->extension();
             $file->storeAs('public/saleoff/banners', $name);
 
             $saleoff->imageurl = asset('storage/saleoff/banners').'/'.$name;
@@ -160,10 +160,10 @@ class AdminSaleOffController extends Controller
             // 2. add new image 
             if ($request->hasFile('banner')) {
                 $file = $request->file('banner');
-                $name = preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $saleoff->name)) . '-' . time() . '.' . $file->extension();
+                $name = unified_format($saleoff->name) . '-' . time() . '.' . $file->extension();
                 $file->storeAs('public/saleoff/banners', $name);
     
-                $saleoff->imageurl = $name;
+                $saleoff->imageurl = asset('storage/saleoff/banners').'/'.$name;
             } else {
                 // make imageurl null if there's no banner
                 $saleoff->imageurl = "";
