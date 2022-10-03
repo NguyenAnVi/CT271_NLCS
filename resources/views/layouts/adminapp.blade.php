@@ -3,11 +3,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
     <title>{{ config('app.name', 'Nhà thuốc Sức Khỏe') }}</title>
+    <link rel="shortcut icon" href="">
 
     <!-- Styles -->
     <link href="{{ asset('css/uikit.css') }}" rel="stylesheet">
@@ -19,49 +18,13 @@
             <div class="uk-container">
                 <div class="uk-navbar" data-uk-navbar>
                     <div class="uk-navbar-left">
+                        @includeWhen(Auth::guard('admin')->check(), 'partials/sidebar')
+                        
                         <a class="uk-navbar-item uk-logo" href="{{route('admin.home')}}">{{ config('app.name', 'Laravel') }}</a>
                         <ul class="uk-navbar-nav">
                         </ul>
                     </div>
-                    <div class="uk-navbar-right">
-                        <ul class="uk-navbar-nav uk-iconnav"> 
-                            {{-- Authentication Links --}}
-                            @auth('admin')
-                            <li>
-                                    <span uk-icon="icon:user"></span>   
-                                    <div class="uk-navbar-dropdown" uk-dropdown="pos: bottom-right; mode:click; animation: uk-animation-slide-top-small">
-                                        <ul class="uk-nav uk-navbar-dropdown-nav">
-                                            <li class="uk-nav-header">
-                                                {{Auth::guard('admin')->user()->name}}
-                                            </li>
-                                            <li class="uk-nav-divider"></li>
-                                            <li>
-                                                @if (Route::has('admin.register'))
-                                                        <a href="{{ route('admin.register') }}">{{ __('Đăng ký') }}</a>
-                                                @endif
-                                                <a href="{{ route('admin.logout') }}"
-                                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                                    {{ __('Đăng xuất') }}
-                                                </a>
-                                                <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
-                                                    @csrf
-                                                </form>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </li>
-                            @else
-                                @if (Route::has('admin.login'))
-                                    <li>
-                                        <a href="{{ route('admin.login') }}">{{ __('Đăng nhập') }}</a>
-                                    </li>
-                                @endif
-                                
-
-                                
-                            @endauth
-                        </ul>
-                    </div>
+                    
                 </div>
             </div>
         </nav>
