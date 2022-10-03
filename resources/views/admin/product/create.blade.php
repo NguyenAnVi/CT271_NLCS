@@ -3,6 +3,8 @@
 
 <link href="{{asset('froala-editor/css/froala_editor.pkgd.min.css')}}" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="{{asset('froala-editor/js/froala_editor.pkgd.min.js')}}"></script>
+<script type="text/javascript" src="{{asset('froala-editor/js/plugins/image.min.js')}}"></script>
+<script type="text/javascript" src="{{asset('froala-editor/js/plugins/file.min.js')}}"></script>
 <script src="{{ asset('js/jquery-3.6.1.min.js') }}"></script>
 <div class="uk-container uk-padding-small ">
     <div class="uk-cover-container">
@@ -101,6 +103,12 @@
         var selectedValue = selectBox.options[selectBox.selectedIndex].value;
         if (selectedValue == -1) document.getElementById('new-saleoff').submit();
     }
-    let editor = new FroalaEditor('textarea#froala-editor');
+    let editor = new FroalaEditor('textarea#froala-editor'
+    // ,{
+        // imageUploadURL: '{{route('api.product.upload')}}',
+        // imageUploadMethod: 'post',
+        // imageAllowedTypes: ['jpeg', 'jpg', 'png','webp', 'gif'],
+    // }
+    );
 </script> 
 @endsection

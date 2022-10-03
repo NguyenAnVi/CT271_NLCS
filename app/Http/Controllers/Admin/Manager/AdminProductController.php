@@ -5,17 +5,15 @@ namespace App\Http\Controllers\Admin\Manager;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use Illuminate\Http\Request;
-use App\Http\Requests\StoreProductRequest;
-use App\Http\Requests\UpdateProductRequest;
 use Illuminate\Support\Facades\DB;
 use App\Models\SaleOff;
+use stdClass;
 
 class AdminProductController extends Controller
 {
     
     public function index($data=NULL)
     {
-        
         $products = DB::table('products')->paginate(5);
         if($data!=NULL) 
             $data = array_merge($data,[
@@ -30,11 +28,6 @@ class AdminProductController extends Controller
         return view('admin.product.index', $data);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         $data = ([
@@ -43,12 +36,6 @@ class AdminProductController extends Controller
         return view('admin.product.create', $data);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreProductRequest  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $this->validate($request, [
@@ -56,7 +43,6 @@ class AdminProductController extends Controller
             'price' => 'required',
             'detail' => 'max:5000',
         ]);
-
         
         $product= new Product();
         $product->timestamps = false;
@@ -64,7 +50,7 @@ class AdminProductController extends Controller
         $product->name = $request->name;
         $product->price = $request->price;
         $product->detail = ($request->detail!=NULL)?$request->detail:"";
-        $product->saleoff_id = $request->saleoff;
+        $product->saleoff_id = ($request->saleoff<0)?0:$request->saleoff;
         $product->images = "";
         
         $product->save();
@@ -114,7 +100,7 @@ class AdminProductController extends Controller
         return view('tested', ['msg'=>'error']);
     }
 
-    public function update(UpdateProductRequest $request, Product $product)
+    public function update(Request $request, Product $product)
     {
         //
     }
