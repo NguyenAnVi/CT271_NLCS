@@ -87,7 +87,7 @@ class AdminSaleOffController extends Controller
     public function update(Request $request, $saleoff)
     {
         // find object
-        $saleoff = SaleOff::find( $saleoff);
+        $saleoff = SaleOff::find($saleoff);
 
         // create Saleoff object and append data:
         // disable timestamp adding:

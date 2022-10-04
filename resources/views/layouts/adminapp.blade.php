@@ -6,10 +6,25 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name', 'Nhà thuốc Sức Khỏe') }}</title>
-    <link rel="shortcut icon" href="">
+    <link rel="icon" type="image/x-icon" href="{{asset('logo/favicon.png')}}">
 
     <!-- Styles -->
     <link href="{{ asset('css/uikit.css') }}" rel="stylesheet">
+    <style>
+  * { /* Firefox */
+        scrollbar-width: auto;
+        scrollbar-color: #ffffff #222222;
+        cursor: url("{{asset('logo/cursor.cur')}}"), auto;
+    }
+    *::-webkit-scrollbar {width: 15px;}/* Chrome, Edge, and Safari */
+    *::-webkit-scrollbar-track {background: #222222;}
+    *::-webkit-scrollbar-thumb {
+        background-color: #ffffff;
+        border-radius: 25px;
+        border: 10px double #222222;
+    }
+    </style>
+    @yield('css')
 </head>
 <body style="min-height: 100vh">
 <div id="app">
@@ -19,20 +34,19 @@
                 <div class="uk-navbar" data-uk-navbar>
                     <div class="uk-navbar-left">
                         @includeWhen(Auth::guard('admin')->check(), 'partials/sidebar')
-                        
+                        <img src="{{asset('logo/favicon.png')}}" style="max-height: 2rem; max-width: 2rem">
                         <a class="uk-navbar-item uk-logo" href="{{route('admin.home')}}">{{ config('app.name', 'Laravel') }}</a>
                         <ul class="uk-navbar-nav">
                         </ul>
                     </div>
-                    
                 </div>
             </div>
         </nav>
     </div>
     
     <main class="" uk-height-viewport="offset-bottom:true ; offset-top:true">
-        <div class="uk-container">
-            @includeIf('layouts.generalmessage')
+        <div class="uk-container uk-flex-around uk-flex">
+            @includeIf('partials.generalmessage')
             @yield('content')
         </div>
     </main>
@@ -56,6 +70,6 @@
 </div>
 <script src="{{ asset('js/uikit.js') }}" defer></script>
 <script src="{{ asset('js/uikit-icons.js') }}" defer></script>
-
+@yield('js')
 </body>
 </html>
