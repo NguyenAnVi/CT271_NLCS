@@ -19,8 +19,6 @@ class CreateUsersTable extends Migration
             $table->string('phone')->unique();
             $table->string('password');
             $table->integer('point')->default(0);
-            $table->rememberToken();
-            $table->timestamps();
         });
     }
 

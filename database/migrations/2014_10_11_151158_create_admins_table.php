@@ -6,18 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateAdminsTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
-    // public function up()
-    // {
-    //     Schema::create('admins', function (Blueprint $table) {
-    //         $table->id();
-    //         $table->timestamps();
-    //     });
-    // }
     public function up()
     {
         Schema::create('admins', function (Blueprint $table) {
@@ -25,16 +13,8 @@ class CreateAdminsTable extends Migration
             $table->string('name');
             $table->string('phone')->unique();
             $table->string('password');
-            $table->rememberToken();
-            $table->timestamps();
         });
     }
-
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('admins');

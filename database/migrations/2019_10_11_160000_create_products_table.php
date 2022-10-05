@@ -1,5 +1,4 @@
 <?php
-
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,15 +14,10 @@ class CreateProductsTable extends Migration
             $table->integer('price');
             $table->text('images');
             $table->unsignedBigInteger('saleoff_id')->nullable();
-            $table->foreign('saleoff_id')->references('id')->on('saleoffs')->nullOnDelete();
+            $table->foreign('saleoff_id')->references('id')->on('saleoffs');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('products');
