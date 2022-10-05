@@ -244,4 +244,16 @@ class AdminProductController extends Controller
             return Response($output);
         }
     }
+
+    public function removeSaleoff($saleoff_id){
+        $check = 0;
+        $products = Product::where('saleoff_id', $saleoff_id)->get();
+        foreach ($products as $item){
+            $item->timestamps = false;
+            $item->saleoff_id = 1;
+            $item->save();
+            $check++;
+        }
+        return $check;
+    }
 }
