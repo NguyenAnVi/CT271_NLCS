@@ -22,11 +22,17 @@ Route::middleware('auth:admin')->group(function () {
         });
 
         // Manage Admin Account route
-        Route::match(['get', 'post'], 'hr', [AdminHRController::class, 'index'])->name('admin.hr');
-        Route::match(['post'], 'hr/create', [AdminHRController::class, 'createNewAccount'])->name('admin.hr.create');
-        Route::match(['delete'], 'hr/destroy/{id}', [AdminHRController::class, 'destroy'])->name('admin.hr.destroy');
-        Route::match(['get'], 'hr/edit/{id}', [AdminHRController::class, 'edit'])->name('admin.hr.edit');
-        Route::match(['post'], 'hr/update/{id}', [AdminHRController::class, 'update'])->name('admin.hr.update');
+        Route::resource('hr', AdminHrController::class)
+            ->except(['show'])
+            ->names([
+                'index' => 'admin.hr',
+                'create' => 'admin.hr.create',
+                'store' => 'admin.hr.store',
+                'edit' => 'admin.hr.edit',
+                'update' => 'admin.hr.update',
+                'destroy' => 'admin.hr.destroy'
+            ]);
+            Route::get('saleoff/search', [AdminProductController::class, 'search'])->name('admin.saleoff.search');
 
         // Manage User Account route
         Route::resource('customer', AdminCustomerController::class)
@@ -49,6 +55,7 @@ Route::middleware('auth:admin')->group(function () {
                 'update' => 'admin.saleoff.update',
                 'destroy' => 'admin.saleoff.destroy'
             ]);
+            Route::get('saleoff/search', [AdminProductController::class, 'search'])->name('admin.saleoff.search');
 
         Route::resource('product', AdminProductController::class)
             ->except(['show'])

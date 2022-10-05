@@ -55,17 +55,37 @@ class AdminHRController extends Controller
         
     }
 
-    public function createNewAccount(Request $request)
+    public function create()
+    {
+        $check = $this->checkRootUser($this->getCurrentId());
+        if($check){
+            return view('admin.hr.create');
+        }
+        else{
+            return $this->rejectAction();
+        }
+    }
+
+    public function store(Request $request)
     {   
         $check = $this->checkRootUser($this->getCurrentId());
         if($check){
-            //do something if the User is ROOT
+            //if the User is ROOT
             $credentials = $request->only(['name', 'phone', 'password', 'password_confirm']);
             $validated = $request->validate([
                 'name' => 'required|string|max:255',
-                'phone' => 'required|string|max:10|min:10|unique:admins',
+                'phone' => 'required|string|size:10|unique:admins',
                 'password' => 'required|min:6',
                 'password_confirmation' => 'required|same:password'
+            ],$messages = [
+                'name.required' => 'Bạn cần nhập tên',
+                'name.max' => 'Tên nhân viên không vượt quá :max kí tự.',
+                'phone.unique' => 'Số điện thoại đã tồn tại.',
+                'phone.size' => 'Số điện thoại phải có đúng 10 chữ số.',
+                'password.required' => 'Mật khẩu là cần thiết!!!',
+                'password.min' => 'Để an toàn hơn, hãy đặt mật khẩu từ 6 kí tự trở lên.',
+                'password_confirmation.required' => 'Cần phải nhập lại mật khẩu.',
+                'password_confirmation.same' => 'Nhập lại mật khẩu sai, chắc chưa?',
             ]);
             Admin::create([
                 'name' => $request->input('name'),
