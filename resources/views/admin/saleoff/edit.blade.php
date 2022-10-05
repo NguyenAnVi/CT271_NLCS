@@ -1,10 +1,10 @@
 @extends('layouts.adminapp')
+
 @section('content')
-<script src="{{ asset('js/jquery-3.6.1.min.js') }}"></script>
-<div class="uk-container uk-padding-small ">
+<div class="uk-container uk-padding-small">
     <div class="uk-width-1-1 uk-padding">
-        <h2 class="uk-text-center">Thay đổi thông tin chương trình khuyến mãi ({{$saleoff->name}})</h2>
-        <p class="uk-text-center uk-text-italic">*Đánh dấu check <label><input class="uk-checkbox" type="checkbox" checked></label> vào những trường cần thay đổi</p>
+        <h2 class="uk-text-bold">Thay đổi thông tin chương trình khuyến mãi ({{$saleoff->name}})</h2>
+        <p class="uk-text uk-text-italic">*Đánh dấu check <label><input class="uk-checkbox" type="checkbox" checked></label> vào những trường cần thay đổi</p>
         
         <form id="edit-form" class="uk-grid-small uk-form uk-child-width-1-1" uk-grid
             method="POST" 
@@ -136,6 +136,10 @@
         </form>
     </div>
 </div>
+@endsection
+
+@section('js')
+<script src="{{ asset('js/jquery-3.6.1.min.js') }}"></script>
 <script>
     $(function() {
          $("#file-input").change(function() {

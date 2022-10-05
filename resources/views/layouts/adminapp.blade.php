@@ -45,8 +45,9 @@
     </div>
     
     <main class="" uk-height-viewport="offset-bottom:true ; offset-top:true">
+        @includeIf('partials.generalmessage')
         <div class="uk-container uk-flex-around uk-flex">
-            @includeIf('partials.generalmessage')
+            
             @yield('content')
         </div>
     </main>

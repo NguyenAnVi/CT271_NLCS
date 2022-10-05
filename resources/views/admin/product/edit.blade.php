@@ -1,14 +1,14 @@
 @extends('layouts.adminapp')
-@section('content')
 
+@section('css')
 <link href="{{asset('froala-editor/css/froala_editor.pkgd.min.css')}}" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="{{asset('froala-editor/js/froala_editor.pkgd.min.js')}}"></script>
-<script src="{{ asset('js/jquery-3.6.1.min.js') }}"></script>
+@endsection
 
+@section('content')
 <div class="uk-container uk-padding-small">
-	<div class="uk-width-1-1 uk-padding-small@l">
-		<h2 class="uk-text-center">Thay đổi thông tin sản phẩm ({{$product->id}})</h2>
-		<p class="uk-text-center uk-text-italic">*Đánh dấu check <label><input class="uk-checkbox" type="checkbox" checked></label> vào những trường cần thay đổi</p>
+	<div class="uk-width-1-1 uk-padding">
+		<h2 class="uk-text-bold">Thay đổi thông tin sản phẩm ({{$product->id}})</h2>
+		<p class="uk-text-italic">*Đánh dấu check <label><input class="uk-checkbox" type="checkbox" checked></label> vào những trường cần thay đổi</p>
 		
 		<form id="edit-form" uk-grid
 				class="uk-grid-small uk-form uk-child-width-1-1" 
@@ -137,6 +137,11 @@
 		<form hidden id="new-saleoff" action="{{route('admin.saleoff.create')}}" method="get"></form>
 	</div>
 </div>
+@endsection
+
+@section('js')
+<script type="text/javascript" src="{{asset('froala-editor/js/froala_editor.pkgd.min.js')}}"></script>
+<script src="{{ asset('js/jquery-3.6.1.min.js') }}"></script>
 <script> FroalaEditor('textarea#froala-editor')</script>
 <script>
 	function changeFunc() {

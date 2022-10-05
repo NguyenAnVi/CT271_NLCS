@@ -1,110 +1,58 @@
 @extends('layouts.adminapp')
+
 @section('content')
-<div class="uk-container uk-padding-small ">
-    <div>
-        <ul class="uk-child-width-expand" uk-tab>
-            <li onclick="UIkit.slider('#slcontent').show('0');" class="uk-active"><a href=""><h3 class="uk-text-bold">Danh sách nhân viên</h3></a></li>
-            <li onclick="UIkit.slider('#slcontent').show('1');" class="" ><a href="#"><h3 class="uk-text-bold">Thêm mới</h3></a></li>
-        </ul>
-    </div>
-    <div id="slcontent" uk-slider="center:true; autoplay:false; finite:true; index:0; draggable:false">
-        <ul class="uk-slider-items uk-grid uk-grid-match">
-            <li class="uk-width-1-1">
-                <div class="uk-cover-container">
-                    {{-- table --}}
-                    <table class="uk-table uk-table-middle uk-table-divider">
-                        <thead>
-                            <tr>
-                                <th class="uk-width-small">ID</th>
-                                <th>Tên</th>
-                                <th class="uk-width-small">Điện thoại</th>
-                                <th class="uk-table-shrink">Sửa</th>
-                                <th class="uk-table-shrink">Xóa</th>
-                            </tr>
-                        </thead>
-                        <tbody> 
-                            @if(isset($admins))
-                            @foreach ($admins as $item)
-                            <tr>
-                                <td>{{$item->id}}</td>
-                                <td>{{$item->name}}@if(1 === $item->id) (Tài khoản hiện tại)@endif</td>
-                                <td class="phone" data-phone="{{$item->phone}}">{{$item->phone}}</td>
-                                @if(1 === $item->id)
-                                <td><button class="uk-button-primary" type="button" disabled><span uk-icon="pencil"></span></button></td>
-                                <td><button class="uk-button-danger" type="button" disabled><span uk-icon="close"></span></button></td>
-                                @else
-                                <form id="item-{{$item->id}}-destroy-form" method="POST" action="{{route('admin.hr.destroy',['id' => $item->id])}}" hidden>
-                                    @csrf
-                                    @method('delete')
-                                </form>
-                                <form id="item-{{$item->id}}-edit-form" method="GET" action="{{route('admin.hr.edit',['id' => $item->id])}}" hidden>
-                                </form>
-                                <td><button form="item-{{$item->id}}-edit-form" class="uk-button-primary" type="submit"><span uk-icon="pencil"></span></button></td>
-                                <td><button form="item-{{$item->id}}-destroy-form" class="uk-button-danger" type="submit"><span uk-icon="close"></span></button></td>
-                                @endif
-                            </tr>
-                            @endforeach
-                            @endif
-                            
-                        </tbody>
-                    </table>
-                    {{$admins->links()}}
-                </div>
-            </li>
-            <li id="add" class="uk-width-1-1">
-                <div class="uk-cover-container">
-                    {{-- adding form --}}
-                    <form id="register-form" 
-                          class="uk-grid-small uk-form" 
-                          method="POST" 
-                          action="{{ route('admin.hr.create') }}" 
-                          uk-grid="">
-                        @csrf
-                        <div class="uk-width-1-2@s">
-                            <input autofocus tabindex="1" class="uk-input uk-width-1-1 uk-form-large @error('name') uk-form-danger @enderror" type="text" name="name" placeholder="Họ và tên" required>
-                            @error('name')
-                            <span class="uk-text-danger">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-                        
-    
-                        <div class="uk-width-1-2@s">
-                            <input tabindex="1" class="uk-input uk-width-1-1 uk-form-large @error('phone') uk-form-danger @enderror" type="phone" name="phone" placeholder="Điện thoại" required>
-                            @error('phone')
-                            <span class="uk-text-danger">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-                        
-                        <div class="uk-width-1-2@s">
-                            <input tabindex="1" class="uk-input uk-width-1-1 uk-form-large @error('password') uk-form-danger @enderror" type="password" name="password" placeholder="Nhập mật khẩu mới" required>
-                            @error('password')
-                            <span class="uk-text-danger">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-    
-                        <div class="uk-width-1-2@s">
-                            <input tabindex="1" class="uk-input uk-width-1-1 uk-form-large @error('password_confirmation') uk-form-danger @enderror" type="password" name="password_confirmation" placeholder="Nhập lại mật khẩu" required>
-                            @error('password_confirmation')
-                            <span class="uk-text-danger">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-    
-                        <div class="uk-width-1-1@s">
-                            <button tabindex="1" class="uk-button uk-button-primary uk-button-large uk-width-expand@m" type="submit" form="register-form">Thêm</button>
-                        </div>
-                    </form>
-                    
-                </div>
-            </li>
-        </ul>
-    </div>
+<div class="uk-width-1-1 uk-padding ">
+	<div class="uk-flex-between" uk-grid>
+		<H3 class="uk-text-bold">Danh sách nhân viên</H3>
+		@include('partials/searchbar')
+	</div>
+	
+	<div uk-grid class="uk-flex-between uk-margin-small">
+		{{$admins->links()}}
+		<button form="create-form" class="uk-icon-button uk-width-auto uk-text-center uk-button-primary uk-padding-small">Thêm nhân viên mới &nbsp;&nbsp;&nbsp; <span uk-icon="plus"></span></button>
+		<form hidden id="create-form" action="{{route('admin.hr.create')}}" method="GET">@csrf</form>
+	</div>
+
+	<div id="slcontent" uk-slider="center:true; autoplay:false; finite:true; index:0; draggable:false">
+		<div class="uk-overflow-auto">
+			{{-- table --}}
+			<table class="uk-table uk-table-middle uk-table-divider">
+				<thead>
+					<tr>
+						<th class="uk-table-shrink">ID</th>
+						<th>Tên</th>
+						<th class="uk-width-small">Điện thoại</th>
+						<th class="uk-table-shrink">Sửa</th>
+						<th class="uk-table-shrink">Xóa</th>
+					</tr>
+				</thead>
+				<tbody uk-scrollspy="cls: uk-animation-fade; target: tr; delay: 300;"> 
+					@if(isset($admins))
+					@foreach ($admins as $item)
+					<tr>
+						<td>{{$item->id}}</td>
+						<td>{{$item->name}}@if(1 === $item->id) (Tài khoản hiện tại)@endif</td>
+						<td class="phone" data-phone="{{$item->phone}}">{{$item->phone}}</td>
+						@if(1 === $item->id)
+						<td><button class="uk-button-primary" type="button" disabled><span uk-icon="pencil"></span></button></td>
+						<td><button class="uk-button-danger" type="button" disabled><span uk-icon="close"></span></button></td>
+						@else
+						<form id="item-{{$item->id}}-destroy-form" method="POST" action="{{route('admin.hr.destroy',$item->id)}}" hidden>
+							@csrf
+							@method('delete')
+						</form>
+						<form id="item-{{$item->id}}-edit-form" method="GET" action="{{route('admin.hr.edit',$item->id)}}" hidden>
+						</form>
+						<td><button form="item-{{$item->id}}-edit-form" class="uk-button-primary uk-icon-button" type="submit"><span uk-icon="pencil"></span></button></td>
+						<td><button form="item-{{$item->id}}-destroy-form" class="uk-button-danger uk-icon-button" type="submit"><span uk-icon="close"></span></button></td>
+						@endif
+					</tr>
+					@endforeach
+					@endif
+					
+				</tbody>
+			</table>
+		</div>
+	</div>
 </div>
 @endsection

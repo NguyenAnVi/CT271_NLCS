@@ -1,8 +1,11 @@
 @extends('layouts.adminapp')
+
 @section('content')
-<script src="{{ asset('js/jquery-3.6.1.min.js') }}"></script>
 <div class="uk-container uk-padding-small ">
     <div class="uk-cover-container">
+        <div>
+            <H3 class="uk-text-bold uk-width-expand">Thêm CTKM mới</H3>
+        </div>
         {{-- adding form --}}
         <form id="main-form" 
                 class="uk-grid-small uk-form" 
@@ -81,24 +84,28 @@
                 <button tabindex="1" class="uk-button uk-button-primary uk-button-large uk-width-expand@m" type="submit" form="main-form">Thêm</button>
             </div>
         </form>
-        
     </div>
 </div>
+
+@endsection
+
+@section('js')
+<script src="{{ asset('js/jquery-3.6.1.min.js') }}"></script>
 <script>
-   $(function() {
-        $(":file").change(function() {
-            if (this.files && this.files[0]) {
-                // for (var i = 0; i < this.files.length; i++) {
-                    var reader = new FileReader();
-                    reader.onload = imageIsLoaded;
-                    reader.readAsDataURL(this.files[0]);
-                // }
-            }
-        });
-    });
-    function imageIsLoaded(e) {
-        document.getElementById("myImg").innerHTML = "";
-        $('#myImg').append('<img src="' + e.target.result + '"">');
-    };     
-</script>
+    $(function() {
+         $(":file").change(function() {
+             if (this.files && this.files[0]) {
+                 // for (var i = 0; i < this.files.length; i++) {
+                     var reader = new FileReader();
+                     reader.onload = imageIsLoaded;
+                     reader.readAsDataURL(this.files[0]);
+                 // }
+             }
+         });
+     });
+     function imageIsLoaded(e) {
+         document.getElementById("myImg").innerHTML = "";
+         $('#myImg').append('<img src="' + e.target.result + '"">');
+     };     
+ </script>
 @endsection

@@ -1,16 +1,17 @@
 @extends('layouts.adminapp')
+
 @section('content')
 <div class="uk-container uk-padding-small ">
     <div class="uk-width-1-1 uk-padding">
-        <h2 class="uk-text-center">Thay đổi thông tin người dùng ({{$admin->id}})</h2>
-        <p class="uk-text-center uk-text-italic">*Đánh dấu check <label><input class="uk-checkbox" type="checkbox" checked></label> vào những trường cần thay đổi</p>
+        <h2 class="uk-text-bold">Thay đổi thông tin nhân viên ({{$admin->id}})</h2>
+        <p class="uk-text-italic">*Đánh dấu check <label><input class="uk-checkbox" type="checkbox" checked></label> vào những trường cần thay đổi</p>
         
-        <form id="edit-form" 
+        <form id="edit-form" uk-grid
                 class="uk-grid-small uk-form uk-child-width-1-1" 
                 method="POST" 
-                action="{{ route('admin.hr.update', ['id' => $admin->id]) }}" 
-                uk-grid="">
+                action="{{ route('admin.hr.update', $admin->id) }}">
             @csrf
+            @method('put')
             <div class="uk-form" uk-grid>
                 <div class="uk-width-expand uk-grid-match" uk-grid>
                     <div class="uk-width-auto@s uk-width-expand@m uk-text-right">
