@@ -10,7 +10,7 @@
 		<HR>
 		<form id="edit-form" uk-grid
 				class="uk-grid-small uk-form uk-child-width-1-1" 
-				method="POST" 
+				method="POST"  enctype="multipart/form-data"
 				action="{{route('admin.product.update', $product->id)}}">
 			@csrf
 			@method('put')

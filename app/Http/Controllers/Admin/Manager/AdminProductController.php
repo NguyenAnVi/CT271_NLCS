@@ -132,7 +132,7 @@ class AdminProductController extends Controller
 			$this->validate($request, [
 				'detail', 'string|max:5000',
 			]);
-			$product->price = $request->price;
+			$product->detail = $request->detail;
 			$prop ++;
 		}
 
@@ -147,7 +147,7 @@ class AdminProductController extends Controller
 			}
 		}
 
-		if($request->has('image_check')){
+		if($request->has('images_check')){
 			// 1. delete old images
 			if($product->images != ""){
 				$files = array_filter(
