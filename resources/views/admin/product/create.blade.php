@@ -5,10 +5,11 @@
 @endsection
 
 @section('content')
-<div class="uk-container uk-padding-small ">
-    <div class="uk-cover-container">
+<div class="uk-container">
+    <div class="uk-cover-container uk-padding">
         <div>
-            <H3 class="uk-text-bold uk-width-expand">Thêm sản phẩm mới</H3>
+            <H3 class="uk-text-bold uk-text-center uk-width-expand">Thêm sản phẩm mới</H3>
+            <hr>
         </div>
         {{-- adding form --}}
         <form id="create-form" uk-grid
@@ -16,22 +17,9 @@
                 method="POST" enctype="multipart/form-data"
                 action="{{route('admin.product.store')}}">
             @csrf
-            <div class="uk-width-1-2@s">
+            <div class="uk-width-1-1@s">
                 <input autofocus value="{{old('name')}}" tabindex="1" class="uk-input uk-width-1-1 uk-form-large @error('name') uk-form-danger @enderror" type="text" name="name" placeholder="Tên SP" required>
                 @error('name')
-                <span class="uk-text-danger">
-                    <strong>{{ $message }}</strong>
-                </span>
-                @enderror
-            </div>
-            
-            <div class="uk-width-1-2@s">
-                {{-- <a class="uk-form-icon uk-form-icon-flip" href="#" uk-icon="icon: link"></a> --}}
-                <input tabindex="1" value="{{old('price')}}"
-                    class="uk-input uk-width-1-1 uk-form-large @error('price') uk-form-danger @enderror" 
-                    type="number" min="0"
-                    name="price" placeholder="Giá bán (vnd)" required>
-                @error('price')
                 <span class="uk-text-danger">
                     <strong>{{ $message }}</strong>
                 </span>
@@ -46,6 +34,23 @@
                 </span>
                 @enderror
             </div>
+
+            <div class="uk-width-1-2@s">
+                <label class="uk-form-label" for="form-horizontal-select">
+                    Giá bán
+                </label>
+                {{-- <a class="uk-form-icon uk-form-icon-flip" href="#" uk-icon="icon: link"></a> --}}
+                <input tabindex="1" value="{{old('price')}}"
+                    class="uk-input uk-width-1-1 uk-form @error('price') uk-form-danger @enderror" 
+                    type="number" min="0" step="1000"
+                    name="price" placeholder="Giá bán (vnd)" required>
+                @error('price')
+                <span class="uk-text-danger">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+            </div>
+
             <div class="uk-width-1-2@s">
                     <label class="uk-form-label" for="form-horizontal-select">
                         Chương trình khuyến mãi
@@ -60,7 +65,8 @@
                         </select>
                     </div>
             </div>
-            <div class="uk-width-1-2@s uk-grid-match">
+
+            <div class="uk-width-1-1@s uk-grid-match">
                 <div class="uk-width-1-1 uk-match" uk-form-custom>
                     <input name="images[]" type="file" accept="image/*" multiple>
                     <button class="uk-button uk-button-default uk-margin uk-width-1-1" type="button" tabindex="-1">Hình ảnh</button>

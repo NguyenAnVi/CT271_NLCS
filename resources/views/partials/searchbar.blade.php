@@ -3,5 +3,6 @@
 <div class="uk-drop" uk-drop="animation; animate-out:true;mode: click; pos: left-center; offset: 0">
     <form class="uk-search uk-search-default uk-width-1-1">
         <input id="search" class="uk-search-input" type="search" placeholder="Tìm kiếm...">
+        {{-- <input type="hidden" name="_token" value="{{csrf_token()}}" /> --}}
     </form>
 </div>

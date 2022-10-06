@@ -5,17 +5,27 @@
 @endsection
 
 @section('content')
-<div class="uk-container uk-padding-small">
 	<div class="uk-width-1-1 uk-padding">
-		<h2 class="uk-text-bold">Thay đổi thông tin sản phẩm ({{$product->id}})</h2>
-		<p class="uk-text-italic">*Đánh dấu check <label><input class="uk-checkbox" type="checkbox" checked></label> vào những trường cần thay đổi</p>
-		
+		<h3 class="uk-text-bold uk-text-center">Thay đổi thông tin sản phẩm ({{$product->id}})</h3>
+		<HR>
 		<form id="edit-form" uk-grid
 				class="uk-grid-small uk-form uk-child-width-1-1" 
 				method="POST" 
 				action="{{route('admin.product.update', $product->id)}}">
 			@csrf
 			@method('put')
+			<div class="uk-form" uk-grid>
+				<div class="uk-width-expand uk-grid-match" uk-grid>
+					<div class="uk-width-auto@s uk-width-expand@m uk-text-right">
+						
+					</div>
+					<div class="uk-width-expand@s uk-width-1-4@m">
+					</div>
+					<div class="uk-width-1-1@s uk-width-2-3@m">
+						<p class="uk-text-italic">*Đánh dấu check <label><input class="uk-checkbox" type="checkbox" checked></label> vào những trường cần thay đổi</p>
+					</div>
+				</div>
+			</div>
 			<div class="uk-form" uk-grid>
 				<div class="uk-width-expand uk-grid-match" uk-grid>
 					<div class="uk-width-auto@s uk-width-expand@m uk-text-right">
@@ -136,7 +146,6 @@
 		</form>
 		<form hidden id="new-saleoff" action="{{route('admin.saleoff.create')}}" method="get"></form>
 	</div>
-</div>
 @endsection
 
 @section('js')

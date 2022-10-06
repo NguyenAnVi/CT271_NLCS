@@ -107,7 +107,9 @@ class AdminHRController extends Controller
             // $admin = Admin::find($id);
             $admin = Admin::where('id', $id)->first();
             if (! $admin) {
-                return $this->notFound();                       
+                return back()->withErrors([
+                    'warning' => 'Không tìm thấy người dùng có mã '.$id
+                ]);
             }
             $data = ([
                 'admin' => $admin,
@@ -131,7 +133,9 @@ class AdminHRController extends Controller
             // Kiểm tra xem id có tồn tại hay không?
             $admin = Admin::find($id);
             if (! $admin) {
-                return $this->notFound();                       
+                return back()->withErrors([
+                    'warning' => 'Không tìm thấy người dùng có mã '.$id
+                ]);
             }
             else{
                 // $credentials = $request->only(['name', 'phone', 'password']);
@@ -164,9 +168,6 @@ class AdminHRController extends Controller
                 ]));
                 
             }
-
-            
-            
         }
         else{
             return $this->rejectAction();
@@ -185,7 +186,16 @@ class AdminHRController extends Controller
             // Kiểm tra xem id có tồn tại hay không?
             $admin = Admin::find($id);
             if (! $admin) {
-                $this->notFound();                       
+                return back()->withErrors([
+                    'warning' => 'Không tìm thấy người dùng có mã '.$id
+                ]);
+            }
+
+            // Không thể xóa tk ROOT:
+            if($admin->id == 1){
+                return back()->withErrors([
+                    'danger' => 'Không thể xóa tài khoản quản trị.',
+                ]);
             }
 
             // Thực hiện xóa contact...

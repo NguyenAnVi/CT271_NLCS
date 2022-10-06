@@ -1,4 +1,5 @@
 <?php
+use App\Models\SaleOff;
 
 if (!function_exists('getImageAt')) {
     function getImageAt($array, $position)
@@ -8,6 +9,81 @@ if (!function_exists('getImageAt')) {
         return NULL;
     }
 }
+
+if (!function_exists('getCollection')){
+    function getCollection($array) {
+        $output = '<div style="width:10rem; height:5rem;overflow: hidden" uk-slider="center:true; finite :true; ">';
+        $output .= '<ul class="uk-grid uk-slider-items uk-child-width-1-1">';
+        if($array){
+            $js = json_decode(str_replace('\\','',$array));
+            foreach ($js as $item){
+                $output .= '<li><img style="object-fit: cover;width:10rem; height:5rem;" src="'. $item . '"></li>';
+            }
+        }
+        $output .= '</ul></div>';
+        return $output;
+    }
+} 
+
+// function products_table_row($item){
+//     $output = '<tr>';
+//     $output .= '<td>'.$item->id.'</td>';
+//     $output .= '<td>' . getCollection($item->images) . '</td>';
+//     $output .= '<td>' . $item->name . '</td>';
+//     $output .= '<td>' . number_format($item->price, 0, ',', '.') . 'đ</td>';
+//     $output .= '<form id="item-' . $item->id . '-destroy-form" method="POST" action="' . route('admin.product.destroy',$item->id) . '" hidden><input type="hidden" name="_token" value="'. csrf_token() .'" /> <input type="hidden" name="_method" value="delete"></form>';
+//     $output .= '<form id="item-' . $item->id . '-edit-form" method="GET" action="' . route('admin.product.edit',$item->id) . '" hidden></form>';
+//     $item_saleoff = SaleOff::where('id', $item->saleoff_id)->first();
+//     $output .= '<td class="uk-text-truncate" uk-tooltip="';
+//     if(isset($item_saleoff->amount)){
+//         $output .= 'Giảm';
+//         if($item_saleoff->amount != 0){
+//             $output .= number_format($item_saleoff->amount, 0, ',', '.').'đ';
+//         } else { 
+//             $output .= $item_saleoff->percent.'%';
+//         }
+//     }
+//     $output .= '">';
+//     if(isset($item_saleoff->name))$output .= $item_saleoff->name;
+//     $output.= '</td>';
+//     $output .= '<td><button form="item-' . $item->id . '-edit-form" class="uk-button-primary uk-icon-button" type="submit"><span uk-icon="pencil"></span></button></td>';
+//     $output .= '<td><button form="item-' . $item->id . '-destroy-form" class="uk-button-danger uk-icon-button" type="submit"><span uk-icon="close"></span></button></td>';
+//     $output .= '</tr>';
+
+//     return $output;
+// }
+
+// function products_table($products){
+//     $o = '<div uk-grid class="uk-flex-between uk-margin-small">';
+// 	$o.= json_decode($products)->links();
+// 	$o.= '<button form="create-form" class="uk-icon-button uk-width-auto uk-text-center uk-button-primary uk-padding-small">Thêm sản phẩm mới &nbsp;&nbsp;&nbsp; <span uk-icon="plus"></span></button>';
+//     $o.= '<form hidden id="create-form" action="' . route('admin.product.create') . '" method="GET"><input type="hidden" name="_token" value="'. csrf_token() .'" /></form>';
+//     $o.= '</div>';
+//     $o.= '<div id="slcontent" uk-slider="center:true; autoplay:false; finite:true; index:0; draggable:false">';
+//     $o.= '<div class="uk-overflow-auto">';
+//     $o.= '<table class="uk-table uk-table-middle uk-table-divider">';
+//     $o.='<thead>';
+//     $o.='<tr>';
+//     $o.='<th class="uk-table-shrink">ID</th>';
+//     $o.='<th class="uk-width-small"></th>';
+//     $o.='<th>Tên SP</th>';
+//     $o.='<th class="uk-width-small" uk-tooltip="Giá bán (Chưa bao gồm khuyến mãi)">Gia</th>';
+//     $o.='<th class="uk-width-small" uk-tooltip="Chương trình KM đang áp dụng">KM</th>';
+//     $o.='<th class="uk-table-shrink">Sửa</th>';
+//     $o.='<th class="uk-table-shrink">Xóa</th>';
+//     $o.='</tr>';
+//     $o.='</thead>';
+//     $o.='<tbody uk-scrollspy="cls: uk-animation-fade; target: tr; delay: 300;">';
+//     foreach ($products as $item)
+//         $o.= products_table_row($item);
+//     $o.='</tbody>';
+//     $o.='</table>';
+//     $o.='</div>';
+//     $o.='</div>';
+
+//     return $o;
+// }
+
 if (!function_exists('unified_format')) {
     function unified_format($str) {
         $str = preg_replace("/(à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ)/", 'a', $str);

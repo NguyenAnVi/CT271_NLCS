@@ -26,6 +26,6 @@ class AppServiceProvider extends ServiceProvider
     {
         Paginator::defaultView('partials/pagination');
  
-        Paginator::defaultSimpleView('partials/pagination');
+        // Paginator::defaultSimpleView('partials/pagination');
     }
 }

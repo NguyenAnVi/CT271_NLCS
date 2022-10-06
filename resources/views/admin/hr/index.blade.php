@@ -33,17 +33,12 @@
 						<td>{{$item->id}}</td>
 						<td>{{$item->name}}@if(1 === $item->id) (Tài khoản hiện tại)@endif</td>
 						<td class="phone" data-phone="{{$item->phone}}">{{$item->phone}}</td>
-						@if(1 === $item->id)
-						<td><button class="uk-button-primary" type="button" disabled><span uk-icon="pencil"></span></button></td>
-						<td><button class="uk-button-danger" type="button" disabled><span uk-icon="close"></span></button></td>
-						@else
-						<form id="item-{{$item->id}}-destroy-form" method="POST" action="{{route('admin.hr.destroy',$item->id)}}" hidden>
-							@csrf
-							@method('delete')
-						</form>
-						<form id="item-{{$item->id}}-edit-form" method="GET" action="{{route('admin.hr.edit',$item->id)}}" hidden>
-						</form>
 						<td><button form="item-{{$item->id}}-edit-form" class="uk-button-primary uk-icon-button" type="submit"><span uk-icon="pencil"></span></button></td>
+						<form id="item-{{$item->id}}-edit-form" method="GET" action="{{route('admin.hr.edit',$item->id)}}" hidden></form>
+						@if(1 === $item->id)
+						<td><button class="uk-button-danger uk-icon-button" type="button" disabled><span uk-icon="close"></span></button></td>
+						@else
+						<form id="item-{{$item->id}}-destroy-form" method="POST" action="{{route('admin.hr.destroy',$item->id)}}" hidden>@csrf @method('delete')</form>
 						<td><button form="item-{{$item->id}}-destroy-form" class="uk-button-danger uk-icon-button" type="submit"><span uk-icon="close"></span></button></td>
 						@endif
 					</tr>
