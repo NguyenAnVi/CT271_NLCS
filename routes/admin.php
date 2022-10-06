@@ -55,7 +55,7 @@ Route::middleware('auth:admin')->group(function () {
                 'update' => 'admin.saleoff.update',
                 'destroy' => 'admin.saleoff.destroy'
             ]);
-            Route::get('saleoff/search', [AdminProductController::class, 'search'])->name('admin.saleoff.search');
+            Route::get('saleoff/search', [AdminSaleoffController::class, 'search'])->name('admin.saleoff.search');
 
         Route::resource('product', AdminProductController::class)
             ->except(['show'])
