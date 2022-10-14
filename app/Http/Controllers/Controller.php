@@ -13,18 +13,6 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    public function notFound()
-    {
-        if (ob_get_level()) {
-            ob_end_clean();
-        }
-                
-        http_response_code(404);
-        echo view('errors/404');
-        exit();        
-    }
-    
-
     protected function invokeCsrfGuard()
     {
         if (! Csrf::verifyToken()) {

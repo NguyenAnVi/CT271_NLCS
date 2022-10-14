@@ -1,3 +1,4 @@
+<hr>
 <nav id="pagination">
 	@if ($paginator->hasPages())
 	<ul class="uk-pagination uk-flex-center uk-text-lead" uk-margin>

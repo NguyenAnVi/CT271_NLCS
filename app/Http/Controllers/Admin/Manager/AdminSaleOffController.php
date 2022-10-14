@@ -4,25 +4,31 @@ namespace App\Http\Controllers\Admin\Manager;
 
 use App\Http\Controllers\Controller;
 use App\Models\SaleOff;
-use Illuminate\Database\DBAL\TimestampType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Admin\Manager\AdminProductController;
 
 class AdminSaleOffController extends Controller
 {
-
-    public function index($data = NULL)
-    {
+    public function index($olddata=NULL)
+	{
         $saleoffs = DB::table('saleoffs')->paginate(5);
-        if ($data != NULL) $data = array_merge($data, ['saleoffs' => $saleoffs]);
-        else $data = (['saleoffs' => $saleoffs]);
-        return view('admin.saleoff.index', $data);
-    }
+		$newdata = ([
+			'collection' => $saleoffs,
+			'title' =>'Danh sách chương trình khuyến mãi',
+			'createRoute' => route('admin.saleoff.create'),
+			'tableView' => 'admin.manager.saleoff.saleoffTable',
+		]);
+		if($olddata!=NULL) 
+			$data = array_merge($olddata,$newdata);
+		else 
+			$data = $newdata;
+		return view('admin.layouts.index', $data);
+	}
 
     public function create(Request $request)
     {
-        return view('admin.saleoff.create');
+        return view('admin.manager.saleoff.create');
     }
 
     public function store(Request $request)
@@ -78,11 +84,14 @@ class AdminSaleOffController extends Controller
     public function edit($saleoff)
     {
         $sf = SaleOff::find($saleoff);
-        if (!$sf) return $this->notFound();
-        $data = ([
-            'saleoff' => $sf,
-        ]);
-        return view('admin.saleoff.edit', $data);
+            
+        if($sf)
+            return view('admin.layouts.edit',[
+                'saleoff' => $sf,
+                'title' => 'Thay đổi thông tin CTKM',
+                'formView' => 'admin.manager.saleoff.saleoffEditForm',
+            ]);
+        else return back()->withErrors(['warning'=>'Khong tim thay ID']);
     }
 
     public function update(Request $request, $saleoff)
@@ -142,7 +151,7 @@ class AdminSaleOffController extends Controller
             }
         }
 
-        if($request->has('image_check')){
+        if($request->has('banner_check')){
             // 1. delete old image
             if($saleoff->imageurl != ""){
                 $files = array_filter(
@@ -179,59 +188,43 @@ class AdminSaleOffController extends Controller
         return redirect()->route('admin.saleoff')->withErrors(['success' => $prop.' thuộc tính đã thay đổi.']);
     }
 
-    public function destroy($saleoff)
+    public function destroy($id)
     {
-        $sf = SaleOff::find($saleoff);
-        // delete image
-        if($sf->imageurl != ""){
-            $files = array_filter(
-                glob(
-                    storage_path(
-                        'app/public/saleoff/banners/'
-                        .explode("/",$sf->imageurl)[sizeof(explode("/",$sf->imageurl))-1]
-                    )
-                ),
-                "is_file"
-            ); 
-            foreach($files as $file)
-            unlink($file); // delete file
-        }
-
-        // Remove product_saleoff_id has this saleoff
-        $products = new AdminProductController();
-        $affected_product_count = $products->removeSaleoff($sf->id);
-
-        // delete record from database
-        $sf->delete();
-
-        if($affected_product_count){
-            return redirect()->route('admin.saleoff')->withErrors(['success' => 'Đã xóa một CTKM, '.numToText($affected_product_count).' SP đã loại bỏ CTKM này']);    
-        }
-        return redirect()->route('admin.saleoff')->withErrors(['success' => 'Đã xóa 1 CTKM']);
-    }
-
-    public function search(Request $request)
-    {
-        if ($request->ajax()) {
-            $output = '';
-            $saleoff_data = DB::table('saleoffs')->where('name', 'LIKE', '%' . $request->search . '%')->get();
-            if ($saleoff_data) {
-                foreach ($saleoff_data as $item) {
-                    $output .= '<tr><td>'.$item->id.'</td><td>';
-                    if(getImageAt($item->images, 0))
-                      $output.= '<img class="uk-comment-avatar uk-object-cover" width="100"  style="aspect-ratio: 1 / 1;" src="'.getImageAt($item->images, 0).'">';
-                    $output.='</td><td>'.$item->name.'</td><td>'.number_format($item->price, 0, ',', '.').'đ</td><form id="item-'.$item->id.'-destroy-form" method="POST" action="'.route('admin.product.destroy',$item->id).'" hidden>'.csrf_token().'@method(\'delete\')</form>';
-                    $item_saleoff = SaleOff::where('id', $item->saleoff_id)->first();
-                    $output .= '<td uk-tooltip="';
-                    if($item_saleoff->amount != 0)
-                      $output .= $item_saleoff->amount;
-                    else
-                      $output .= $item_saleoff->percent;
-                    $output .= '">'.$item_saleoff->name.'</td><td><button form="item-'.$item->id.'-edit-form" class="uk-button-primary uk-icon-button" type="submit"><span uk-icon="pencil"></span></button></td>
-                    <td><button form="item-'.$item->id.'-destroy-form" class="uk-button-danger uk-icon-button" type="submit"><span uk-icon="close"></span></button></td></tr>';
-                }
+        if($id!=1){
+            $sf = SaleOff::find($id);
+            // delete image
+            if($sf->imageurl != ""){
+                $files = array_filter(
+                    glob(
+                        storage_path(
+                            'app/public/saleoff/banners/'
+                            .explode("/",$sf->imageurl)[sizeof(explode("/",$sf->imageurl))-1]
+                        )
+                    ),
+                    "is_file"
+                ); 
+                foreach($files as $file)
+                unlink($file); // delete file
             }
-            return Response($output);
-        }
+
+            // Remove product_saleoff_id has this saleoff
+            $products = new AdminProductController();
+            $affected_product_count = $products->removeSaleoff($sf->id);
+
+            // delete record from database
+            $sf->delete();
+
+            if($affected_product_count){
+                return redirect()->route('admin.saleoff')->withErrors(['success' => 'Đã xóa một CTKM, '.numToText($affected_product_count).' SP đã loại bỏ CTKM này']);    
+            }
+            return redirect()->route('admin.saleoff')->withErrors(['success' => 'Đã xóa 1 CTKM']);
+        } else return redirect()->route('admin.saleoff')->withErrors(['warning' => 'Không thể xóa CTKM gốc']);
     }
+
+	public function search(Request $request)
+	{
+		if ($request->ajax()!== NULL) {
+			return Response(json_encode(DB::table('saleoffs')->where('name', 'LIKE', '%' . $request->search . '%')->get()));
+		}
+	}
 }

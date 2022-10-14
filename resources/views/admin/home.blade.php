@@ -1,5 +1,5 @@
 
-@extends('layouts.adminapp')
+@extends('admin.layouts.app')
 @section('css')
 <style>
 	tr {cursor: pointer;}
@@ -20,6 +20,10 @@
 					</tr>
 				</thead>
 				<tbody>
+					<tr onclick="window.location.href='{{route('admin.category')}}'">
+						<td class="uk-text-bold">QL Danh mục</td>
+						<td><img src="{{asset('logo/ProductManager.jpg')}}" class="uk-width-1-1" style="max-height: 3rem; object-fit:cover;"></td>
+					</tr>
 					<tr onclick="window.location.href='{{route('admin.product')}}'">
 						<td class="uk-text-bold">QL Sản phẩm</td>
 						<td><img src="{{asset('logo/ProductManager.jpg')}}" class="uk-width-1-1" style="max-height: 3rem; object-fit:cover;"></td>

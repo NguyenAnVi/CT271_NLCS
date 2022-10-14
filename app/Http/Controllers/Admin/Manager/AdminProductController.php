@@ -7,23 +7,26 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\SaleOff;
+use Exception;
 
 class AdminProductController extends Controller
 {
-	public function index($data=NULL)
+	public function index($olddata=NULL)
 	{
 		$products = Product::paginate(5);
-		if($data!=NULL) 
-			$data = array_merge($data,[
-				'products' => $products, 
-				'saleoffs' => SaleOff::all(),
-			]);
+		$newdata = ([
+			'collection' => $products,
+			'title' =>'Danh sách sản phẩm',
+			'createRoute' => route('admin.product.create'),
+			'tableView' => 'admin.manager.product.productTable',
+
+			'saleoffs' => SaleOff::all(),
+		]);
+		if($olddata!=NULL) 
+			$data = array_merge($olddata,$newdata);
 		else 
-			$data = ([
-				'products' => $products,
-				'saleoffs' => SaleOff::all(),
-			]);
-		return view('admin.product.index', $data);
+			$data = $newdata;
+		return view('admin.layouts.index', $data);
 	}
 
 	public function create()
@@ -31,7 +34,7 @@ class AdminProductController extends Controller
 		$data = ([
 			'saleoffs' => SaleOff::all(),
 		]);
-		return view('admin.product.create', $data);
+		return view('admin.manager.product.create', $data);
 	}
 
 	public function store(Request $request)
@@ -81,16 +84,13 @@ class AdminProductController extends Controller
 	{
 		$product = Product::find($id);
 		if($product){
-			$data=([
+			return view('admin.layouts.edit',[
 				'saleoffs' => SaleOff::all(),
 				'product' => $product,
+				'title' => 'Thay đổi thông tin sản phẩm',
+				'formView' => 'admin.manager.product.productEditForm',
 			]);
-
-			// return view('tested', ['msg'=>'right']);    
-			return view('admin.product.edit', $data);
-		}
-		return $this->notFound();
-		return view('tested', ['msg'=>'error']);
+		}else return back()->withErrors(['warning'=>'Khong tim thay ID']);
 	}
 
 	public function update(Request $request,$p)
@@ -159,10 +159,14 @@ class AdminProductController extends Controller
 					"is_file"
 				);
 				foreach($files as $file) unlink($file); // delete files
-
-				rmdir(storage_path(
-					'app/public/products/'.$product->id
-				));
+				try{
+					rmdir(storage_path(
+						'app/public/products/'.$product->id
+					));
+				} catch (\Exception $e) {
+					echo '';
+				};
+				
 			}
 
 			// 2. add new images
@@ -218,90 +222,18 @@ class AdminProductController extends Controller
 		return redirect()->route('admin.product')->withErrors(['success' => 'Đã xóa 1 SP']);
 	}
 
+	// public function loadMore(Request $request){
+	// 	if($request->ajax()){
+
+	// 		return Response();
+	// 	}
+	// }
+
 	public function search(Request $request)
 	{
-		// if ($request->ajax()) {
-		// 	$output = '';
-		// 	$products_data = DB::table('products')->where('name', 'LIKE', '%' . $request->search . '%')->get();
-		// 	if ($products_data) {
-		// 		foreach ($products_data as $item) {
-		// 			$output .= '<tr><td>'.$item->id.'</td><td>';
-		// 			if(getImageAt($item->images, 0))
-		// 			  $output.= '<img class="uk-comment-avatar uk-object-cover" width="100"  style="aspect-ratio: 1 / 1;" src="'.getImageAt($item->images, 0).'">';
-		// 			$output.='</td><td>'.$item->name.'</td><td>'.number_format($item->price, 0, ',', '.').'đ</td><form id="item-'.$item->id.'-destroy-form" method="POST" action="'.route('admin.product.destroy',$item->id).'" hidden>'.csrf_token().'@method(\'delete\')</form>';
-		// 			$item_saleoff = SaleOff::where('id', $item->saleoff_id)->first();
-		// 			$output .= '<td uk-tooltip="';
-		// 			if($item_saleoff->amount != 0)
-		// 			  $output .= $item_saleoff->amount;
-		// 			else
-		// 			  $output .= $item_saleoff->percent;
-		// 			$output .= '">'.$item_saleoff->name.'</td><td><button form="item-'.$item->id.'-edit-form" class="uk-button-primary uk-icon-button" type="submit"><span uk-icon="pencil"></span></button></td>
-		// 			<td><button form="item-'.$item->id.'-destroy-form" class="uk-button-danger uk-icon-button" type="submit"><span uk-icon="close"></span></button></td></tr>';
-		// 		}
-		// 	}
-		// 	return Response($output);
-		// }
-		// if ($request->ajax()) {
-		// 	$o =[];
-		// 	$products = Product::where('name', 'LIKE', '%' . $request->search . '%')->get();
-		// 	if ($products) {
-		// 		$o .='<div uk-grid class="uk-flex-between uk-margin-small">';
-		// 		$o .=$products->links();
-		// 		$o .='<button form="create-form" class="uk-icon-button uk-width-auto uk-text-center uk-button-primary uk-padding-small">Thêm sản phẩm mới &nbsp;&nbsp;&nbsp; <span uk-icon="plus"></span></button><form hidden id="create-form" action="'.route('admin.product.create').'" method="GET"><input type="hidden" name="_token" value="'.csrf_token().'"</form></div>';
-		// 		$o .='<div id="slcontent" uk-slider="center:true; autoplay:false; finite:true; index:0; draggable:false">';
-		// 		$o .='<div class="uk-overflow-auto">';
-		// 		$o .='<table class="uk-table uk-table-middle uk-table-divider">';
-		// 			$o .='<thead>							<tr>';
-		// 				$o .=	'<th class="uk-table-shrink">ID</th>';
-		// 					$o .='	<th class="uk-width-small"></th>';
-		// 				$o .='	<th>Tên SP</th>					<th class="uk-width-small" uk-tooltip="Giá bán (Chưa bao gồm khuyến mãi)">Giá</th>';
-		// 			$o .=	'<th class="uk-width-small" uk-tooltip="Chương trình KM đang áp dụng">KM</th>';
-		// 					$o .=	'<th class="uk-table-shrink">Sửa</th>';
-		// 					$o .=	'<th class="uk-table-shrink">Xóa</th>';
-		// 					$o .=	'</tr>';
-		// 					$o .='</thead>';
-		// 				$o .='<tbody uk-scrollspy="cls: uk-animation-fade; target: tr; delay: 300;">';
-		// 			foreach ($products as $item){
-		// 				//@include('partials/productTableRow', ['item'=> $item])
-		// 				$o .= '<tr><td>'.$item->id.'</td><td>'.getCollection($item->images).'</td><td>'.$item->name.'</td><td>'.number_format($item->price, 0, ',', '.').' đ</td><form id="item-'.$item->id.'-destroy-form" method="POST" action="'.route('admin.product.destroy',$item->id).'" hidden><input type="hidden" name="_token" value="'.csrf_token().'"> <input type="hidden" name="method" value="delete"></form>
-		// 				<form id="item-'.$item->id.'-edit-form" method="GET" action="'.route('admin.product.edit',$item->id).'" hidden></form>';
-		// 				$item_saleoff = SaleOff::where('id', $item->saleoff_id)->first();
-		// 				$o .= '<td class="uk-text-truncate" uk-tooltip="';
-		// 				if(isset($item_saleoff->amount)){
-		// 					$o .= 'Giảm';
-		// 					if($item_saleoff->amount != 0){
-		// 						$o.= number_format($item_saleoff->amount, 0, ',', '.').' đ';
-		// 					} else {
-		// 						$o.= $item_saleoff->percent.'%';
-		// 					}
-		// 				}
-		// 				$o.='">';
-		// 				if(isset($item_saleoff->name)){
-		// 					$o.=$item_saleoff->name;
-		// 				}
-		// 				$o.='</td><td><button form="item-'.$item->id.'-edit-form" class="uk-button-primary uk-icon-button" type="submit"><span uk-icon="pencil"></span></button></td>
-		// 				<td><button form="item-'.$item->id.'-destroy-form" class="uk-button-danger uk-icon-button" type="submit"><span uk-icon="close"></span></button></td>
-		// 				</tr>';
-		// 			}
-		// 			$o .= '</tbody></table></div></div>';
-		// 			error_log($o);
-		// 	}
-		// 	return Response(json_encode($o));
-		// }
-		// if ($request->ajax()!== NULL) {
-		//     $output = [];
-		//     $products_data = DB::table('products')->where('name', 'LIKE', '%' . $request->search . '%')->get();
-		//     if ($products_data) {
-		//         foreach ($products_data as $item) {
-		//             $output = array_merge($output, [$item]);
-		//         }
-		//     }
-		//     return Response(json_encode($output));
-		// }
 		if ($request->ajax()!== NULL) {
 			return Response(json_encode(DB::table('products')->where('name', 'LIKE', '%' . $request->search . '%')->get()));
 		}
-		
 	}
 
 	public function removeSaleoff($saleoff_id){

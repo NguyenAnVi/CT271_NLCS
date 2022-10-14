@@ -45,8 +45,8 @@ class LoginController extends Controller
         if($request->getMethod() == 'GET') {
             return view('user.auth.register');
         }
-        $credentials = $request->only(['name', 'phone', 'password']);
-        $validated = $request->validate([
+        $request->only(['name', 'phone', 'password']);
+        $request->validate([
             'name' => 'required|string|max:255',
             'phone' => 'required|string|max:10|min:10|unique:users',
             'password' => 'required|min:6',

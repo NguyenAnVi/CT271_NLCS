@@ -1,5 +1,4 @@
 <?php
-use App\Models\SaleOff;
 
 if (!function_exists('getImageAt')) {
     function getImageAt($array, $position)
@@ -25,65 +24,6 @@ if (!function_exists('getCollection')){
     }
 } 
 
-// function products_table_row($item){
-//     $output = '<tr>';
-//     $output .= '<td>'.$item->id.'</td>';
-//     $output .= '<td>' . getCollection($item->images) . '</td>';
-//     $output .= '<td>' . $item->name . '</td>';
-//     $output .= '<td>' . number_format($item->price, 0, ',', '.') . 'đ</td>';
-//     $output .= '<form id="item-' . $item->id . '-destroy-form" method="POST" action="' . route('admin.product.destroy',$item->id) . '" hidden><input type="hidden" name="_token" value="'. csrf_token() .'" /> <input type="hidden" name="_method" value="delete"></form>';
-//     $output .= '<form id="item-' . $item->id . '-edit-form" method="GET" action="' . route('admin.product.edit',$item->id) . '" hidden></form>';
-//     $item_saleoff = SaleOff::where('id', $item->saleoff_id)->first();
-//     $output .= '<td class="uk-text-truncate" uk-tooltip="';
-//     if(isset($item_saleoff->amount)){
-//         $output .= 'Giảm';
-//         if($item_saleoff->amount != 0){
-//             $output .= number_format($item_saleoff->amount, 0, ',', '.').'đ';
-//         } else { 
-//             $output .= $item_saleoff->percent.'%';
-//         }
-//     }
-//     $output .= '">';
-//     if(isset($item_saleoff->name))$output .= $item_saleoff->name;
-//     $output.= '</td>';
-//     $output .= '<td><button form="item-' . $item->id . '-edit-form" class="uk-button-primary uk-icon-button" type="submit"><span uk-icon="pencil"></span></button></td>';
-//     $output .= '<td><button form="item-' . $item->id . '-destroy-form" class="uk-button-danger uk-icon-button" type="submit"><span uk-icon="close"></span></button></td>';
-//     $output .= '</tr>';
-
-//     return $output;
-// }
-
-// function products_table($products){
-//     $o = '<div uk-grid class="uk-flex-between uk-margin-small">';
-// 	$o.= json_decode($products)->links();
-// 	$o.= '<button form="create-form" class="uk-icon-button uk-width-auto uk-text-center uk-button-primary uk-padding-small">Thêm sản phẩm mới &nbsp;&nbsp;&nbsp; <span uk-icon="plus"></span></button>';
-//     $o.= '<form hidden id="create-form" action="' . route('admin.product.create') . '" method="GET"><input type="hidden" name="_token" value="'. csrf_token() .'" /></form>';
-//     $o.= '</div>';
-//     $o.= '<div id="slcontent" uk-slider="center:true; autoplay:false; finite:true; index:0; draggable:false">';
-//     $o.= '<div class="uk-overflow-auto">';
-//     $o.= '<table class="uk-table uk-table-middle uk-table-divider">';
-//     $o.='<thead>';
-//     $o.='<tr>';
-//     $o.='<th class="uk-table-shrink">ID</th>';
-//     $o.='<th class="uk-width-small"></th>';
-//     $o.='<th>Tên SP</th>';
-//     $o.='<th class="uk-width-small" uk-tooltip="Giá bán (Chưa bao gồm khuyến mãi)">Gia</th>';
-//     $o.='<th class="uk-width-small" uk-tooltip="Chương trình KM đang áp dụng">KM</th>';
-//     $o.='<th class="uk-table-shrink">Sửa</th>';
-//     $o.='<th class="uk-table-shrink">Xóa</th>';
-//     $o.='</tr>';
-//     $o.='</thead>';
-//     $o.='<tbody uk-scrollspy="cls: uk-animation-fade; target: tr; delay: 300;">';
-//     foreach ($products as $item)
-//         $o.= products_table_row($item);
-//     $o.='</tbody>';
-//     $o.='</table>';
-//     $o.='</div>';
-//     $o.='</div>';
-
-//     return $o;
-// }
-
 if (!function_exists('unified_format')) {
     function unified_format($str) {
         $str = preg_replace("/(à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ)/", 'a', $str);
@@ -107,56 +47,9 @@ if (!function_exists('unified_format')) {
     }
 }
 
-// if(!function_exists('category')){
-//     function category($categories, $parent_id = 0, $char= '')
-//     {
-//         $html = '';
-
-//         foreach ($categories as $key => $item) {
-//             if ($item->parent_id == $parent_id){
-//                 $html .= '
-//                 <tr>
-//                     <td> '. $item->id .' </td>
-//                     <td> '.$char. $item->name .' </td>
-//                     <td> '.active($item->status) .' </td>
-//                     <td> '. $item->updated_at .' </td>
-//                     <td>
-//                         <a class="btn btn-primary btn-sm" href="/admin/menus/edit/'.$item->id.'">
-//                             <i class="fa-solid fa-pen-to-square"></i>
-//                         </a>
-
-//                         <a href="#" class="btn btn-danger btn-sm"
-//                             onclick="removeRow('.$item->id.',\'/admin/menus/destroy\')">
-//                         <i class="fa-solid fa-trash"></i>
-//                         </a>
-//                     </td>
-//                 <tr>
-//                 ';
-
-//                 unset($item[$key]);
-
-//                 // $html .= self::menu($categories, $item->id, $char.'|---');
-//                 $html .= category($categories, $item->id, $char.$item->name.' => ');
-//             }
-//         }
-
-//         return $html;
-//     }
-// }
-
-// function active($active = 0) : string
-// {
-//     return $active == 0 ? '<span class = "btn btn-danger btn-xs">NO</span>'
-//             :'<span class = "btn btn-success btn-xs">YES</span>' ;
-// }
-
-if(!function_exists('category')){
+if(!function_exists('numToText')){
     function numToText($amount)
     {
-            if($amount <=0)
-            {
-                return $textnumber="Tiền phải là số nguyên dương lớn hơn số 0";
-            }
             $Text=array("không", "một", "hai", "ba", "bốn", "năm", "sáu", "bảy", "tám", "chín");
             $TextLuythua =array("","nghìn", "triệu", "tỷ", "ngàn tỷ", "triệu tỷ", "tỷ tỷ");
             $textnumber = "";
@@ -203,7 +96,6 @@ if(!function_exists('category')){
                 $textnumber = $Text[$so] ." ". $textnumber;
             }
         
-            //Phai de cac ham replace theo dung thu tu nhu the nay
             $textnumber = str_replace("không mươi", "lẻ", $textnumber);
             $textnumber = str_replace("lẻ không", "", $textnumber);
             $textnumber = str_replace("mươi không", "mươi", $textnumber);
@@ -218,3 +110,77 @@ if(!function_exists('category')){
     }
 }
 
+function getCategoriesTree($categories, $parent_id = 0, $char = '')
+    {
+        $html = '';
+        foreach ($categories as $key => $item) {
+            if ($item->parent_id == $parent_id) {
+                $html .= '
+                    <tr>
+                        <td>' . $item->id . '</td>
+                        <td>' . $char . $item->name . '</td>
+                        <td>' . checkStatus($item->id, $item->status) . '</td>
+                        <td><button class="uk-button-primary uk-icon-button" type="submit" onclick="window.location.href=\''.route("admin.category.edit", $item->id).'\'"><span uk-icon="pencil"></span></button></td>
+                        <td><button class="uk-button-danger uk-icon-button" type="submit" onclick="window.location.href=\''.route("admin.category.destroy", $item->id).'\'"><span uk-icon="close"></span></button></td>
+                    </tr>
+                ';
+                $id = $item->id;
+                unset($categories[$key]);
+
+                $html .= getCategoriesTree($categories, $item->id, $char . ' ' . $parent_id . ' 👉 ');
+            }
+        }
+
+        return $html;
+    }
+    function checkStatus($id, $status): string
+    {
+        return '<button data-id="'.$id.'" class="check-status uk-button-'. ($status == 1 ? 'secondary' : 'default').' uk-icon-button  uk-form-small" type="button"><span uk-icon="'. ($status == 1 ? 'check' : 'close').'"></span></button>';
+    }
+
+    function copyr($source, $dest)
+    {
+    // Simple copy for a file
+    if (is_file($source)) {
+        return copy($source, $dest);
+    }
+
+    // Make destination directory
+    if (!is_dir($dest)) {
+        mkdir($dest);
+        $company = ($_POST['company']);
+    }
+
+    // Loop through the folder
+    $dir = dir($source);
+    while (false !== $entry = $dir->read()) {
+        // Skip pointers
+        if ($entry == '.' || $entry == '..') {
+            continue;
+        }
+
+        // Deep copy directories
+        if ($dest !== "$source/$entry") {
+            copyr("$source/$entry", "$dest/$entry");
+        }
+    }
+
+    // Clean up
+    $dir->close();
+    return true;
+    }
+
+    function rrmdir($dir) { 
+        if (is_dir($dir)) { 
+          $objects = scandir($dir);
+          foreach ($objects as $object) { 
+            if ($object != "." && $object != "..") { 
+              if (is_dir($dir. DIRECTORY_SEPARATOR .$object) && !is_link($dir."/".$object))
+                rrmdir($dir. DIRECTORY_SEPARATOR .$object);
+              else
+                unlink($dir. DIRECTORY_SEPARATOR .$object); 
+            } 
+          }
+          rmdir($dir); 
+        } 
+      }

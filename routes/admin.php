@@ -32,7 +32,7 @@ Route::middleware('auth:admin')->group(function () {
                 'update' => 'admin.hr.update',
                 'destroy' => 'admin.hr.destroy'
             ]);
-            Route::get('saleoff/search', [AdminProductController::class, 'search'])->name('admin.saleoff.search');
+        Route::get('hr/search', [AdminHrController::class, 'search'])->name('admin.hr.search');
 
         // Manage User Account route
         Route::resource('customer', AdminCustomerController::class)
@@ -43,6 +43,7 @@ Route::middleware('auth:admin')->group(function () {
                 'update' => 'admin.customer.update',
                 'destroy' => 'admin.customer.destroy'
             ]);
+        Route::get('customer/search', [AdminCustomerController::class, 'search'])->name('admin.customer.search');
 
         // Manage SaleOff route
         Route::resource('saleoff', AdminSaleOffController::class)
@@ -79,5 +80,10 @@ Route::middleware('auth:admin')->group(function () {
                 'update' => 'admin.category.update',
                 'destroy' => 'admin.category.destroy'
             ]);
+        Route::post('category/switchstatus', [AdminCategoryController::class, 'switchstatus'])->name('admin.category.switchstatus');
+        Route::get('category/search', [AdminCategoryController::class, 'search'])->name('admin.category.search');
+
     });
+
+    Route::fallback([HomeController::class, 'notFound']);
 });

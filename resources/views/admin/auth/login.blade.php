@@ -1,4 +1,4 @@
-@extends('layouts.adminapp')
+@extends('admin.layouts.app')
 @section('content')
     <div class="uk-child-width-expand@s uk-text-center uk-align-center uk-padding" uk-grid="" style="width: 900px;">
         <div class="uk-card uk-card-default uk-card-body uk-grid-margin uk-margin" uk-grid>

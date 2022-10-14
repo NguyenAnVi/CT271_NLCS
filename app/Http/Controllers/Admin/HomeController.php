@@ -15,5 +15,16 @@ class HomeController extends Controller
 
         return view('admin.home');
     }
+
+    public function notFound()
+    {
+        if (ob_get_level()) {
+            ob_end_clean();
+        }
+                
+        http_response_code(404);
+        echo view('admin.errors.404');
+        exit();      
+    }
 }
 
