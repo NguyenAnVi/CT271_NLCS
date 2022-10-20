@@ -28,8 +28,10 @@ class AdminCategoryController extends Controller
 
 	public function create()
 	{
-		return view('admin.category.create',[
-			'categories' => $this->getAll()
+		return view('admin.layouts.create', [
+			'categories' => $this->getAll(),
+			'title' => 'Thêm danh muc',
+			'formView' => 'admin.manager.category.categoryAddForm',
 		]);
 	}
 

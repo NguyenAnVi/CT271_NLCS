@@ -28,7 +28,10 @@ class AdminSaleOffController extends Controller
 
     public function create(Request $request)
     {
-        return view('admin.manager.saleoff.create');
+        return view('admin.layouts.create', [
+            'title' => 'Thêm CTKM mới',
+            'formView' => 'admin.manager.saleoff.saleoffAddForm',
+        ]);
     }
 
     public function store(Request $request)

@@ -31,10 +31,11 @@ class AdminProductController extends Controller
 
 	public function create()
 	{
-		$data = ([
+		return view('admin.layouts.create', [
 			'saleoffs' => SaleOff::all(),
+			'title' => 'Thêm sản phẩm',
+			'formView' => 'admin.manager.product.productAddForm',
 		]);
-		return view('admin.manager.product.create', $data);
 	}
 
 	public function store(Request $request)

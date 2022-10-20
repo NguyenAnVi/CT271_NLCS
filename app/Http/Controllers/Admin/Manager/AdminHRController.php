@@ -66,7 +66,10 @@ class AdminHRController extends Controller
 	{
 		$check = $this->checkRootUser($this->getCurrentId());
 		if ($check) {
-			return view('admin.manager.hr.create');
+			return view('admin.layouts.create', [
+				'title' => 'Thêm tài khoản admin',
+				'formView' => 'admin.manager.hr.hrAddForm',
+			]);
 		} else {
 			return $this->rejectAction();
 		}

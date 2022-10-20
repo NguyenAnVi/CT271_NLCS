@@ -10,7 +10,7 @@
           <label for="name_check" class="uk-text-bold uk-form-large">Tên CTKM: </label>
         </label>
       </div>
-      <div class="uk-width-1-1@s uk-width-3-4@m">
+      <div class="uk-width-1-1@s uk-width-3-4@l">
         <input value="@if (old('name') != null) {{ old('name') }}@else{{ $saleoff->name }} @endif"
           tabindex="1" class="uk-input uk-form-large @error('name') uk-form-danger @enderror" type="text"
           name="name" placeholder="CTKM">
@@ -33,7 +33,7 @@
           <label for="change_price_check" class="uk-text-bold uk-form-large">Giá KM: </label>
         </label>
       </div>
-      <div class="uk-width-1-1@s uk-width-3-4@m">
+      <div class="uk-width-1-1@s uk-width-3-4@l">
         <div class="uk-margin uk-grid-large uk-child-width-auto uk-grid">
           <label><input class="uk-radio " type="radio" @if (old('price_amount') || $saleoff->amount != 0) {{ __('checked') }} @endif
               name="price_check" value="1">
@@ -81,7 +81,7 @@
           <label for="time_check" class="uk-text-bold uk-form-large">Thời gian diễn ra: </label>
         </label>
       </div>
-      <div class="uk-width-1-1@s uk-width-3-4@m">
+      <div class="uk-width-1-1@s uk-width-3-4@l">
         <div class="uk-width-1-2@s">
           <label for="saleoff_start">
             Thời điểm bắt đầu: 
@@ -121,7 +121,7 @@
           <label for="banner_check" class="uk-text-bold uk-form-large">Ảnh banner: </label>
         </label>
       </div>
-      <div class="uk-width-1-1@s uk-width-3-4@m">
+      <div class="uk-width-1-1@s uk-width-3-4@l">
         <div class="uk-width-1-1" uk-form-custom>
           <input id="file-input" type="file" name="banner" accept="image/*">
           <button class="uk-button uk-button-default uk-margin uk-width-1-1" type="button" tabindex="-1">Hình ảnh
@@ -167,6 +167,38 @@
       $('#change_price_check').attr('checked', 'checked');
       $('input[name=price_check][value='+ value +']').prop('checked', true);
     });
+
+    $('input[name=price_check]').on('change', function() {
+      let value = $(this).attr('value');
+			let nameAct = '';
+			let nameDis = '';
+			if(value == 0){
+				nameAct = 'price_percent';
+				nameDis = 'price_amount';
+			}else{
+				nameAct = 'price_amount';
+				nameDis = 'price_percent';
+			}
+      $('input[name='+nameDis+']').prop('disabled', true);
+			$('input[name='+nameAct+']').prop('disabled',false);
+    });
+
+    $('input[name^=price_]').on('focus', function() {
+			let value = $(this).attr('name');
+			let nameAct = value;
+			let nameDis = '';
+			value = 0;
+			if(nameAct == 'price_percent'){
+				nameDis = 'price_amount';
+			}else if(nameAct == 'price_amount'){
+				nameDis = 'price_percent';
+				value = 1;
+			}
+			else{ return}
+      $('input[name='+nameDis+']').prop('disabled', true);
+			$('input[name='+nameAct+']').prop('disabled',false);
+			$('input[name=price_check][value='+value+']').prop('checked', true);
+		});
 
     $(function() {
       $("#file-input").change(function() {
