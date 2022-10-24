@@ -43,7 +43,7 @@
 <body>
 	<div id="app">
 		<div class="uk-background-primary uk-light uk-position-z-index uk-padding uk-padding-remove-vertical" uk-sticky=" show-on-up: true; animation: uk-animation-slide-top">
-			<nav class="uk-navbar uk-navbar-transparent">
+			<nav class="uk-navbar uk-navbar-transparent uk-container">
 					<div class="uk-nav-overlay uk-navbar-left">
 						<img src="{{asset('logo/favicon.png')}}" style="max-height: 2rem; max-width: 2rem">
 						<a class="uk-navbar-item uk-logo" href="{{route('home')}}">{{ config('app.name', 'Laravel') }}</a>
@@ -131,7 +131,7 @@
 		
 		<main class="" uk-height-viewport="offset-bottom:true ; offset-top:true">
 			@includeIf('admin.partials.generalmessage')
-			<div class="uk-padding-small">
+			<div class="uk-padding-small uk-container">
 				@yield('content')
 			</div>
 		</main>
