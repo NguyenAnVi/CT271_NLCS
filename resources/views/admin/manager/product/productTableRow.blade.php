@@ -3,7 +3,7 @@
 	<td>{{$item->id}}</td>
  <td>{!!getCollection($item->images)!!}</td>
  <td>{{$item->name}}</td>
- <td>{{number_format($item->price, 0, ',', '.')}} đ</td>
+ <td>{{toCurrency($item->price)}}</td>
     <?php $item_saleoff = SaleOff::where('id', $item->saleoff_id)->first() ?>
  <td class="uk-text-truncate" uk-tooltip="@if(isset($item_saleoff->amount))Giảm @if($item_saleoff->amount != 0){{number_format($item_saleoff->amount, 0, ',', '.')}} đ @else {{$item_saleoff->percent}} % @endif @endif ">
 @if(isset($item_saleoff->name)){{$item_saleoff->name}}@endif</td>

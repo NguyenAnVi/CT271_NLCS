@@ -3,18 +3,46 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use App\Models\Product;
+use App\Models\Category;
+use App\Http\Controllers\User\Resources\ProductController;
+use App\Http\Controllers\User\Resources\SaleoffController;
 
 class HomeController extends Controller
 {
-    public function gethomepage(){
-        return view('user.home');
-    }
-    public function showProduct(Product $product)
-    {
-        //
-    }
+	public function gethomepage(){
+
+		$data = ([
+			'saleoffs' => SaleoffController::getSaleoffs(),
+			'categories' => Category::get(),
+			'products' => ProductController::getProducts(20),
+		]);
+		return view('user.home', $data);
+	}
+	public function show($what, $id)
+	{
+		switch($what){
+			case 'product':
+				$data = ([
+					'item' => ProductController::getProduct($id),
+					'view' => 'user.show.product',
+				]);
+				return view('user.show', $data);
+				break;
+			case 'category':
+				//
+				break;
+			case 'saleoff':
+				//
+				break;
+			default:
+				//
+		};
+
+		return;
+	}
+
+	public function notFound(){
+		return view('user.errors.404');
+	}
 }
 
