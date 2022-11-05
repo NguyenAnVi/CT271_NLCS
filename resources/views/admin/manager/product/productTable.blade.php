@@ -7,6 +7,7 @@
 				<th>Tên SP</th>
 				<th class="uk-width-small rm" uk-tooltip="Giá bán (Chưa bao gồm khuyến mãi)">Giá</th>
 				<th class="uk-width-small rm" uk-tooltip="Chương trình KM đang áp dụng">KM</th>
+				<th class="uk-table-shrink">Kho</th>
 				<th class="uk-table-shrink">Sửa</th>
 				<th class="uk-table-shrink">Xóa</th>
 			</tr>
@@ -48,7 +49,6 @@
 		collection.forEach(function (item) {
 			o +=  '<tr>';
 			o += '<td>' +item.id +'</td>';
-			// o +='<td>'+item.images+'</td>';
 			o += getCollection(item.images);
 			o += '<td>' + item.name + '</td>';
 			o += '<td><button class="uk-button-primary uk-icon-button uk-form-small" type="submit" onclick="window.location.href=\'/admin/product/'+item.id+'/edit\'"><span uk-icon="pencil"></span></button></td>';

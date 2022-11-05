@@ -39,15 +39,17 @@
   </div>
 
   {{-- categories --}}
-  <div class="uk-flex uk-height-1-1 uk-flex-column uk-child-width-1-1 uk-card uk-card-default uk-card-hover uk-padding-small uk-margin-bottom">
-    <div id="content" class="uk-card-body uk-padding-small uk-padding-remove-horizontal">
-      <div class="uk-flex uk-flex-wrap uk-flex-wrap-around uk-flex-center">
+  <hr>
+  <div class="uk-flex uk-height-1-1 uk-flex-column uk-child-width-1-1 uk-padding-small uk-margin-bottom">
+    <div id="content" class="uk-padding-small uk-padding-remove-horizontal">
+      <div class="uk-flex uk-flex-wrap uk-flex-wrap-between uk-flex-between">
         @foreach($categories as $item)
             <button class="uk-button uk-button-text uk-flex uk-flex-center uk-flex-middle uk-margin-right uk-text-bold uk-text-{{(['primary', 'secondary', 'success', 'warning', 'danger'])[rand(0,4)]}}">{{$item->name}}</button>
         @endforeach
       </div>
     </div>
   </div>
+  <hr>
 
   {{-- products_random --}}
   <div class="uk-flex uk-height-1-1 uk-flex-column uk-child-width-1-1 uk-card uk-card-default uk-card-hover uk-padding-small  uk-margin-bottom">
@@ -57,23 +59,8 @@
     </div>
     <hr>
     <div id="content" class="uk-card-body uk-padding-small uk-padding-remove-horizontal">
-      <div class="uk-flex uk-flex-wrap">
-        @foreach ($products as $item)
-        <div data-type="product" data-id="{{$item->id}}" class="uk-padding-small uk-padding-remove-left uk-padding-remove-top uk-width-1-2 uk-width-1-3@s uk-width-1-4@m uk-width-1-6@l">
-          <div class="uk-card uk-card-secondary uk-border-rounded uk-overflow-hidden">
-            <div class="product-image uk-padding-small">
-              <img style="aspect-ratio:1/1;" class="uk-object-cover" src="{{getImageAt($item->images, 0)}}" alt="">
-            </div>
-            <div class="product-title uk-padding-small uk-flex uk-flex-column uk-flex-between" style="height:5rem">
-              <div style="height: 3rem;" class="uk-overflow-hidden"><p>{{$item->name}}</p></div>
-              <div style="height:2rem;" class="uk-flex uk-flex-between">
-                <div><p>{{$item->price}}</p></div><div><p class="uk-emphasis">Đã bán 0</p></div>
-              </div>
-              
-            </div>  
-          </div>
-        </div>
-        @endforeach
+      <div class="uk-flex uk-flex-wrap uk-child-width-1-2 uk-child-width-1-3@s uk-child-width-1-4@m uk-child-width-1-6@l">
+        @each ('user.partials.product_card',$products,'item', 'user.partials.product_card_is_empty')
       </div>
       
     </div>

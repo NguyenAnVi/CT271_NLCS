@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Services\CategoryService;
 use App\Models\Category;
+use App\Http\Controllers\Admin\Manager\AdminProductController;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 
@@ -18,13 +19,49 @@ class AdminCategoryController extends Controller
 		$this->categoryService = $categoryService;
 	}
 
+	public function getRelativeProduct($categoryid){
+		$product = new AdminProductController();
+		return $product->getAll()->where('category_id', $categoryid);
+	}
+
+	public function getChildren($categoryid){
+		$c = Category::where('parent_id', $categoryid)->get();
+		return $c;
+	}
+
+	public function getAllLeaf(){
+
+		// SELECT leaf.node_id
+		// FROM tree AS leaf
+		// LEFT OUTER JOIN tree AS child on child.parent = leaf.node_id
+		// WHERE child.node_id IS NULL
+
+		return DB::table('categories as leaf')
+							->select('leaf.*')
+							->leftJoin('categories as child','child.parent_id', '=', 'leaf.id')
+							->whereNull('child.id')
+							->get();
+	}
+
+	public function getAllLeafAjax(Request $request){
+		if($request->ajax()!==NULL){
+			return Response(json_encode($this->getAllLeaf()));
+		}
+
+	}
+
 	public function getAll($pages = 0)
-    {
-        if($pages == 0)
-            return Category::orderby('id', 'asc')->get();
-        else
-            return Category::orderby('id', 'asc')->paginate($pages);
-    }
+	{
+		if($pages == 0)	return Category::orderby('id', 'asc')->get();
+		else return Category::orderby('id', 'asc')->paginate($pages);
+	}
+
+	public function getAllAjax(Request $request){
+		if($request->ajax()!==NULL){
+			return Response(json_encode($this->getAll()));
+		}
+
+	}
 
 	public function create()
 	{
@@ -137,19 +174,39 @@ class AdminCategoryController extends Controller
 			return back()->withErrors(['success'=>'Thay đổi thành công ('.$prop.' thuộc tính)']);
 	}
 
-	public function destroy(Request $request): JsonResponse
+	public function destroy(int $id)
 	{
-		$result = $this->categoryService->destroy($request);
-		if ($result){
-			return response()->json([
-				'error' => false,
-				'message' => 'Xóa thành công danh mục'
+		$menu = Category::where('id', $id)->first();
+
+		try{
+			if ($menu){
+				$countChildren = 0;
+				foreach($this->getChildren($id) as $item){
+					$this->destroy($item->id);
+					$countChildren++;
+				}
+
+				foreach($this->getRelativeProduct($id) as $item){
+					$product = new AdminProductController();
+					try{
+						$product->destroy($item->id);
+					} catch (\Exception $e){
+						return back()->withErrors([
+							'danger'=>'Có lỗi xảy ra khi xóa Danh mục : '.$e->getMessage(),
+						]);
+					}
+				}
+				Category::where('id', $id)->delete();
+
+				return back()->withErrors([
+					'success' => 'Xóa thành công danh mục '.$id.', '.$countChildren.' danh mục con đã được xóa.',
+				]);
+			}
+		} catch (\Exception $e) {
+			return back()->withErrors([
+				'danger'=>'Có lỗi xảy ra khi xóa Danh mục : '.$e->getMessage(),
 			]);
 		}
-
-		return response()->json([
-			'error' => true
-		]);
 	}
 
 	public function switchstatus( Request $request)

@@ -5,6 +5,8 @@
 		action="{{route('admin.product.update', $product->id)}}">
 	@csrf
 	@method('put')
+
+	{{-- tenSP --}}
 	<div class="uk-form" uk-grid>
 		<div class="uk-width-expand uk-grid-match" uk-grid>
 			<div class="uk-width-1-1@s uk-width-1-4@l">
@@ -25,6 +27,30 @@
 			</div>
 		</div>
 	</div>
+
+	{{-- tonkho --}}
+	<div class="uk-form" uk-grid>
+		<div class="uk-width-expand uk-grid-match" uk-grid>
+			<div class="uk-width-1-1@s uk-width-1-4@l">
+				<label class="uk-form-large ">
+					<input id="stock_check" name="stock_check" class="uk-checkbox" type="checkbox">
+					<label for="stock_check" class="uk-text-bold uk-form-large">Tồn kho: </label>
+				</label>
+			</div>
+			<div class="uk-width-1-1@s uk-width-3-4@l">
+				<input value="@if(old('stock')!=NULL){{old('stock')}}@else{{$product->stock}}@endif" tabindex="1" 
+				class="uk-input uk-form-large @error('stock') uk-form-danger @enderror" 
+				type="text" name="stock" placeholder="Tồn kho" >
+				@error('stock')
+				<span class="uk-text-danger">
+					<strong>{{ $message }}</strong>
+				</span>
+				@enderror
+			</div>
+		</div>
+	</div>
+
+	{{-- giaban --}}
 	<div class="uk-form" uk-grid>
 		<div class="uk-width-expand uk-grid-match" uk-grid>
 			<div class="uk-width-1-1@s uk-width-1-4@l">
@@ -46,6 +72,7 @@
 		</div>
 	</div>
 	
+	{{-- chitiet --}}
 	<div class="uk-form" uk-grid>
 		<div class="uk-width-expand uk-grid-match" uk-grid>
 			<div class="uk-width-1-1@s uk-width-1-4@l">
@@ -66,19 +93,18 @@
 		</div>
 	</div>
 
+	{{-- danhmuc --}}
 	<div class="uk-form" uk-grid>
 		<div class="uk-width-expand uk-grid-match" uk-grid>
 			<div class="uk-width-1-1@s uk-width-1-4@l">
 				<label class="uk-form-large ">
-					<input id="saleoff_check" name="saleoff_check" class="uk-checkbox" type="checkbox">
-					<label for="saleoff_check" class="uk-text-bold uk-form-large">CTKM: </label>
+					<input id="category_check" name="category_check" class="uk-checkbox" type="checkbox">
+					<label for="category_check" class="uk-text-bold uk-form-large">Danh mục: </label>
 				</label>
 			</div>
 			<div class="uk-width-1-1@s uk-width-3-4@l">
-				<select class="uk-select" id="saleoff-select" name="saleoff" onchange="changeFunc()">
-					@foreach($saleoffs as $saleoff)
-					<option value="{{$saleoff->id}}" @if((old('saleoff')==$saleoff->id)||($product->saleoff_id==$saleoff->id))selected @endif>{{$saleoff->name}}</option>
-					@endforeach
+				<select class="uk-select" id="category_list" name="category" onchange="changeFunc()">
+					
 					<hr class="uk-divider-icon">
 					<option value="-1">{{__('Thêm CTKM mới')}}</option>
 				</select>
@@ -86,6 +112,7 @@
 		</div>
 	</div>
 
+	{{-- hinhanh --}}
 	<div class="uk-form" uk-grid>
 		<div class="uk-width-expand uk-grid-match" uk-grid>
 			<div class="uk-width-1-1@s uk-width-1-4@l">
@@ -137,11 +164,40 @@
 			$('input[name='+name+']').attr('checked','checked');
 			});
 
-			function changeFunc() {
-			var selectBox = document.getElementById("saleoff-select");
-			var selectedValue = selectBox.options[selectBox.selectedIndex].value;
-			if (selectedValue == -1) document.getElementById('new-saleoff').submit();
-		}
+		$(function (){
+      let olddata = $('#category_list').html();
+      $.ajax({
+        headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+        type: 'get',
+        url: '{{route("admin.category.getallleaf")}}',
+        data: {},
+        success:function(obj){
+          // alert(JSON.parse(obj)[1].id)
+          $('#category_list').html(select_row(JSON.parse(obj))+olddata);
+        }
+      });
+
+      olddata = $('#saleoff_list').html();
+      $.ajax({
+        headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+        type: 'get',
+        url: '{{route("admin.saleoff.getall")}}',
+        data: {},
+        success:function(obj){
+          $('#saleoff_list').html(select_row(JSON.parse(obj))+olddata);
+        }
+      });
+      
+    });
+
+    function select_row(collection){
+      let o= '';
+      collection.forEach(function (item) {
+        o +=  '<option value="'+item.id+'">'+item.name+'</option>';
+      });
+      return o;
+	  }
+
 		$(function() {
 			$(":file").change(function() {
 				if (this.files && this.files[0]) {
@@ -159,5 +215,5 @@
 			$('#myImg').append('<li><img src=' + e.target.result + ' width="400" height="600" alt=""></li>');
 		};    
 	}
-		
+
 </script>

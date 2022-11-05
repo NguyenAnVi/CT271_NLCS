@@ -14,7 +14,7 @@ class HomeController extends Controller
 		$data = ([
 			'saleoffs' => SaleoffController::getSaleoffs(),
 			'categories' => Category::get(),
-			'products' => ProductController::getProducts(20),
+			'products' => ProductController::getProducts(6),
 		]);
 		return view('user.home', $data);
 	}

@@ -11,6 +11,10 @@ use Exception;
 
 class AdminProductController extends Controller
 {
+	public function getAll(){
+		return Product::all();
+	}
+	
 	public function index($olddata=NULL)
 	{
 		$products = Product::paginate(5);
@@ -43,6 +47,8 @@ class AdminProductController extends Controller
 		$this->validate($request, [
 			'name' => 'required',
 			'price' => 'required',
+			'category' => 'required',
+			'saleoff' => 'required',
 			'detail' => 'max:5000',
 		]);
 		
@@ -51,6 +57,9 @@ class AdminProductController extends Controller
 
 		$product->name = $request->name;
 		$product->price = $request->price;
+		$product->saleoff_id = $request->saleoff;
+		$product->category_id = $request->category;
+		$product->stock = $request->stock;
 		$product->detail = ($request->detail!=NULL)?$request->detail:"";
 		$product->saleoff_id = ($request->saleoff<0)?0:$request->saleoff;
 		$product->images = "";

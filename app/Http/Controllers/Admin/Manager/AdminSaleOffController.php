@@ -7,9 +7,21 @@ use App\Models\SaleOff;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Admin\Manager\AdminProductController;
+use Illuminate\Support\Facades\Response;
 
 class AdminSaleOffController extends Controller
 {
+    public function getAll($page = null){
+        if($page) return SaleOff::paginate((int) $page);
+        else return SaleOff::get();
+    }
+
+    public function getAllAjax(Request $request){
+        if ($request->ajax()){
+            return Response(json_encode($this->getAll()));
+        }
+    }
+
     public function index($olddata=NULL)
 	{
         $saleoffs = DB::table('saleoffs')->paginate(5);

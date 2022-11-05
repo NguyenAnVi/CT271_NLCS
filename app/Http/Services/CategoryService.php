@@ -8,18 +8,5 @@ class CategoryService
     {
         return Category::where('parent_id', $n)->get();
     }
-
     
-
-    public function destroy($request)
-    {
-        $id = (int) $request->input('id');
-        $menu = Category::where('id', $request->input('id'))->first();
-
-        if ($menu){
-            return Category::where('id', $id)->orWhere('parent_id')->delete();
-
-        }
-        return false;
-    }
 }

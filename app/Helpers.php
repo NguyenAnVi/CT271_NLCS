@@ -170,7 +170,6 @@ if(!function_exists('copyr')){
 	// Make destination directory
 	if (!is_dir($dest)) {
 		mkdir($dest);
-		$company = ($_POST['company']);
 	}
 
 	// Loop through the folder

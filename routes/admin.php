@@ -55,8 +55,11 @@ Route::middleware('auth:admin')->group(function () {
                 'edit' => 'admin.saleoff.edit',
                 'update' => 'admin.saleoff.update',
                 'destroy' => 'admin.saleoff.destroy'
-            ]);
-            Route::get('saleoff/search', [AdminSaleoffController::class, 'search'])->name('admin.saleoff.search');
+            ]
+        );
+        Route::get('saleoff/search', [AdminSaleoffController::class, 'search'])->name('admin.saleoff.search');
+        Route::get('saleoff/getall', [AdminSaleoffController::class, 'getAllAjax'])->name('admin.saleoff.getall');
+
 
         Route::resource('product', AdminProductController::class)
             ->except(['show'])
@@ -79,7 +82,9 @@ Route::middleware('auth:admin')->group(function () {
                 'edit' => 'admin.category.edit',
                 'update' => 'admin.category.update',
                 'destroy' => 'admin.category.destroy'
-            ]);
+            ]
+        );
+        Route::get('category/getallleaf', [AdminCategoryController::class, 'getAllLeafAjax'])->name('admin.category.getallleaf');
         Route::post('category/switchstatus', [AdminCategoryController::class, 'switchstatus'])->name('admin.category.switchstatus');
         Route::get('category/search', [AdminCategoryController::class, 'search'])->name('admin.category.search');
 
