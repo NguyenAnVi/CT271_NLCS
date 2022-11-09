@@ -53,21 +53,32 @@
         </p>
 
         {{-- buttons and select number add to cart --}}
-        <form action="" method="post" class="uk-form-horizontal uk-margin-small">
+        <form action="@if (Auth::check()){{ route('addCart') }}@endif" method="post" class="uk-form-horizontal uk-margin-small">
+          
+          @csrf
           <div class="uk-margin">
             <div class="uk-width-1-1 uk-flex uk-flex-left">
               <label class="uk-padding-small">Số lượng</label>
-              <input type="number" value="1" min="1" max="{{intval($item->stock)}}" class="uk-input uk-width-small" name="amount" id="amount">
+              <input type="text" name="user_id" value="{{Auth::id()}}" hidden>
+              <input type="text" name="product_id" value="{{ $item->id }}" hidden>
+              <input type="number" value="1" min="1" max="{{intval($item->stock)}}" class="uk-input uk-width-small" name="quantity" id="amount">
               <p class="uk-padding-small uk-inline uk-margin-remove">Có {{intval($item->stock)}} sản phẩm có sẵn.</p>
             </div>
           </div>
+
           <div class="uk-grid-small uk-child-width-auto" uk-grid>
-            <div>
-                <a class="uk-button-large uk-button uk-button-secondary" href="#">Thêm vào giỏ hàng <span uk-icon="cart"></span></a>
+            @if ($item->stock > 0)
+              @if (Auth::check())
+              <button type="submit" class="uk-button-large uk-button uk-button-secondary" href="#">Thêm vào giỏ hàng <span uk-icon="cart"></span> </button>
+              @else
+                <button type="button" onclick="alert('Bạn phải đăng nhập')" class="uk-button-large uk-button uk-button-secondary" href="#">Thêm vào giỏ hàng <span uk-icon="cart"></span> </button>
+              @endif
+            @else
+              <button type="button" class="uk-button-large uk-button uk-button-secondary uk-disabled" href="#">Tạm hết hàng</button>
+            @endif
+              
             </div>
-            <div>
-                <a class="uk-button-large uk-button uk-button-primary" href="#">Mua ngay</a>
-            </div>
+          </form>
         </div>
         </form>
     
@@ -86,6 +97,7 @@
         <h3 class="uk-alert uk-alert-primary uk-padding-small uk-border-rounded uk-padding-remove-right" uk-grid>CHI TIET SAN PHAM</h3>
         <p>Danh muc: {{--insert breadcrumb --}}</p>
         ...
+        {{Cart::content()}}
       </div>
       <div>
         <h3 class="uk-alert uk-alert-primary uk-padding-small uk-border-rounded uk-padding-remove-right" uk-grid>MO TA SAN PHAM</h3>

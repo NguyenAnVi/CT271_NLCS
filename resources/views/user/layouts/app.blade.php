@@ -69,30 +69,7 @@
 							@else
 								{{-- Shopping cart --}}
 								 <li>
-									<a href=""><span uk-icon="icon:cart"></span></a>
-									<div id="cart" class="uk-width-1-1@s uk-width-1-2@m"
-										uk-dropdown="pos: bottom-right; mode: click; animation: uk-animation-slide-top-small;">
-										@if(isset($cart_item))
-											<ul class="uk-list">
-												<li class="uk-nav-header uk-text-bold">Sản phẩm vừa thêm</li>
-												<li><hr></li>
-												<li>
-													<ul class="uk-list uk-list-large uk-list-divider">
-														@foreach($cart_item as $item)
-														<li>
-															<div uk-grid>
-																<div class="uk-width-expand">{{$item['name']}}</div>
-																<div class="uk-width-1-4">{{$item['quantity']}}</div>
-															</div>
-														</li>
-														@endforeach
-													</ul>
-												</li>
-											</ul>
-										@else
-											<div>Chưa có sản phẩm trong giỏ</div>
-										@endif
-									</div>
+									@includeIf('user.partials.cart')
 								</li>
 
 								{{-- search button --}}

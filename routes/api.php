@@ -61,7 +61,6 @@ Route::post('admin/product/uploadImageEditor', function (Request $request){
     // }
     // else{
     //     $response = new stdClass;
-    //     $response->link = "https://c.pxhere.com/photos/44/49/black_white_pretty_sexy_erotic_female_girl_woman_relish-569216.jpg!d";
     //     // $response->link = asset('storage/uploads').$name;
     //     error_log($response->link);
     //     echo stripslashes(json_encode($response));

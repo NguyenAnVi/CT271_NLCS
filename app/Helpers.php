@@ -1,7 +1,12 @@
 <?php
 
+/**
+ * @return string as AN IMAGE with full URL asset
+ * @param array of ImageURLs ex.: [https://abc.jpg,https://efg.jpg]
+ * @param position : 0 .. length of array - index of image
+ */
 if (!function_exists('getImageAt')) {
-	function getImageAt($array, $position)
+	function getImageAt(string $array = null, int $position)
 	{
 		if($array)
 			if(json_decode(str_replace('\\','',$array))[$position] != '')

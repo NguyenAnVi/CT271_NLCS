@@ -7,10 +7,11 @@ use App\Models\Category;
 use App\Http\Controllers\User\Resources\ProductController;
 use App\Http\Controllers\User\Resources\SaleoffController;
 
+
 class HomeController extends Controller
 {
 	public function gethomepage(){
-
+		
 		$data = ([
 			'saleoffs' => SaleoffController::getSaleoffs(),
 			'categories' => Category::get(),
