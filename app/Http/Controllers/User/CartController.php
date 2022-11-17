@@ -27,6 +27,18 @@ class CartController extends Controller
     {
         Cart::store(Auth::id());
     }
+
+    /**
+     * Kiểm tra tính hợp lệ của số lượng
+     * trong giỏ hàng so với tồn kho
+     * @param $quantity
+     * @param $product (Model)
+     */
+    public function checkValidQty($quantity, $product){
+        error_log($quantity== $product->stock);
+        return ($quantity== $product->stock);
+    }
+
     public function save_cart(Request $request)
     {
         $user_id = $request->user_id;
@@ -34,6 +46,8 @@ class CartController extends Controller
         $quantity = $request->quantity;
         
         $product = Product::find($product_id);
+
+        $this->checkValidQty($quantity, $product);
         
         $product_name = $product->name;
         $product_image = $product->images;
@@ -54,7 +68,6 @@ class CartController extends Controller
             Cart::add($data);
             Cart::store($user_id);
         } catch (CartAlreadyStoredException $th) {
-            error_log("2");
             Cart::merge($user_id,$data);
         }
         
@@ -65,8 +78,7 @@ class CartController extends Controller
     }
     public static function get_cart_partial(){
         $o='';
-        Cart::restore(Auth::id());
-
+        Cart::restore(Auth::user()->id);
 
         if(Cart::count()>0){
             $o.="<div class=\"uk-width-1-1\">";
@@ -134,11 +146,12 @@ class CartController extends Controller
 
     public function delete_cart(Request $request)
     {
-        
         $user_id = $request->user_id;
+        Cart::restore($user_id);
+        
         $rowId = $request->rowId;
         Cart::remove($rowId);
-        Cart::restore($user_id);
+        Cart::store($user_id);
         return redirect()->back()->withErrors([
             'success' => 'Xóa thành công.',
         ]);
