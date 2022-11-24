@@ -32,7 +32,7 @@
 						<td class="uk-text-bold">QL Chương trình khuyến mãi</td>
 						<td><img src="{{asset('logo/sale-off.jpg')}}" class="uk-width-1-1" style="max-height: 3rem; object-fit:cover;"></td>
 					</tr>
-					<tr onclick="window.location.href=''">
+					<tr onclick="window.location.href='{{route('admin.order')}}'">
 						<td class="uk-text-bold">QL Hóa đơn</td>
 						<td><img src="{{asset('logo/billing.png')}}" class="uk-width-1-1" style="max-height: 3rem; object-fit:cover;"></td>
 					</tr>

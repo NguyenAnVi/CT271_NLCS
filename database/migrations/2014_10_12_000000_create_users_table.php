@@ -19,6 +19,7 @@ class CreateUsersTable extends Migration
             $table->string('phone')->unique();
             $table->string('password');
             $table->string('cart_id')->nullable();
+            $table->string('address')->nullable();
             $table->integer('point')->default(0);
         });
     }

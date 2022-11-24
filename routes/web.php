@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\User\Auth\LoginController;
 use App\Http\Controllers\User\HomeController;
 use App\Http\Controllers\User\CartController;
+use App\Http\Controllers\User\CheckoutController;
 
 // Guest
 Route::match(['get'], '/', function(){return redirect('home');});
@@ -22,6 +23,14 @@ Route::match(['get'],'show-cart', [CartController::class,'show_cart'])->name('sh
 Route::match(['post'],'delete-cart', [CartController::class,'delete_cart'])->name('deleteCart');
 Route::match(['post'],'update-qty-cart{id}', [CartController::class, 'update_quantity'])->name('updateCart');
 
+//Order_checkout
+Route::match(['get'], '/checkout', [CheckoutController::class, 'index'])->name('checkout');
+Route::match(['post'], '/placeorder', [CheckoutController::class, 'order_place'])->name('placeOrder');
+
+//Order_checkout_ajax_Shipping_fee_calculate
+Route::match(['get'], '/getshippingfee', [CheckoutController::class, 'getShippingFee'])->name('getshippingfee');
+//Order_checkout_ajax_total_calculate
+Route::match(['get'], '/getsubtotal', [CheckoutController::class, 'getTotal'])->name('getSubTotal');
 
 
 Route::fallback([HomeController::class, 'notFound']);

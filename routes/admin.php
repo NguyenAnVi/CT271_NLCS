@@ -9,6 +9,8 @@ use App\Http\Controllers\Admin\Manager\AdminCustomerController;
 use App\Http\Controllers\Admin\Manager\AdminProductController;
 use App\Http\Controllers\Admin\Manager\AdminSaleOffController;
 use App\Http\Controllers\Admin\Manager\AdminCategoryController;
+use App\Http\Controllers\Admin\Manager\AdminOrderController;
+
 
 
 Route::match(['get', 'post'], 'login', [LoginController::class, 'login'])->name('admin.login');
@@ -88,6 +90,13 @@ Route::middleware('auth:admin')->group(function () {
         Route::post('category/switchstatus', [AdminCategoryController::class, 'switchstatus'])->name('admin.category.switchstatus');
         Route::get('category/search', [AdminCategoryController::class, 'search'])->name('admin.category.search');
 
+        // ORDER management
+        Route::get('order', [AdminOrderController::class, 'index'])->name('admin.order');
+        Route::get('order/all', [AdminOrderController::class, 'all'])->name('admin.order.all');
+        Route::get('order/pending', [AdminOrderController::class, 'pending'])->name('admin.order.getPending');
+        Route::get('order/detail', [AdminOrderController::class, 'detail'])->name('admin.order.getDetail');
+        Route::get('order/search', [AdminOrderController::class, 'search'])->name('admin.order.search');
+        Route::post('order/switchstatus', [AdminOrderController::class, 'switchstatus']);
     });
 
     Route::fallback([HomeController::class, 'notFound']);

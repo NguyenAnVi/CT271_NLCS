@@ -75,8 +75,8 @@
                 
                 {{-- <button type="button" class="cart__submit"><a href="">@lang('main.cart.order')</a></button> --}}
                 <div class="uk-width-1-1 uk-text-center">
-                    <form action="{{-- route('order.create') --}}" method="post">
-                        <button type="button" class="uk-button uk-button-primary">Đăt hàng ngay</button>
+                    <form action="{{route('checkout')}}" method="get">
+                        <button type="submit" class="uk-button uk-button-primary">Đăt hàng ngay</button>
                     </form>
                 </div>
             @else
