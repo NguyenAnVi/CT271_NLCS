@@ -87,7 +87,10 @@
 											</li>
 											<li class="uk-nav-divider"></li>
 											<li>
-												<a href="{{ route('admin.logout') }}"
+												<a href="{{ route('orders') }}">
+													{{ __('Đơn hàng của tôi')}}
+												</a>
+												<a href="{{ route('logout') }}"
 												   onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
 													{{ __('Đăng xuất') }}
 												</a>

@@ -52,6 +52,8 @@ class CheckoutController extends Controller
     $odata['subtotal'] = Cart::total(0,"","");
     $odata['total'] = intval($odata['subtotal']) + intval($odata['shipping_fee']);
     $odata['status'] = 'PENDING';
+    $odata['created_at'] = now();
+    $odata['updated_at'] = now();
 
     $order_id =Order::insertGetId($odata);
 

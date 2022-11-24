@@ -68,11 +68,10 @@ class AdminOrderController extends Controller
 	}
 
 	public function switchStatus(Request $request){
-		$order = Order::find($request->order_id)->first();
+		$order = Order::where('id',$request->order_id)->first();
 		if($order){
 			if(OrderStatus::isValidName($request->status)){
 				$order->status = $request->status;
-				$order->timestamps = false;
 				$order->save();
 				return back()->withErrors([
 					'success' => 'Thay đổi trạng thái đơn hàng thành công.',
