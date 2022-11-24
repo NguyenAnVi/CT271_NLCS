@@ -19,6 +19,7 @@ class CreateOrdersTable extends Migration
             $table->integer('subtotal');        //tien hang
             $table->integer('total');           //tien hang + tien ship - tien KM... =  Tong tien thanh toan
             $table->string('status');
+            $table->timestamps();
         });
     }
 
