@@ -76,6 +76,7 @@
                 {{-- <button type="button" class="cart__submit"><a href="">@lang('main.cart.order')</a></button> --}}
                 <div class="uk-width-1-1 uk-text-center">
                     <form action="{{route('checkout')}}" method="get">
+                        <input type="hidden" name="id" value = {{Auth::id()}}>
                         <button type="submit" class="uk-button uk-button-primary">Đăt hàng ngay</button>
                     </form>
                 </div>

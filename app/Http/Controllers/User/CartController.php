@@ -78,8 +78,7 @@ class CartController extends Controller
     }
     public static function get_cart_partial(){
         $o='';
-        Cart::restore(Auth::user()->id);
-
+        Cart::restore(Auth::id());
         if(Cart::count()>0){
             $o.="<div class=\"uk-width-1-1\">";
                 $o.="<strong>Sản phẩm vừa thêm</strong>";

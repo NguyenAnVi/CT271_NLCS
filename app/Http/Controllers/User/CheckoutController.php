@@ -14,11 +14,14 @@ use Illuminate\Support\Facades\Session;
 
 class CheckoutController extends Controller
 {
-  public function index(){
-    $user = User::where('id', Session::get('id'));
+  public function index(Request $request){
+    $user = User::where('id', $request->id)->first();
+    Cart::restore($user->id);
+    $cart = Cart::content();
+    Cart::store($user->id);
     return view('user.checkout.view', [
       compact('user'),
-      'cart' => Cart::content()
+      'cart' => $cart,
     ]);
   }
 
@@ -35,6 +38,8 @@ class CheckoutController extends Controller
         'warning' => 'Hình thức vận chuyển không hợp lệ.', 
       ]);
     }
+
+    Cart::restore($request->user_id);
 
     $odata = array();
     $odata['user_id'] = $request->user_id;   // Tai khoan dat hang
@@ -61,6 +66,7 @@ class CheckoutController extends Controller
       DB::table('orderitems')->insert($oidata);
     }
 
+    Cart::destroy($request->user_id);
     // Thong bao cho Admin biet
 
 
