@@ -257,4 +257,26 @@ class AdminProductController extends Controller
 		}
 		return $check;
 	}
+
+	/**
+	 * cập nhật lại số lượng sản phẩm khi có thay đổi về đơn hàng
+	 * @param int $id mã sản phẩm
+	 * @param int $quantity số lượng sản phẩm cần thay đổi
+	 * @param int $multiplier cần trừ hay là thêm lại sản phẩm 
+	 * (nếu muốn tăng số lượng thì để 1, giảm số lượng thì để 0)
+	 * @return void
+	 */
+	public function restock(int $id, int $quantity, int $multiplier){
+		$multiplier = ($multiplier>0?1:($multiplier<0?-1:0));
+		if($multiplier==0) return;
+		else {
+			$product = Product::where('id', $id)->first();
+			$product->timestamps = false;
+			error_log('truoc khi thay doi so luong: '.$product->stock);
+			$product->stock += ($multiplier * $quantity) ;
+			error_log('sau khi thay doi so luong : '.$product->stock);
+			$product->save();
+			return;
+		}
+	}
 }

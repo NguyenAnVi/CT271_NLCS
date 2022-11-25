@@ -7,8 +7,7 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use App\FakeEnums\OrderStatus;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Exception;
+use App\Http\Controllers\Admin\Manager\AdminProductController;
 
 class AdminOrderController extends Controller
 {
@@ -67,11 +66,45 @@ class AdminOrderController extends Controller
 		}
 	}
 
+	/*
+	*	Khi đổi trạng thái đơn hàng thành PROCESSING: 
+	*		-Trừ trong kho
+	*	Khi đổi trạng thái đơn hàng thành PENDING hoặc CANCELLED: 
+	*		-Tìm trong kho các sản phẩm và khôi phục lại
+	*/
+	public function updateStock(Order $order, string $oldStatus){
+		$pro = new AdminProductController();
+		$items = OrderItem::where('order_id', $order->id)->get();
+		$newStatus = $order->status;
+
+		if ($oldStatus == "PENDING" && ($newStatus == "PROCESSING" || 
+																		$newStatus == "DELIVERING" || 
+																		$newStatus == "DELIVERED"))
+		{
+			$multiplier = -1;
+		} else if($newStatus == "CANCELED_BY_USER"){
+			$multiplier = 1;
+		} else {
+			error_log("nothing to change");
+			return;
+		}
+		
+		foreach ($items as $item){
+			$pro->restock($item->product_id, $item->qty, $multiplier);
+		}
+		return;
+	}
+
 	public function switchStatus(Request $request){
 		$order = Order::where('id',$request->order_id)->first();
 		if($order){
 			if(OrderStatus::isValidName($request->status)){
+				$oldStatus = $order->status;
 				$order->status = $request->status;
+
+				// cập nhật Product.Stock:
+				$this->updateStock($order, $oldStatus, $order->status);
+				
 				$order->save();
 				return back()->withErrors([
 					'success' => 'Thay đổi trạng thái đơn hàng thành công.',
