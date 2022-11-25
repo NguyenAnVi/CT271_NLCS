@@ -35,6 +35,10 @@ Route::match(['get'], '/getsubtotal', [CheckoutController::class, 'getTotal'])->
 
 //Orders
 Route::match(['get'], '/orders', [OrderController::class, 'index'])->name('orders');
+Route::match(['get'], '/order/detail/{id}', [OrderController::class, 'detail']);
+Route::match(['post'], '/order/detail', [OrderController::class, 'cancel'])->name('cancelOrder');
+
+
 
 
 

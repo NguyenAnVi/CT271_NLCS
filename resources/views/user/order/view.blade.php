@@ -41,8 +41,18 @@
 			</ul>
 		</div>
 	</div>
-	<script src="{{ asset('js/jquery-3.6.1.min.js') }}"></script>
 	<script>
-		
+		function toCurrency(num){
+			if(!Number.isInteger(parseInt(num)))num = 0; 
+			return(
+				Number(num).toLocaleString(
+					'vi-VN', 
+					{
+						style: 'currency',
+						currency: 'VND',
+					}
+				)
+			);
+		}
 	</script>
 @endsection
