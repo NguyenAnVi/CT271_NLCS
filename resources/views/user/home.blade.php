@@ -76,49 +76,15 @@
     <div id="content" class="uk-card-body uk-padding-small uk-padding-remove-horizontal">
       <div uk-filter="target: .js-filter">
         <ul class="uk-subnav uk-subnav-pill">
-            <li uk-filter-control=".tag-white"><a href="#">White</a></li>
-            <li uk-filter-control=".tag-blue"><a href="#">Blue</a></li>
-            <li uk-filter-control=".tag-black"><a href="#">Black</a></li>
+          <li uk-filter-control><a href="#">Tất cả</a></li>
+          @foreach($productable_categories as $item)
+            <li uk-filter-control=".category-{{$item->id}}"><a href="#">{{$item->name}}</a></li>
+          @endforeach
         </ul>
     
-        <ul class="js-filter uk-child-width-1-2 uk-child-width-1-3@m uk-text-center" uk-grid>
-            <li class="tag-white">
-                <div class="uk-card uk-card-default uk-card-body">Item</div>
-            </li>
-            <li class="tag-blue">
-                <div class="uk-card uk-card-primary uk-card-body">Item</div>
-            </li>
-            <li class="tag-white">
-                <div class="uk-card uk-card-default uk-card-body">Item</div>
-            </li>
-            <li class="tag-white">
-                <div class="uk-card uk-card-default uk-card-body">Item</div>
-            </li>
-            <li class="tag-black">
-                <div class="uk-card uk-card-secondary uk-card-body">Item</div>
-            </li>
-            <li class="tag-black">
-                <div class="uk-card uk-card-secondary uk-card-body">Item</div>
-            </li>
-            <li class="tag-blue">
-                <div class="uk-card uk-card-primary uk-card-body">Item</div>
-            </li>
-            <li class="tag-black">
-                <div class="uk-card uk-card-secondary uk-card-body">Item</div>
-            </li>
-            <li class="tag-blue">
-                <div class="uk-card uk-card-primary uk-card-body">Item</div>
-            </li>
-            <li class="tag-white">
-                <div class="uk-card uk-card-default uk-card-body">Item</div>
-            </li>
-            <li class="tag-blue">
-                <div class="uk-card uk-card-primary uk-card-body">Item</div>
-            </li>
-            <li class="tag-black tag-white">
-                <div class="uk-card uk-card-secondary uk-card-body">Item</div>
-            </li>
-        </ul>
+        <div class="uk-flex uk-flex-wrap js-filter uk-child-width-1-2 uk-child-width-1-3@s uk-child-width-1-4@m uk-child-width-1-6@l uk-text-center">
+          @each ('user.partials.product_card',$saleoff_products,'item', 'user.partials.product_card_is_empty')
+        </div>
     
       </div>
     </div>
