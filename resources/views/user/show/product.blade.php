@@ -96,8 +96,6 @@
       <div>
         <h3 class="uk-alert uk-alert-primary uk-padding-small uk-border-rounded uk-padding-remove-right" uk-grid>CHI TIET SAN PHAM</h3>
         <p>Danh muc: {{--insert breadcrumb --}}</p>
-        ...
-        {{Cart::content()}}
       </div>
       <div>
         <h3 class="uk-alert uk-alert-primary uk-padding-small uk-border-rounded uk-padding-remove-right" uk-grid>MO TA SAN PHAM</h3>
