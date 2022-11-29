@@ -148,7 +148,7 @@
                       o+='<div class="">Người nhận :</div><div> <i>'+order.receiver_name+'</i></div>';
                     o+='</div>';
                     o+='<div class="uk-flex uk-flex-between">';
-                      o+='<div class="">SDT :</div><div> <i>'+order.phone+'</i></div>';
+                      o+='<div class="">SDT :</div><div> <i>'+order.receiver_phone+'</i></div>';
                     o+='</div>';
                     o+='<div class="">';
                       o+='<div class="uk-width-1-1">Địa chỉ nhận :</div><div class="uk-width-1-1 uk-text-right"> <i>'+decodeURIComponent(order.address)+'</i></div>';
