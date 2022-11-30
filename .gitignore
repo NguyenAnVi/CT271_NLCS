@@ -1,5 +1,3 @@
-/public/storage
-.env.backup
 /.idea
 /.vscode
 /bootstrap/compiled.php
